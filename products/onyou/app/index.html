@@ -72,15 +72,15 @@
       min-height:500px;
     }
 
-    .preview-area h3{
-      margin-top:0;
-    }
+    .preview-area h3{ margin-top:0; }
+    .preview-muted{ color:#555; font-size:14px; }
 
-    .preview-muted{
-      color:#555;
-      font-size:14px;
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
     }
-
   </style>
 </head>
 <body>
@@ -110,31 +110,31 @@
       <h2>Form Configuration</h2>
 
       <div class="field-group">
-        <label>Template Type</label>
-        <select>
-          <option>Resume</option>
-          <option>NDA</option>
-          <option>Employment Application</option>
+        <label for="templateType">Template Type</label>
+        <select id="templateType">
+          <option value="resume">Resume</option>
+          <option value="nda">NDA</option>
+          <option value="employment">Employment Application</option>
         </select>
       </div>
 
       <div class="field-group">
-        <label>Full Name</label>
-        <input type="text" placeholder="John Doe">
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text" placeholder="John Doe" autocomplete="name">
       </div>
 
       <div class="field-group">
-        <label>Title / Role</label>
-        <input type="text" placeholder="Project Manager">
+        <label for="roleTitle">Title / Role</label>
+        <input id="roleTitle" type="text" placeholder="Project Manager" autocomplete="organization-title">
       </div>
 
       <div class="field-group">
-        <label>Summary</label>
-        <textarea placeholder="Brief professional summary..."></textarea>
+        <label for="summary">Summary</label>
+        <textarea id="summary" placeholder="Brief professional summary..."></textarea>
       </div>
 
-      <button class="btn btn-wide">Generate Preview</button>
-
+      <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
+      <div class="hint">Live preview updates as you type. Button will later run template + validation.</div>
     </div>
 
     <!-- RIGHT PANEL -->
@@ -142,10 +142,10 @@
       <h2>Live Preview</h2>
 
       <div class="preview-area">
-        <h3>John Doe</h3>
-        <p class="preview-muted">Project Manager</p>
+        <h3 id="pvName">John Doe</h3>
+        <p id="pvRole" class="preview-muted">Project Manager</p>
 
-        <p>
+        <p id="pvSummary">
           This area will render structured output in real time.
           The final layout will be export-ready and professionally formatted.
         </p>
@@ -155,6 +155,45 @@
   </div>
 
 </main>
+
+<script>
+  // Minimal live-binding (no engine yet)
+  const $ = (id) => document.getElementById(id);
+
+  const state = {
+    templateType: "resume",
+    fullName: "John Doe",
+    roleTitle: "Project Manager",
+    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted."
+  };
+
+  function syncPreview(){
+    $("pvName").textContent = state.fullName.trim() || "—";
+    $("pvRole").textContent = state.roleTitle.trim() || " ";
+    $("pvSummary").textContent = state.summary.trim() || " ";
+  }
+
+  function bind(){
+    $("templateType").addEventListener("change", (e) => {
+      state.templateType = e.target.value;
+      // placeholder for template switching later
+    });
+
+    $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; syncPreview(); });
+    $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; syncPreview(); });
+    $("summary").addEventListener("input", (e) => { state.summary = e.target.value; syncPreview(); });
+
+    $("btnPreview").addEventListener("click", () => {
+      // For now this just ensures preview is synced.
+      // Later: validate → render template → update preview.
+      syncPreview();
+    });
+
+    syncPreview();
+  }
+
+  bind();
+</script>
 
 </body>
 </html>
