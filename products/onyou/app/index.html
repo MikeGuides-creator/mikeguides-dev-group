@@ -456,6 +456,10 @@ ${renderEducationPreview()}
     const show = state.templateType === "resume";
     const expHost = $("expList");
     const addBtn = $("btnAddExp");
+    const eduHost = $("eduList");
+const eduBtn = $("btnAddEdu");
+if (eduHost) eduHost.style.display = show ? "" : "none";
+if (eduBtn) eduBtn.style.display = show ? "" : "none";
     if (expHost) expHost.style.display = show ? "" : "none";
     if (addBtn) addBtn.style.display = show ? "" : "none";
     // (The header row contains both; simplest is to keep it but hide host/buttons)
