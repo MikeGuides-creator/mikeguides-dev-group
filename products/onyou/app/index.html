@@ -308,6 +308,80 @@ select option {
       `).join("")}
     `;
   }
+  function renderEducationEditor(){
+  const host = $("eduList");
+  if (!host) return;
+
+  host.innerHTML = state.education.map((x, idx) => `
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">Entry ${idx + 1}</div>
+        <button class="btn btn-ghost btn-sm" type="button" data-edu-remove="${idx}">Remove</button>
+      </div>
+
+      <div class="field-group">
+        <label for="edu_school_${idx}">School</label>
+        <input id="edu_school_${idx}" type="text" value="${esc(x.school)}" placeholder="School / Institution" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_degree_${idx}">Degree / Program</label>
+        <input id="edu_degree_${idx}" type="text" value="${esc(x.degree)}" placeholder="Degree or program" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_dates_${idx}">Dates</label>
+        <input id="edu_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2018 – 2022" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_location_${idx}">Location</label>
+        <input id="edu_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_notes_${idx}">Notes</label>
+        <textarea id="edu_notes_${idx}" placeholder="Honors, coursework, focus...">${esc(x.notes)}</textarea>
+      </div>
+    </div>
+  `).join("");
+
+  state.education.forEach((_, idx) => {
+    $("edu_school_" + idx)?.addEventListener("input", (e) => { state.education[idx].school = e.target.value; renderPreview(); });
+    $("edu_degree_" + idx)?.addEventListener("input", (e) => { state.education[idx].degree = e.target.value; renderPreview(); });
+    $("edu_dates_" + idx)?.addEventListener("input", (e) => { state.education[idx].dates = e.target.value; renderPreview(); });
+    $("edu_location_" + idx)?.addEventListener("input", (e) => { state.education[idx].location = e.target.value; renderPreview(); });
+    $("edu_notes_" + idx)?.addEventListener("input", (e) => { state.education[idx].notes = e.target.value; renderPreview(); });
+  });
+
+  host.querySelectorAll("[data-edu-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-edu-remove"));
+      state.education.splice(i, 1);
+      renderEducationEditor();
+      renderPreview();
+    });
+  });
+}
+
+function renderEducationPreview(){
+  if (!state.education.length) {
+    return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
+  }
+
+  return `
+    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Education</h4>
+    ${state.education.map(x => `
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+          <div><strong>${esc(x.degree || " ")}</strong> — ${esc(x.school || " ")}</div>
+          <div style="color:#666; font-size:13px;">${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}</div>
+        </div>
+        ${x.notes ? `<div style="margin-top:6px; color:#222; font-size:14px; line-height:1.5;">${esc(x.notes)}</div>` : ""}
+      </div>
+    `).join("")}
+  `;
+}
   
 education: [
   {
@@ -318,6 +392,7 @@ education: [
     notes: "Relevant coursework: operations, finance, project management."
   }
 ]
+  
   function renderResume(){
     return `
       <h3 style="margin-top:0;">${esc(state.fullName.trim() || "—")}</h3>
