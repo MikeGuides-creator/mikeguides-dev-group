@@ -435,24 +435,7 @@ education: [
   }
 ]
   
-  function renderResume(){
-    return `
-      <h3 style="margin-top:0;">${esc(state.fullName.trim() || "—")}</h3>
-      <p class="preview-muted">${esc(state.roleTitle.trim() || " ")}</p>
-
-      <p style="line-height:1.6; margin-top:12px;">${esc(state.summary.trim() || " ")}</p>
-
-      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-
-      ${renderExperiencePreview()}
-${renderEducationPreview()}
-
-      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-      <p class="preview-muted"><strong>Next:</strong> Education + Skills blocks.</p>
-    `;
-  }
-
-  function renderNDA(){
+   function renderNDA(){
     const name = esc(state.fullName.trim() || "—");
     return `
       <h3 style="margin-top:0;">Mutual NDA</h3>
