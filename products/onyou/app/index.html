@@ -141,15 +141,7 @@
     <div class="panel">
       <h2>Live Preview</h2>
 
-      <div class="preview-area">
-        <h3 id="pvName">John Doe</h3>
-        <p id="pvRole" class="preview-muted">Project Manager</p>
-
-        <p id="pvSummary">
-          This area will render structured output in real time.
-          The final layout will be export-ready and professionally formatted.
-        </p>
-      </div>
+      <div class="preview-area" id="previewRoot"></div>
     </div>
 
   </div>
@@ -157,7 +149,7 @@
 </main>
 
 <script>
-  // Minimal live-binding (no engine yet)
+  // Minimal live-binding + template switching (no engine yet)
   const $ = (id) => document.getElementById(id);
 
   const state = {
@@ -167,29 +159,81 @@
     summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted."
   };
 
-  function syncPreview(){
-    $("pvName").textContent = state.fullName.trim() || "—";
-    $("pvRole").textContent = state.roleTitle.trim() || " ";
-    $("pvSummary").textContent = state.summary.trim() || " ";
+  function esc(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function renderResume(){
+    return `
+      <h3 style="margin-top:0;">${esc(state.fullName.trim() || "—")}</h3>
+      <p class="preview-muted">${esc(state.roleTitle.trim() || " ")}</p>
+      <p>${esc(state.summary.trim() || " ")}</p>
+      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+      <p class="preview-muted"><strong>Next:</strong> we’ll add sections (experience, education, skills) and structured blocks.</p>
+    `;
+  }
+
+  function renderNDA(){
+    const name = esc(state.fullName.trim() || "—");
+    return `
+      <h3 style="margin-top:0;">Mutual NDA</h3>
+      <p class="preview-muted">Draft preview (template switch demo)</p>
+
+      <p><strong>Parties:</strong> ${name} (“Receiving Party”) and __________________ (“Disclosing Party”).</p>
+      <p><strong>Purpose:</strong> ${esc(state.summary.trim() || " ")}</p>
+
+      <p><strong>Confidentiality:</strong> Receiving Party agrees to protect confidential information and not disclose it to third parties.</p>
+      <p><strong>Term:</strong> ____ years from the Effective Date.</p>
+
+      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+      <p class="preview-muted"><strong>Next:</strong> fields for parties, effective date, term, jurisdiction.</p>
+    `;
+  }
+
+  function renderEmployment(){
+    const name = esc(state.fullName.trim() || "—");
+    return `
+      <h3 style="margin-top:0;">Employment Application</h3>
+      <p class="preview-muted">Draft preview (template switch demo)</p>
+
+      <p><strong>Applicant:</strong> ${name}</p>
+      <p><strong>Desired Position:</strong> ${esc(state.roleTitle.trim() || " ")}</p>
+      <p><strong>Notes:</strong> ${esc(state.summary.trim() || " ")}</p>
+
+      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+      <p class="preview-muted"><strong>Next:</strong> add contact, availability, work history, education blocks.</p>
+    `;
+  }
+
+  function renderPreview(){
+    const root = $("previewRoot");
+    if (!root) return;
+
+    if (state.templateType === "nda") root.innerHTML = renderNDA();
+    else if (state.templateType === "employment") root.innerHTML = renderEmployment();
+    else root.innerHTML = renderResume();
   }
 
   function bind(){
     $("templateType").addEventListener("change", (e) => {
       state.templateType = e.target.value;
-      // placeholder for template switching later
+      renderPreview();
     });
 
-    $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; syncPreview(); });
-    $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; syncPreview(); });
-    $("summary").addEventListener("input", (e) => { state.summary = e.target.value; syncPreview(); });
+    $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); });
+    $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); });
+    $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); });
 
     $("btnPreview").addEventListener("click", () => {
-      // For now this just ensures preview is synced.
-      // Later: validate → render template → update preview.
-      syncPreview();
+      renderPreview();
     });
 
-    syncPreview();
+    renderPreview();
   }
 
   bind();
