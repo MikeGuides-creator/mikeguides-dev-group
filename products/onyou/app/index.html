@@ -194,14 +194,22 @@ select option {
 </main>
 
 <script>
-  // Minimal live-binding + template switching (no engine yet)
   const $ = (id) => document.getElementById(id);
 
   const state = {
     templateType: "resume",
     fullName: "John Doe",
     roleTitle: "Project Manager",
-    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted."
+    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
+    experience: [
+      {
+        company: "Acme Construction",
+        role: "Project Manager",
+        dates: "2022 – Present",
+        location: "Chicago, IL",
+        desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
+      }
+    ]
   };
 
   function esc(s){
@@ -213,13 +221,96 @@ select option {
       .replaceAll("'","&#039;");
   }
 
+  function renderExperienceEditor(){
+    const host = $("expList");
+    if (!host) return;
+
+    host.innerHTML = state.experience.map((x, idx) => `
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">Entry ${idx + 1}</div>
+          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
+        </div>
+
+        <div class="field-group">
+          <label for="exp_company_${idx}">Company</label>
+          <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
+        </div>
+
+        <div class="field-group">
+          <label for="exp_role_${idx}">Role / Title</label>
+          <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
+        </div>
+
+        <div class="field-group">
+          <label for="exp_dates_${idx}">Dates</label>
+          <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
+        </div>
+
+        <div class="field-group">
+          <label for="exp_location_${idx}">Location</label>
+          <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+        </div>
+
+        <div class="field-group">
+          <label for="exp_desc_${idx}">Description</label>
+          <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
+        </div>
+      </div>
+    `).join("");
+
+    // Bind inputs
+    state.experience.forEach((_, idx) => {
+      $("exp_company_" + idx)?.addEventListener("input", (e) => { state.experience[idx].company = e.target.value; renderPreview(); });
+      $("exp_role_" + idx)?.addEventListener("input", (e) => { state.experience[idx].role = e.target.value; renderPreview(); });
+      $("exp_dates_" + idx)?.addEventListener("input", (e) => { state.experience[idx].dates = e.target.value; renderPreview(); });
+      $("exp_location_" + idx)?.addEventListener("input", (e) => { state.experience[idx].location = e.target.value; renderPreview(); });
+      $("exp_desc_" + idx)?.addEventListener("input", (e) => { state.experience[idx].desc = e.target.value; renderPreview(); });
+    });
+
+    // Remove buttons (event delegation)
+    host.querySelectorAll("[data-exp-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.getAttribute("data-exp-remove"));
+        state.experience.splice(i, 1);
+        renderExperienceEditor();
+        renderPreview();
+      });
+    });
+  }
+
+  function renderExperiencePreview(){
+    if (!state.experience.length) {
+      return `<p class="preview-muted"><strong>Experience:</strong> (none yet)</p>`;
+    }
+
+    return `
+      <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Experience</h4>
+      ${state.experience.map(x => `
+        <div style="margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <div><strong>${esc(x.role || " ")}</strong> — ${esc(x.company || " ")}</div>
+            <div style="color:#666; font-size:13px;">${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}</div>
+          </div>
+          <div style="margin-top:6px; color:#222; font-size:14px; line-height:1.5;">${esc(x.desc || " ")}</div>
+        </div>
+      `).join("")}
+    `;
+  }
+
   function renderResume(){
     return `
       <h3 style="margin-top:0;">${esc(state.fullName.trim() || "—")}</h3>
       <p class="preview-muted">${esc(state.roleTitle.trim() || " ")}</p>
-      <p>${esc(state.summary.trim() || " ")}</p>
+
+      <p style="line-height:1.6; margin-top:12px;">${esc(state.summary.trim() || " ")}</p>
+
       <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-      <p class="preview-muted"><strong>Next:</strong> we’ll add sections (experience, education, skills) and structured blocks.</p>
+
+      ${renderExperiencePreview()}
+
+      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+      <p class="preview-muted"><strong>Next:</strong> Education + Skills blocks.</p>
     `;
   }
 
@@ -264,9 +355,21 @@ select option {
     else root.innerHTML = renderResume();
   }
 
+  function syncLeftPanelVisibility(){
+    // Only show Experience editor when Resume is selected
+    const show = state.templateType === "resume";
+    const expHost = $("expList");
+    const addBtn = $("btnAddExp");
+    if (expHost) expHost.style.display = show ? "" : "none";
+    if (addBtn) addBtn.style.display = show ? "" : "none";
+    // (The header row contains both; simplest is to keep it but hide host/buttons)
+  }
+
   function bind(){
     $("templateType").addEventListener("change", (e) => {
       state.templateType = e.target.value;
+      syncLeftPanelVisibility();
+      renderExperienceEditor();
       renderPreview();
     });
 
@@ -274,15 +377,26 @@ select option {
     $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); });
     $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); });
 
-    $("btnPreview").addEventListener("click", () => {
+    $("btnAddExp").addEventListener("click", () => {
+      state.experience.push({
+        company: "",
+        role: "",
+        dates: "",
+        location: "",
+        desc: ""
+      });
+      renderExperienceEditor();
       renderPreview();
     });
 
+    $("btnPreview").addEventListener("click", () => renderPreview());
+
+    syncLeftPanelVisibility();
+    renderExperienceEditor();
     renderPreview();
   }
 
   bind();
 </script>
-
 </body>
 </html>
