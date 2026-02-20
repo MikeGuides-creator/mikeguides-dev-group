@@ -484,32 +484,35 @@ ${renderEducationPreview()}
     `;
   }
 
-  function renderResume(){
- const headshot = state.showHeadshot
-    ? `<div style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;"></div>`
+ function renderResume(){
+  const name = esc(state.fullName?.trim() || "—");
+  const role = esc(state.roleTitle?.trim() || " ");
+  const email = esc(state.email?.trim() || "");
+  const phone = esc(state.phone?.trim() || "");
+  const address = esc(state.address?.trim() || "");
+  const summary = esc(state.summary?.trim() || " ");
+
+  const headshot = state.showHeadshot
+    ? `<div style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;flex:0 0 auto;"></div>`
     : "";
 
+  const contactBits = [email, phone, address].filter(Boolean).join(" • ");
+
   return `
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
-      <div>
-        <h2 style="margin:0;">${esc(state.fullName.trim() || "—")}</h2>
-        <div style="color:#444;font-size:14px;margin-top:4px;">
-          ${esc(state.roleTitle || "")}
-        </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="min-width:260px;">
+        <h2 style="margin:0;">${name}</h2>
+        <div style="color:#444;font-size:14px;margin-top:4px;">${role}</div>
         <div style="margin-top:8px;font-size:13px;color:#555;">
-          ${esc(state.email || "")}
-          ${state.phone ? " • " + esc(state.phone) : ""}
-          ${state.address ? " • " + esc(state.address) : ""}
+          ${contactBits || " "}
         </div>
       </div>
       ${headshot}
     </div>
 
     <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-    
-    <p style="line-height:1.6;">
-      ${esc(state.summary.trim() || " ")}
-    </p>
+
+    <p style="line-height:1.6;margin:0;">${summary}</p>
 
     <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
 
@@ -517,13 +520,6 @@ ${renderEducationPreview()}
     ${renderEducationPreview()}
   `;
 }
-    const root = $("previewRoot");
-    if (!root) return;
-
-    if (state.templateType === "nda") root.innerHTML = renderNDA();
-    else if (state.templateType === "employment") root.innerHTML = renderEmployment();
-    else root.innerHTML = renderResume();
-  }
 
   function syncLeftPanelVisibility(){
     // Only show Experience editor when Resume is selected
