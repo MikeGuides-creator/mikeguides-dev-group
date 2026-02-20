@@ -187,7 +187,8 @@ select option {
   <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
 </div>
 
-<div id="eduList"></div>     
+<div id="eduList"></div>  
+      
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
       <div class="hint">Live preview updates as you type. Button will later run template + validation.</div>
     </div>
@@ -307,7 +308,16 @@ select option {
       `).join("")}
     `;
   }
-
+  
+education: [
+  {
+    school: "State University",
+    degree: "B.S. Business Administration",
+    dates: "2018 – 2022",
+    location: "Springfield, IL",
+    notes: "Relevant coursework: operations, finance, project management."
+  }
+]
   function renderResume(){
     return `
       <h3 style="margin-top:0;">${esc(state.fullName.trim() || "—")}</h3>
