@@ -514,10 +514,32 @@ if (eduBtn) eduBtn.style.display = show ? "" : "none";
       renderExperienceEditor();
       renderPreview();
     });
-
+    $("email").value = state.email;
+$("phone").value = state.phone;
+$("address").value = state.address;
+$("toggleHeadshot").checked = state.showHeadshot;
     $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); });
     $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); });
     $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); });
+    $("email").addEventListener("input", (e) => {
+  state.email = e.target.value;
+  renderPreview();
+});
+
+$("phone").addEventListener("input", (e) => {
+  state.phone = e.target.value;
+  renderPreview();
+});
+
+$("address").addEventListener("input", (e) => {
+  state.address = e.target.value;
+  renderPreview();
+});
+
+$("toggleHeadshot").addEventListener("change", (e) => {
+  state.showHeadshot = e.target.checked;
+  renderPreview();
+});
 
     $("btnAddExp").addEventListener("click", () => {
       state.experience.push({
