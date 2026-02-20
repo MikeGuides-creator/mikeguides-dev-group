@@ -208,20 +208,31 @@ select option {
   const $ = (id) => document.getElementById(id);
 
   const state = {
-    templateType: "resume",
-    fullName: "John Doe",
-    roleTitle: "Project Manager",
-    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
-    experience: ],
-      {
-        company: "Acme Construction",
-        role: "Project Manager",
-        dates: "2022 – Present",
-        location: "Chicago, IL",
-        desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
-      }
-    ]
-  };
+  templateType: "resume",
+  fullName: "John Doe",
+  roleTitle: "Project Manager",
+  summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
+
+  experience: [
+    {
+      company: "Acme Construction",
+      role: "Project Manager",
+      dates: "2022 – Present",
+      location: "Chicago, IL",
+      desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
+    }
+  ],
+
+  education: [
+    {
+      school: "State University",
+      degree: "B.S. Business Administration",
+      dates: "2018 – 2022",
+      location: "Springfield, IL",
+      notes: "Relevant coursework: operations, finance, project management."
+    }
+  ]
+};
 
   function esc(s){
     return String(s ?? "")
