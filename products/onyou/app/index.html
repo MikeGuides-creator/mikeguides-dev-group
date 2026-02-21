@@ -243,7 +243,6 @@
   <label for="skillInput">Add a skill (press Enter)</label>
   <input id="skillInput" type="text" placeholder="e.g., Leadership, Excel, Classroom Management">
 </div>
-
 <div id="skillsChips" class="chips"></div>
 
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
@@ -293,9 +292,9 @@
         notes: "Relevant coursework: operations, finance, project management."
       }
     ],
-    
-    skills: ["Leadership", "Operations", "Problem Solving"],
-  };
+    };
+  
+  state.skills = Array.isArray(state.skills) ? state.skills : [];
 
   function esc(s){
     return String(s ?? "")
