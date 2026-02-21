@@ -14,11 +14,8 @@
       gap:18px;
       padding: 32px 0 60px;
     }
-
     @media (min-width: 1000px){
-      .builder-layout{
-        grid-template-columns: 420px 1fr;
-      }
+      .builder-layout{ grid-template-columns: 420px 1fr; }
     }
 
     .panel{
@@ -27,6 +24,7 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding:18px;
+      min-width: 0;
     }
 
     .panel h2{
@@ -58,30 +56,23 @@
       color:var(--text);
       font-size:14px;
     }
-    
-select {
-  background: rgba(255,255,255,.06);
-  color: var(--text);
-}
 
-select option {
-  color: black;
-  background: white;
-}
-    textarea{
-      min-height:80px;
-      resize:vertical;
+    /* Dropdown menu contrast fix */
+    select option{
+      color: black;
+      background: white;
     }
+
+    textarea{ min-height:80px; resize:vertical; }
 
     .preview-area{
       background:white;
       color:black;
       border-radius:12px;
       padding:24px;
-      min-height:500px;
+      min-height:540px;
     }
 
-    .preview-area h3{ margin-top:0; }
     .preview-muted{ color:#555; font-size:14px; }
 
     .hint{
@@ -90,35 +81,36 @@ select option {
       font-size:12px;
       line-height:1.4;
     }
+
     .block{
-  border:1px solid var(--border);
-  background: rgba(255,255,255,.03);
-  border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
 
-.block-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom: 10px;
-}
+    .block-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
 
-.block-title{
-  font-weight:900;
-  font-size:13px;
-  color: var(--muted);
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
+    .block-title{
+      font-weight:900;
+      font-size:13px;
+      color: var(--muted);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
 
-.btn-sm{
-  padding:8px 10px;
-  border-radius: 12px;
-  font-size: 13px;
-}
+    .btn-sm{
+      padding:8px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -156,32 +148,6 @@ select option {
         </select>
       </div>
 
-      <div class="mini-divider"></div>
-
-<div class="block-title">Contact</div>
-
-<div class="field-group">
-  <label for="email">Email</label>
-  <input id="email" type="text" placeholder="email@example.com">
-</div>
-
-<div class="field-group">
-  <label for="phone">Phone</label>
-  <input id="phone" type="text" placeholder="(555) 123-4567">
-</div>
-
-<div class="field-group">
-  <label for="address">Address</label>
-  <input id="address" type="text" placeholder="City, State">
-</div>
-
-<div class="field-group">
-  <label>
-    <input id="toggleHeadshot" type="checkbox" checked>
-    Include Headshot Placeholder
-  </label>
-</div>
-      
       <div class="field-group">
         <label for="fullName">Full Name</label>
         <input id="fullName" type="text" placeholder="John Doe" autocomplete="name">
@@ -196,25 +162,48 @@ select option {
         <label for="summary">Summary</label>
         <textarea id="summary" placeholder="Brief professional summary..."></textarea>
       </div>
-      
-<div class="mini-divider"></div>
 
-<div class="block-head">
-  <div class="block-title">Experience</div>
-  <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
-</div>
+      <div class="mini-divider"></div>
+      <div class="block-title">Contact</div>
 
-<div id="expList"></div>
-      
- <div class="mini-divider"></div>
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" placeholder="email@example.com" autocomplete="email">
+      </div>
 
-<div class="block-head">
-  <div class="block-title">Education</div>
-  <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
-</div>
+      <div class="field-group">
+        <label for="phone">Phone</label>
+        <input id="phone" type="text" placeholder="(555) 123-4567" autocomplete="tel">
+      </div>
 
-<div id="eduList"></div>  
-      
+      <div class="field-group">
+        <label for="address">Address</label>
+        <input id="address" type="text" placeholder="City, State">
+      </div>
+
+      <div class="field-group">
+        <label style="text-transform:none; letter-spacing:0; font-weight:600; color:var(--text);">
+          <input id="toggleHeadshot" type="checkbox" style="margin-right:8px;">
+          Include headshot placeholder
+        </label>
+      </div>
+
+      <div class="mini-divider"></div>
+
+      <div class="block-head">
+        <div class="block-title">Experience</div>
+        <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
+      </div>
+      <div id="expList"></div>
+
+      <div class="mini-divider"></div>
+
+      <div class="block-head">
+        <div class="block-title">Education</div>
+        <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
+      </div>
+      <div id="eduList"></div>
+
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
       <div class="hint">Live preview updates as you type. Button will later run template + validation.</div>
     </div>
@@ -222,7 +211,6 @@ select option {
     <!-- RIGHT PANEL -->
     <div class="panel">
       <h2>Live Preview</h2>
-
       <div class="preview-area" id="previewRoot"></div>
     </div>
 
@@ -234,36 +222,36 @@ select option {
   const $ = (id) => document.getElementById(id);
 
   const state = {
-  templateType: "resume",
-  fullName: "John Doe",
-  roleTitle: "Project Manager",
-  summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
+    templateType: "resume",
+    fullName: "John Doe",
+    roleTitle: "Project Manager",
+    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
 
     email: "john@example.com",
-phone: "(555) 123-4567",
-address: "Chicago, IL",
-showHeadshot: true,
-    
-  experience: [
-    {
-      company: "Acme Construction",
-      role: "Project Manager",
-      dates: "2022 – Present",
-      location: "Chicago, IL",
-      desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
-    }
-  ],
+    phone: "(555) 123-4567",
+    address: "Chicago, IL",
+    showHeadshot: true,
 
-  education: [
-    {
-      school: "State University",
-      degree: "B.S. Business Administration",
-      dates: "2018 – 2022",
-      location: "Springfield, IL",
-      notes: "Relevant coursework: operations, finance, project management."
-    }
-  ]
-};
+    experience: [
+      {
+        company: "Acme Construction",
+        role: "Project Manager",
+        dates: "2022 – Present",
+        location: "Chicago, IL",
+        desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
+      }
+    ],
+
+    education: [
+      {
+        school: "State University",
+        degree: "B.S. Business Administration",
+        dates: "2018 – 2022",
+        location: "Springfield, IL",
+        notes: "Relevant coursework: operations, finance, project management."
+      }
+    ]
+  };
 
   function esc(s){
     return String(s ?? "")
@@ -272,6 +260,19 @@ showHeadshot: true,
       .replaceAll(">","&gt;")
       .replaceAll('"',"&quot;")
       .replaceAll("'","&#039;");
+  }
+
+  function syncLeftPanelVisibility(){
+    const show = state.templateType === "resume";
+    const expHost = $("expList");
+    const eduHost = $("eduList");
+    const addExp = $("btnAddExp");
+    const addEdu = $("btnAddEdu");
+
+    if (expHost) expHost.style.display = show ? "" : "none";
+    if (eduHost) eduHost.style.display = show ? "" : "none";
+    if (addExp) addExp.style.display = show ? "" : "none";
+    if (addEdu) addEdu.style.display = show ? "" : "none";
   }
 
   function renderExperienceEditor(){
@@ -311,88 +312,15 @@ showHeadshot: true,
         </div>
       </div>
     `).join("");
-    
-function syncStateFromInputs(){
-  const t = $("templateType"); if (t) state.templateType = t.value;
 
-  const n = $("fullName"); if (n) state.fullName = n.value;
-  const r = $("roleTitle"); if (r) state.roleTitle = r.value;
-  const s = $("summary"); if (s) state.summary = s.value;
+    state.experience.forEach((_, idx) => {
+      $("exp_company_" + idx)?.addEventListener("input", (e) => { state.experience[idx].company = e.target.value; renderPreview(); });
+      $("exp_role_" + idx)?.addEventListener("input", (e) => { state.experience[idx].role = e.target.value; renderPreview(); });
+      $("exp_dates_" + idx)?.addEventListener("input", (e) => { state.experience[idx].dates = e.target.value; renderPreview(); });
+      $("exp_location_" + idx)?.addEventListener("input", (e) => { state.experience[idx].location = e.target.value; renderPreview(); });
+      $("exp_desc_" + idx)?.addEventListener("input", (e) => { state.experience[idx].desc = e.target.value; renderPreview(); });
+    });
 
-  const e = $("email"); if (e) state.email = e.value;
-  const p = $("phone"); if (p) state.phone = p.value;
-  const a = $("address"); if (a) state.address = a.value;
-
-  const h = $("toggleHeadshot"); if (h) state.showHeadshot = !!h.checked;
-}
-    function bind(){
-  // Set initial UI values (safe even if elements are missing)
-  if ($("email")) $("email").value = state.email || "";
-  if ($("phone")) $("phone").value = state.phone || "";
-  if ($("address")) $("address").value = state.address || "";
-  if ($("toggleHeadshot")) $("toggleHeadshot").checked = !!state.showHeadshot;
-
-  syncLeftPanelVisibility();
-  renderExperienceEditor();
-  renderEducationEditor?.(); // in case you added it
-  renderPreview();
-
-  // One global input handler (super reliable)
-  document.addEventListener("input", (e) => {
-    const id = e.target && e.target.id;
-    if (!id) return;
-
-    // Only react to fields we care about
-    const watched = new Set([
-      "templateType","fullName","roleTitle","summary",
-      "email","phone","address"
-    ]);
-
-    // Experience/Education fields are dynamic; still update preview on any input inside them
-    if (watched.has(id) || id.startsWith("exp_") || id.startsWith("edu_")){
-      // Let your existing exp/edu bindings keep those arrays updated,
-      // but also ensure core fields always sync correctly.
-      syncStateFromInputs();
-      renderPreview();
-    }
-  });
-
-  // Template switching
-  $("templateType")?.addEventListener("change", () => {
-    syncStateFromInputs();
-    syncLeftPanelVisibility();
-    renderExperienceEditor();
-    renderEducationEditor?.();
-    renderPreview();
-  });
-
-  // Headshot toggle
-  $("toggleHeadshot")?.addEventListener("change", () => {
-    syncStateFromInputs();
-    renderPreview();
-  });
-
-  // Button
-  $("btnPreview")?.addEventListener("click", () => {
-    syncStateFromInputs();
-    renderPreview();
-  });
-
-  // Add buttons (keep your existing logic)
-  $("btnAddExp")?.addEventListener("click", () => {
-    state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
-    renderExperienceEditor();
-    renderPreview();
-  });
-
-  $("btnAddEdu")?.addEventListener("click", () => {
-    state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
-    renderEducationEditor();
-    renderPreview();
-  });
-}
-
-    // Remove buttons (event delegation)
     host.querySelectorAll("[data-exp-remove]").forEach(btn => {
       btn.addEventListener("click", () => {
         const i = Number(btn.getAttribute("data-exp-remove"));
@@ -403,11 +331,66 @@ function syncStateFromInputs(){
     });
   }
 
+  function renderEducationEditor(){
+    const host = $("eduList");
+    if (!host) return;
+
+    host.innerHTML = state.education.map((x, idx) => `
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">Entry ${idx + 1}</div>
+          <button class="btn btn-ghost btn-sm" type="button" data-edu-remove="${idx}">Remove</button>
+        </div>
+
+        <div class="field-group">
+          <label for="edu_school_${idx}">School</label>
+          <input id="edu_school_${idx}" type="text" value="${esc(x.school)}" placeholder="School / Institution" />
+        </div>
+
+        <div class="field-group">
+          <label for="edu_degree_${idx}">Degree / Program</label>
+          <input id="edu_degree_${idx}" type="text" value="${esc(x.degree)}" placeholder="Degree or program" />
+        </div>
+
+        <div class="field-group">
+          <label for="edu_dates_${idx}">Dates</label>
+          <input id="edu_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2018 – 2022" />
+        </div>
+
+        <div class="field-group">
+          <label for="edu_location_${idx}">Location</label>
+          <input id="edu_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+        </div>
+
+        <div class="field-group">
+          <label for="edu_notes_${idx}">Notes</label>
+          <textarea id="edu_notes_${idx}" placeholder="Honors, coursework, focus...">${esc(x.notes)}</textarea>
+        </div>
+      </div>
+    `).join("");
+
+    state.education.forEach((_, idx) => {
+      $("edu_school_" + idx)?.addEventListener("input", (e) => { state.education[idx].school = e.target.value; renderPreview(); });
+      $("edu_degree_" + idx)?.addEventListener("input", (e) => { state.education[idx].degree = e.target.value; renderPreview(); });
+      $("edu_dates_" + idx)?.addEventListener("input", (e) => { state.education[idx].dates = e.target.value; renderPreview(); });
+      $("edu_location_" + idx)?.addEventListener("input", (e) => { state.education[idx].location = e.target.value; renderPreview(); });
+      $("edu_notes_" + idx)?.addEventListener("input", (e) => { state.education[idx].notes = e.target.value; renderPreview(); });
+    });
+
+    host.querySelectorAll("[data-edu-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const i = Number(btn.getAttribute("data-edu-remove"));
+        state.education.splice(i, 1);
+        renderEducationEditor();
+        renderPreview();
+      });
+    });
+  }
+
   function renderExperiencePreview(){
     if (!state.experience.length) {
       return `<p class="preview-muted"><strong>Experience:</strong> (none yet)</p>`;
     }
-
     return `
       <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Experience</h4>
       ${state.experience.map(x => `
@@ -421,105 +404,69 @@ function syncStateFromInputs(){
       `).join("")}
     `;
   }
-  function renderEducationEditor(){
-  const host = $("eduList");
-  if (!host) return;
 
-  host.innerHTML = state.education.map((x, idx) => `
-    <div class="block">
-      <div class="block-head">
-        <div class="block-title">Entry ${idx + 1}</div>
-        <button class="btn btn-ghost btn-sm" type="button" data-edu-remove="${idx}">Remove</button>
-      </div>
-
-      <div class="field-group">
-        <label for="edu_school_${idx}">School</label>
-        <input id="edu_school_${idx}" type="text" value="${esc(x.school)}" placeholder="School / Institution" />
-      </div>
-
-      <div class="field-group">
-        <label for="edu_degree_${idx}">Degree / Program</label>
-        <input id="edu_degree_${idx}" type="text" value="${esc(x.degree)}" placeholder="Degree or program" />
-      </div>
-
-      <div class="field-group">
-        <label for="edu_dates_${idx}">Dates</label>
-        <input id="edu_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2018 – 2022" />
-      </div>
-
-      <div class="field-group">
-        <label for="edu_location_${idx}">Location</label>
-        <input id="edu_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
-      </div>
-
-      <div class="field-group">
-        <label for="edu_notes_${idx}">Notes</label>
-        <textarea id="edu_notes_${idx}" placeholder="Honors, coursework, focus...">${esc(x.notes)}</textarea>
-      </div>
-    </div>
-  `).join("");
-
-  state.education.forEach((_, idx) => {
-    $("edu_school_" + idx)?.addEventListener("input", (e) => { state.education[idx].school = e.target.value; renderPreview(); });
-    $("edu_degree_" + idx)?.addEventListener("input", (e) => { state.education[idx].degree = e.target.value; renderPreview(); });
-    $("edu_dates_" + idx)?.addEventListener("input", (e) => { state.education[idx].dates = e.target.value; renderPreview(); });
-    $("edu_location_" + idx)?.addEventListener("input", (e) => { state.education[idx].location = e.target.value; renderPreview(); });
-    $("edu_notes_" + idx)?.addEventListener("input", (e) => { state.education[idx].notes = e.target.value; renderPreview(); });
-  });
-
-  host.querySelectorAll("[data-edu-remove]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const i = Number(btn.getAttribute("data-edu-remove"));
-      state.education.splice(i, 1);
-      renderEducationEditor();
-      renderPreview();
-    });
-  });
-}
-
-function renderEducationPreview(){
-  if (!state.education.length) {
-    return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
-  }
-
-  return `
-    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Education</h4>
-    ${state.education.map(x => `
-      <div style="margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-          <div><strong>${esc(x.degree || " ")}</strong> — ${esc(x.school || " ")}</div>
-          <div style="color:#666; font-size:13px;">${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}</div>
+  function renderEducationPreview(){
+    if (!state.education.length) {
+      return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
+    }
+    return `
+      <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Education</h4>
+      ${state.education.map(x => `
+        <div style="margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <div><strong>${esc(x.degree || " ")}</strong> — ${esc(x.school || " ")}</div>
+            <div style="color:#666; font-size:13px;">${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}</div>
+          </div>
+          ${x.notes ? `<div style="margin-top:6px; color:#222; font-size:14px; line-height:1.5;">${esc(x.notes)}</div>` : ""}
         </div>
-        ${x.notes ? `<div style="margin-top:6px; color:#222; font-size:14px; line-height:1.5;">${esc(x.notes)}</div>` : ""}
-      </div>
-    `).join("")}
-  `;
-}
-  
-education: [
-  {
-    school: "State University",
-    degree: "B.S. Business Administration",
-    dates: "2018 – 2022",
-    location: "Springfield, IL",
-    notes: "Relevant coursework: operations, finance, project management."
+      `).join("")}
+    `;
   }
-]
-  
-   function renderNDA(){
+
+  function renderResume(){
+    const name = esc(state.fullName?.trim() || "—");
+    const role = esc(state.roleTitle?.trim() || " ");
+    const email = esc(state.email?.trim() || "");
+    const phone = esc(state.phone?.trim() || "");
+    const address = esc(state.address?.trim() || "");
+    const summary = esc(state.summary?.trim() || " ");
+
+    const contactBits = [email, phone, address].filter(Boolean).join(" • ");
+
+    const headshot = state.showHeadshot
+      ? `<div style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;flex:0 0 auto;"></div>`
+      : "";
+
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="min-width:260px;">
+          <h2 style="margin:0;">${name}</h2>
+          <div style="color:#444;font-size:14px;margin-top:4px;">${role}</div>
+          <div style="margin-top:8px;font-size:13px;color:#555;">${contactBits || " "}</div>
+        </div>
+        ${headshot}
+      </div>
+
+      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+
+      <p style="line-height:1.6;margin:0;">${summary}</p>
+
+      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+
+      ${renderExperiencePreview()}
+      ${renderEducationPreview()}
+    `;
+  }
+
+  function renderNDA(){
     const name = esc(state.fullName.trim() || "—");
     return `
       <h3 style="margin-top:0;">Mutual NDA</h3>
       <p class="preview-muted">Draft preview (template switch demo)</p>
-
       <p><strong>Parties:</strong> ${name} (“Receiving Party”) and __________________ (“Disclosing Party”).</p>
       <p><strong>Purpose:</strong> ${esc(state.summary.trim() || " ")}</p>
-
       <p><strong>Confidentiality:</strong> Receiving Party agrees to protect confidential information and not disclose it to third parties.</p>
       <p><strong>Term:</strong> ____ years from the Effective Date.</p>
-
-      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-      <p class="preview-muted"><strong>Next:</strong> fields for parties, effective date, term, jurisdiction.</p>
     `;
   }
 
@@ -528,124 +475,59 @@ education: [
     return `
       <h3 style="margin-top:0;">Employment Application</h3>
       <p class="preview-muted">Draft preview (template switch demo)</p>
-
       <p><strong>Applicant:</strong> ${name}</p>
       <p><strong>Desired Position:</strong> ${esc(state.roleTitle.trim() || " ")}</p>
       <p><strong>Notes:</strong> ${esc(state.summary.trim() || " ")}</p>
-
-      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-      <p class="preview-muted"><strong>Next:</strong> add contact, availability, work history, education blocks.</p>
     `;
   }
 
- function renderResume(){
-  const name = esc(state.fullName?.trim() || "—");
-  const role = esc(state.roleTitle?.trim() || " ");
-  const email = esc(state.email?.trim() || "");
-  const phone = esc(state.phone?.trim() || "");
-  const address = esc(state.address?.trim() || "");
-  const summary = esc(state.summary?.trim() || " ");
-
-  const headshot = state.showHeadshot
-    ? `<div style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;flex:0 0 auto;"></div>`
-    : "";
-
-  const contactBits = [email, phone, address].filter(Boolean).join(" • ");
-
-  return `
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
-      <div style="min-width:260px;">
-        <h2 style="margin:0;">${name}</h2>
-        <div style="color:#444;font-size:14px;margin-top:4px;">${role}</div>
-        <div style="margin-top:8px;font-size:13px;color:#555;">
-          ${contactBits || " "}
-        </div>
-      </div>
-      ${headshot}
-    </div>
-
-    <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-
-    <p style="line-height:1.6;margin:0;">${summary}</p>
-
-    <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-
-    ${renderExperiencePreview()}
-    ${renderEducationPreview()}
-  `;
-}
-
-  function syncLeftPanelVisibility(){
-    // Only show Experience editor when Resume is selected
-    const show = state.templateType === "resume";
-    const expHost = $("expList");
-    const addBtn = $("btnAddExp");
-    const eduHost = $("eduList");
-const eduBtn = $("btnAddEdu");
-if (eduHost) eduHost.style.display = show ? "" : "none";
-if (eduBtn) eduBtn.style.display = show ? "" : "none";
-    if (expHost) expHost.style.display = show ? "" : "none";
-    if (addBtn) addBtn.style.display = show ? "" : "none";
-    // (The header row contains both; simplest is to keep it but hide host/buttons)
+  function renderPreview(){
+    const root = $("previewRoot");
+    if (!root) return;
+    if (state.templateType === "nda") root.innerHTML = renderNDA();
+    else if (state.templateType === "employment") root.innerHTML = renderEmployment();
+    else root.innerHTML = renderResume();
   }
 
   function bind(){
+    // Seed inputs
+    $("templateType").value = state.templateType;
+    $("fullName").value = state.fullName;
+    $("roleTitle").value = state.roleTitle;
+    $("summary").value = state.summary;
+
+    $("email").value = state.email;
+    $("phone").value = state.phone;
+    $("address").value = state.address;
+    $("toggleHeadshot").checked = !!state.showHeadshot;
+
     $("templateType").addEventListener("change", (e) => {
       state.templateType = e.target.value;
       syncLeftPanelVisibility();
-      renderExperienceEditor();
       renderPreview();
     });
-    $("email").value = state.email;
-$("phone").value = state.phone;
-$("address").value = state.address;
-$("toggleHeadshot").checked = state.showHeadshot;
+
     $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); });
     $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); });
     $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); });
-    $("email").addEventListener("input", (e) => {
-  state.email = e.target.value;
-  renderPreview();
-});
 
-$("phone").addEventListener("input", (e) => {
-  state.phone = e.target.value;
-  renderPreview();
-});
-
-$("address").addEventListener("input", (e) => {
-  state.address = e.target.value;
-  renderPreview();
-});
-
-$("toggleHeadshot").addEventListener("change", (e) => {
-  state.showHeadshot = e.target.checked;
-  renderPreview();
-});
+    $("email").addEventListener("input", (e) => { state.email = e.target.value; renderPreview(); });
+    $("phone").addEventListener("input", (e) => { state.phone = e.target.value; renderPreview(); });
+    $("address").addEventListener("input", (e) => { state.address = e.target.value; renderPreview(); });
+    $("toggleHeadshot").addEventListener("change", (e) => { state.showHeadshot = e.target.checked; renderPreview(); });
 
     $("btnAddExp").addEventListener("click", () => {
-      state.experience.push({
-        company: "",
-        role: "",
-        dates: "",
-        location: "",
-        desc: ""
-      });
+      state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
       renderExperienceEditor();
       renderPreview();
     });
-    
-$("btnAddEdu").addEventListener("click", () => {
-  state.education.push({
-    school: "",
-    degree: "",
-    dates: "",
-    location: "",
-    notes: ""
-  });
-  renderEducationEditor();
-  renderPreview();
-});
+
+    $("btnAddEdu").addEventListener("click", () => {
+      state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
+      renderEducationEditor();
+      renderPreview();
+    });
+
     $("btnPreview").addEventListener("click", () => renderPreview());
 
     syncLeftPanelVisibility();
@@ -656,5 +538,6 @@ $("btnAddEdu").addEventListener("click", () => {
 
   bind();
 </script>
+
 </body>
 </html>
