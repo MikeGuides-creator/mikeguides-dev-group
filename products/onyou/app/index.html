@@ -467,42 +467,58 @@
     `;
   }
 
-  function renderSkillsPreview(){
-    const name = esc(state.fullName?.trim() || "—");
-    const role = esc(state.roleTitle?.trim() || " ");
-    const email = esc(state.email?.trim() || "");
-    const phone = esc(state.phone?.trim() || "");
-    const address = esc(state.address?.trim() || "");
-    const summary = esc(state.summary?.trim() || " ");
-
-    const contactBits = [email, phone, address].filter(Boolean).join(" • ");
-
-    const headshot = state.showHeadshot
-      ? `<div style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;flex:0 0 auto;"></div>`
-      : "";
-
-    return `
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
-        <div style="min-width:260px;">
-          <h2 style="margin:0;">${name}</h2>
-          <div style="color:#444;font-size:14px;margin-top:4px;">${role}</div>
-          <div style="margin-top:8px;font-size:13px;color:#555;">${contactBits || " "}</div>
-        </div>
-        ${headshot}
-      </div>
-
-      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-
-      <p style="line-height:1.6;margin:0;">${summary}</p>
-
-      <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
-
-      ${renderExperiencePreview()}
-      ${renderEducationPreview()}
-      ${renderSkillsPreview()}
-    `;
+ function renderSkillsPreview(){
+  if (!state.skills || !state.skills.length) {
+    return `<p class="preview-muted"><strong>Skills:</strong> (none yet)</p>`;
   }
 
+  return `
+    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Skills</h4>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      ${state.skills.map(s => `
+        <span style="display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid #e7e7e7;font-size:13px;color:#222;">
+          ${esc(s)}
+        </span>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderResume(){
+  const name = esc(state.fullName?.trim() || "—");
+  const role = esc(state.roleTitle?.trim() || " ");
+  const email = esc(state.email?.trim() || "");
+  const phone = esc(state.phone?.trim() || "");
+  const address = esc(state.address?.trim() || "");
+  const summary = esc(state.summary?.trim() || " ");
+
+  const contactBits = [email, phone, address].filter(Boolean).join(" • ");
+
+  const headshot = state.showHeadshot
+    ? `<div style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;flex:0 0 auto;"></div>`
+    : "";
+
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="min-width:260px;">
+        <h2 style="margin:0;">${name}</h2>
+        <div style="color:#444;font-size:14px;margin-top:4px;">${role}</div>
+        <div style="margin-top:8px;font-size:13px;color:#555;">${contactBits || " "}</div>
+      </div>
+      ${headshot}
+    </div>
+
+    <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+
+    <p style="line-height:1.6;margin:0;">${summary}</p>
+
+    <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
+
+    ${renderExperiencePreview()}
+    ${renderEducationPreview()}
+    ${renderSkillsPreview()}
+  `;
+}
   function renderNDA(){
     const name = esc(state.fullName.trim() || "—");
     return `
