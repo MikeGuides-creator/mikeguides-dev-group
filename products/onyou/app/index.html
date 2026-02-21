@@ -311,15 +311,86 @@ showHeadshot: true,
         </div>
       </div>
     `).join("");
+    
+function syncStateFromInputs(){
+  const t = $("templateType"); if (t) state.templateType = t.value;
 
-    // Bind inputs
-    state.experience.forEach((_, idx) => {
-      $("exp_company_" + idx)?.addEventListener("input", (e) => { state.experience[idx].company = e.target.value; renderPreview(); });
-      $("exp_role_" + idx)?.addEventListener("input", (e) => { state.experience[idx].role = e.target.value; renderPreview(); });
-      $("exp_dates_" + idx)?.addEventListener("input", (e) => { state.experience[idx].dates = e.target.value; renderPreview(); });
-      $("exp_location_" + idx)?.addEventListener("input", (e) => { state.experience[idx].location = e.target.value; renderPreview(); });
-      $("exp_desc_" + idx)?.addEventListener("input", (e) => { state.experience[idx].desc = e.target.value; renderPreview(); });
-    });
+  const n = $("fullName"); if (n) state.fullName = n.value;
+  const r = $("roleTitle"); if (r) state.roleTitle = r.value;
+  const s = $("summary"); if (s) state.summary = s.value;
+
+  const e = $("email"); if (e) state.email = e.value;
+  const p = $("phone"); if (p) state.phone = p.value;
+  const a = $("address"); if (a) state.address = a.value;
+
+  const h = $("toggleHeadshot"); if (h) state.showHeadshot = !!h.checked;
+}
+    function bind(){
+  // Set initial UI values (safe even if elements are missing)
+  if ($("email")) $("email").value = state.email || "";
+  if ($("phone")) $("phone").value = state.phone || "";
+  if ($("address")) $("address").value = state.address || "";
+  if ($("toggleHeadshot")) $("toggleHeadshot").checked = !!state.showHeadshot;
+
+  syncLeftPanelVisibility();
+  renderExperienceEditor();
+  renderEducationEditor?.(); // in case you added it
+  renderPreview();
+
+  // One global input handler (super reliable)
+  document.addEventListener("input", (e) => {
+    const id = e.target && e.target.id;
+    if (!id) return;
+
+    // Only react to fields we care about
+    const watched = new Set([
+      "templateType","fullName","roleTitle","summary",
+      "email","phone","address"
+    ]);
+
+    // Experience/Education fields are dynamic; still update preview on any input inside them
+    if (watched.has(id) || id.startsWith("exp_") || id.startsWith("edu_")){
+      // Let your existing exp/edu bindings keep those arrays updated,
+      // but also ensure core fields always sync correctly.
+      syncStateFromInputs();
+      renderPreview();
+    }
+  });
+
+  // Template switching
+  $("templateType")?.addEventListener("change", () => {
+    syncStateFromInputs();
+    syncLeftPanelVisibility();
+    renderExperienceEditor();
+    renderEducationEditor?.();
+    renderPreview();
+  });
+
+  // Headshot toggle
+  $("toggleHeadshot")?.addEventListener("change", () => {
+    syncStateFromInputs();
+    renderPreview();
+  });
+
+  // Button
+  $("btnPreview")?.addEventListener("click", () => {
+    syncStateFromInputs();
+    renderPreview();
+  });
+
+  // Add buttons (keep your existing logic)
+  $("btnAddExp")?.addEventListener("click", () => {
+    state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
+    renderExperienceEditor();
+    renderPreview();
+  });
+
+  $("btnAddEdu")?.addEventListener("click", () => {
+    state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
+    renderEducationEditor();
+    renderPreview();
+  });
+}
 
     // Remove buttons (event delegation)
     host.querySelectorAll("[data-exp-remove]").forEach(btn => {
