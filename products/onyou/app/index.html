@@ -111,6 +111,35 @@
       border-radius: 12px;
       font-size: 13px;
     }
+    
+    .chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin: 8px 0 16px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  font-size:13px;
+}
+
+.chip button{
+  border:0;
+  background: transparent;
+  color: var(--muted);
+  cursor:pointer;
+  font-size:14px;
+  line-height:1;
+  padding:0;
+}
   </style>
 </head>
 <body>
