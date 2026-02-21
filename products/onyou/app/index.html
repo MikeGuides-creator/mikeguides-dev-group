@@ -467,7 +467,7 @@
     `;
   }
 
-  function renderResume(){
+  function renderSkillsPreview(){
     const name = esc(state.fullName?.trim() || "—");
     const role = esc(state.roleTitle?.trim() || " ");
     const email = esc(state.email?.trim() || "");
@@ -499,6 +499,7 @@
 
       ${renderExperiencePreview()}
       ${renderEducationPreview()}
+      ${renderSkillsPreview()}
     `;
   }
 
