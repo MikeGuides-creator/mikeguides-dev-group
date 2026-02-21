@@ -597,6 +597,27 @@ function renderResume(){
     renderEducationEditor();
     renderPreview();
   }
+  
+  renderSkillsEditor(); // make sure chips appear on load
+
+const skillInput = $("skillInput");
+if (skillInput) {
+  skillInput.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+
+    const val = normalizeSkill(skillInput.value);
+    if (!val) return;
+
+    // prevent duplicates (case-insensitive)
+    const exists = state.skills.some(x => x.toLowerCase() === val.toLowerCase());
+    if (!exists) state.skills.push(val);
+
+    skillInput.value = "";
+    renderSkillsEditor();
+    renderPreview();
+  });
+}
 document.title = "OnYou Builder ✅ script running";
   bind();
 </script>
