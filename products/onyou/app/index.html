@@ -356,6 +356,8 @@
         </div>
       </div>
     `).join("");
+    
+    state.skills = Array.isArray(state.skills) ? state.skills : [];
 
     state.experience.forEach((_, idx) => {
       $("exp_company_" + idx)?.addEventListener("input", (e) => { state.experience[idx].company = e.target.value; renderPreview(); });
@@ -471,7 +473,7 @@
   if (!state.skills || !state.skills.length) {
     return `<p class="preview-muted"><strong>Skills:</strong> (none yet)</p>`;
   }
-
+   
   return `
     <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Skills</h4>
     <div style="display:flex;flex-wrap:wrap;gap:8px;">
