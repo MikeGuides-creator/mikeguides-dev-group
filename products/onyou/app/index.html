@@ -295,6 +295,9 @@
     };
   
   state.skills = Array.isArray(state.skills) ? state.skills : [];
+  if (!state.skills.length) {
+  state.skills = ["Leadership", "Operations", "Problem Solving"];
+}
 
   function esc(s){
     return String(s ?? "")
