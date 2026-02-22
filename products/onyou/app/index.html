@@ -359,8 +359,6 @@
       </div>
     `).join("");
     
-    state.skills = Array.isArray(state.skills) ? state.skills : [];
-
     state.experience.forEach((_, idx) => {
       $("exp_company_" + idx)?.addEventListener("input", (e) => { state.experience[idx].company = e.target.value; renderPreview(); });
       $("exp_role_" + idx)?.addEventListener("input", (e) => { state.experience[idx].role = e.target.value; renderPreview(); });
