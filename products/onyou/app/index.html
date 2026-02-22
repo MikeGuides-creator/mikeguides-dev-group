@@ -619,12 +619,7 @@ function renderResume(){
 
     syncLeftPanelVisibility();
     renderExperienceEditor();
-    renderEducationEditor();
-    renderSkillsEditor(); // make sure chips appear on load
-    renderPreview();
-  }
-    
-const skillInput = $("skillInput");
+    const skillInput = $("skillInput");
 if (skillInput) {
   skillInput.addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
@@ -642,6 +637,10 @@ if (skillInput) {
     renderPreview();
   });
 }
+    renderEducationEditor();
+    renderSkillsEditor(); // make sure chips appear on load
+    renderPreview();
+  }
 
   bind();
 </script>
