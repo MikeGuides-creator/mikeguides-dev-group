@@ -623,21 +623,7 @@ function renderResume(){
     renderSkillsEditor(); // make sure chips appear on load
     renderPreview();
   }
-  $("skillInput")?.addEventListener("keydown", (e) => {
-  if (e.key !== "Enter") return;
-  e.preventDefault();
-
-  const val = normalizeSkill(e.target.value);
-  if (!val) return;
-
-  const exists = (state.skills || []).some(x => x.toLowerCase() === val.toLowerCase());
-  if (!exists) state.skills.push(val);
-
-  e.target.value = "";
-  renderSkillsEditor();
-  renderPreview();
-});
-  
+    
 const skillInput = $("skillInput");
 if (skillInput) {
   skillInput.addEventListener("keydown", (e) => {
@@ -656,7 +642,7 @@ if (skillInput) {
     renderPreview();
   });
 }
-document.title = "OnYou Builder ✅ script running";
+
   bind();
 </script>
 
