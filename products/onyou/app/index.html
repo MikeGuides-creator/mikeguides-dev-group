@@ -375,7 +375,32 @@
       });
     });
   }
+  
+function normalizeSkill(s){
+  return (s || "").trim().replace(/\s+/g, " ");
+}
 
+function renderSkillsEditor(){
+  const host = $("skillsChips");
+  if (!host) return;
+
+  host.innerHTML = (state.skills || []).map((s, idx) => `
+    <span class="chip">
+      ${esc(s)}
+      <button type="button" aria-label="Remove skill" data-skill-remove="${idx}">✕</button>
+    </span>
+  `).join("");
+
+  host.querySelectorAll("[data-skill-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-skill-remove"));
+      state.skills.splice(i, 1);
+      renderSkillsEditor();
+      renderPreview();
+    });
+  });
+}
+  
   function renderEducationEditor(){
     const host = $("eduList");
     if (!host) return;
