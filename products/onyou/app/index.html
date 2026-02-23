@@ -580,7 +580,9 @@ function renderResume(){
     else if (state.templateType === "employment") root.innerHTML = renderEmployment();
     else root.innerHTML = renderResume();
   }
-
+  
+document.getElementById("buildId").textContent = "c648212";
+  
   function bind(){
     // Seed inputs
     $("templateType").value = state.templateType;
