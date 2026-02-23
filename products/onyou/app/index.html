@@ -484,6 +484,80 @@ function renderSkillsEditor(){
     });
   }
 
+  function renderCertificationsEditor(){
+  const host = $("certList");
+  if (!host) return;
+
+  host.innerHTML = state.certifications.map((c, idx) => `
+    <div class="card">
+      <div class="field-group">
+        <label>Name</label>
+        <input id="cert_name_${idx}" value="${esc(c.name)}">
+      </div>
+      <div class="field-group">
+        <label>Issuer</label>
+        <input id="cert_issuer_${idx}" value="${esc(c.issuer)}">
+      </div>
+      <div class="field-group">
+        <label>Year</label>
+        <input id="cert_year_${idx}" value="${esc(c.year)}">
+      </div>
+    </div>
+  `).join("");
+
+  state.certifications.forEach((_, idx) => {
+    $("cert_name_" + idx)?.addEventListener("input", e => {
+      state.certifications[idx].name = e.target.value;
+      renderPreview();
+    });
+    $("cert_issuer_" + idx)?.addEventListener("input", e => {
+      state.certifications[idx].issuer = e.target.value;
+      renderPreview();
+    });
+    $("cert_year_" + idx)?.addEventListener("input", e => {
+      state.certifications[idx].year = e.target.value;
+      renderPreview();
+    });
+  });
+}
+
+  function renderProjectsEditor(){
+  const host = $("projectList");
+  if (!host) return;
+
+  host.innerHTML = state.projects.map((p, idx) => `
+    <div class="card">
+      <div class="field-group">
+        <label>Title</label>
+        <input id="proj_title_${idx}" value="${esc(p.title)}">
+      </div>
+      <div class="field-group">
+        <label>Your Role</label>
+        <input id="proj_role_${idx}" value="${esc(p.role)}">
+      </div>
+      <div class="field-group">
+        <label>Description</label>
+        <textarea id="proj_desc_${idx}">${esc(p.desc)}</textarea>
+      </div>
+    </div>
+  `).join("");
+
+  state.projects.forEach((_, idx) => {
+    $("proj_title_" + idx)?.addEventListener("input", e => {
+      state.projects[idx].title = e.target.value;
+      renderPreview();
+    });
+    $("proj_role_" + idx)?.addEventListener("input", e => {
+      state.projects[idx].role = e.target.value;
+      renderPreview();
+    });
+    $("proj_desc_" + idx)?.addEventListener("input", e => {
+      state.projects[idx].desc = e.target.value;
+      renderPreview();
+    });
+  });
+}
+  
   function renderExperiencePreview(){
     if (!state.experience.length) {
       return `<p class="preview-muted"><strong>Experience:</strong> (none yet)</p>`;
