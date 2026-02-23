@@ -650,7 +650,8 @@ renderSkillsEditor();
 renderPreview();
 }
 
-document.getElementById("buildId").textContent = "a88d2b0";
+document.getElementById("buildId").textContent =
+  new Date(document.lastModified).toLocaleString();
   
   bind();
 </script>
