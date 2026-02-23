@@ -629,8 +629,8 @@ function renderResume(){
 // Skills: add on Enter
 const skillInput = $("skillInput");
 if (skillInput) {
-  skillInput.onkeydown = null;
   skillInput.addEventListener("keydown", (e) => {
+  console.log("KEY:", e.key);
     if (e.key !== "Enter") return;
     e.preventDefault();
 
