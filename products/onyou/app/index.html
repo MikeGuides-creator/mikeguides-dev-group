@@ -611,6 +611,32 @@ function renderSkillsEditor(){
   `;
 }
 
+function renderCertificationsPreview(){
+  if (!state.certifications?.length) return "";
+
+  return `
+    <h4 class="preview-section">Certifications</h4>
+    ${state.certifications.map(c => `
+      <div>
+        <strong>${esc(c.name)}</strong> — ${esc(c.issuer)} (${esc(c.year)})
+      </div>
+    `).join("")}
+  `;
+}
+
+function renderCertificationsPreview(){
+  if (!state.certifications?.length) return "";
+
+  return `
+    <h4 class="preview-section">Certifications</h4>
+    ${state.certifications.map(c => `
+      <div>
+        <strong>${esc(c.name)}</strong> — ${esc(c.issuer)} (${esc(c.year)})
+      </div>
+    `).join("")}
+  `;
+}
+  
 function renderResume(){
   const name = esc(state.fullName?.trim() || "—");
   const role = esc(state.roleTitle?.trim() || " ");
