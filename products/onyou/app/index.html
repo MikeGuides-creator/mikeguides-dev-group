@@ -584,7 +584,49 @@ function renderResume(){
     else if (state.templateType === "employment") root.innerHTML = renderEmployment();
     else root.innerHTML = renderResume();
   }
-    
+  
+ function wireSkillsInput(){
+  const input = $("skillInput");
+  const btn = $("btnAddSkill"); // optional if you add the button
+  if (!input) return;
+
+  // prevent double-binding
+  if (input.dataset.wired === "1") return;
+  input.dataset.wired = "1";
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+
+    const val = normalizeSkill(input.value);
+    if (!val) return;
+
+    const exists = (state.skills || []).some(x => String(x).toLowerCase() === val.toLowerCase());
+    if (!exists) state.skills.push(val);
+
+    input.value = "";
+    renderSkillsEditor();
+    renderPreview();
+  });
+
+  // If you added an Add button, wire it too (safe even if missing)
+  if (btn && btn.dataset.wired !== "1") {
+    btn.dataset.wired = "1";
+    btn.addEventListener("click", () => {
+      const val = normalizeSkill(input.value);
+      if (!val) return;
+
+      const exists = (state.skills || []).some(x => String(x).toLowerCase() === val.toLowerCase());
+      if (!exists) state.skills.push(val);
+
+      input.value = "";
+      input.focus();
+      renderSkillsEditor();
+      renderPreview();
+    });
+  }
+}
+  
   function bind(){
     // Seed inputs
     $("templateType").value = state.templateType;
@@ -598,10 +640,11 @@ function renderResume(){
     $("toggleHeadshot").checked = !!state.showHeadshot;
 
     $("templateType").addEventListener("change", (e) => {
-      state.templateType = e.target.value;
-      syncLeftPanelVisibility();
-      renderPreview();
-    });
+  state.templateType = e.target.value;
+  syncLeftPanelVisibility();
+  wireSkillsInput();   // ✅ re-wire after any panel changes
+  renderPreview();
+});
 
     $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); });
     $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); });
