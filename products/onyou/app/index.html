@@ -241,8 +241,12 @@
 
 <div class="field-group">
   <label for="skillInput">Add a skill (press Enter)</label>
-  <input id="skillInput" type="text" placeholder="e.g., Leadership, Excel, Classroom Management">
+  <div style="display:flex; gap:10px;">
+    <input id="skillInput" type="text" placeholder="e.g., Leadership, Excel, Classroom Management" style="flex:1;">
+    <button id="btnAddSkill" type="button" class="btn">Add</button>
+  </div>
 </div>
+
 <div id="skillsChips" class="chips"></div>
 
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
