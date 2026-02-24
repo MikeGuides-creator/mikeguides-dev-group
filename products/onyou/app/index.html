@@ -799,6 +799,20 @@ function renderResume(){
     $("address").addEventListener("input", (e) => { state.address = e.target.value; renderPreview(); });
     $("toggleHeadshot").addEventListener("change", (e) => { state.showHeadshot = e.target.checked; renderPreview(); });
 
+    $("btnAddCert")?.addEventListener("click", () => {
+  state.certifications = state.certifications || [];
+  state.certifications.push({ name:"", issuer:"", year:"" });
+  renderCertificationsEditor();
+  renderPreview();
+});
+
+$("btnAddProject")?.addEventListener("click", () => {
+  state.projects = state.projects || [];
+  state.projects.push({ title:"", role:"", desc:"" });
+  renderProjectsEditor();
+  renderPreview();
+});
+    
     $("btnAddExp").addEventListener("click", () => {
       state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
       renderExperienceEditor();
@@ -816,26 +830,6 @@ $("toggleReferences")?.addEventListener("change", (e) => {
 });
     
     $("btnPreview").addEventListener("click", () => renderPreview());
-
-// Skills: add on Enter
-const skillInput = $("skillInput");
-if (skillInput) {
-  skillInput.addEventListener("keydown", (e) => {
-  console.log("KEY:", e.key);
-    if (e.key !== "Enter") return;
-    e.preventDefault();
-
-    const val = normalizeSkill(skillInput.value);
-    if (!val) return;
-
-    const exists = state.skills.some(x => x.toLowerCase() === val.toLowerCase());
-    if (!exists) state.skills.push(val);
-
-    skillInput.value = "";
-    renderSkillsEditor();
-    renderPreview();
-  });
-}
 
 // One-time initial paint
 syncLeftPanelVisibility();
