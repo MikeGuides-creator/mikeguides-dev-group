@@ -824,10 +824,13 @@ $("btnAddProject")?.addEventListener("click", () => {
       renderEducationEditor();
       renderPreview();
     });
+    
 $("toggleReferences")?.addEventListener("change", (e) => {
   state.showReferences = e.target.checked;
   renderPreview();
 });
+    
+    $("toggleReferences").checked = !!state.showReferences;
     
     $("btnPreview").addEventListener("click", () => renderPreview());
 
