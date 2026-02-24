@@ -238,14 +238,6 @@
 <div class="block-head">
   <div class="block-title">Skills</div>
 </div>
-
-<div class="field-group">
-  <label for="skillInput">Add a skill (press Enter)</label>
-  <div style="display:flex; gap:10px;">
-    <input id="skillInput" type="text" placeholder="e.g., Leadership, Excel, Classroom Management" style="flex:1;">
-    <button id="btnAddSkill" type="button" class="btn">Add</button>
-  </div>
-</div>
       
 <div class="field-group">
   <label>
@@ -254,6 +246,21 @@
   </label>
 </div>
       
+<div class="mini-divider"></div>
+
+<div class="block-head">
+  <div class="block-title">Certifications</div>
+  <button id="btnAddCert" class="btn btn-ghost btn-sm" type="button">+ Add Certification</button>
+</div>
+<div id="certList"></div>
+
+<div class="mini-divider"></div>
+
+<div class="block-head">
+  <div class="block-title">Projects</div>
+  <button id="btnAddProject" class="btn btn-ghost btn-sm" type="button">+ Add Project</button>
+</div>
+<div id="projectList"></div>      
 <div id="skillsChips" class="chips"></div>
 
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
@@ -630,19 +637,6 @@ function renderCertificationsPreview(){
     `).join("")}
   `;
 }
-
-function renderCertificationsPreview(){
-  if (!state.certifications?.length) return "";
-
-  return `
-    <h4 class="preview-section">Certifications</h4>
-    ${state.certifications.map(c => `
-      <div>
-        <strong>${esc(c.name)}</strong> — ${esc(c.issuer)} (${esc(c.year)})
-      </div>
-    `).join("")}
-  `;
-}
   
 function renderProjectsPreview(){
   if (!state.projects?.length) return "";
@@ -755,7 +749,7 @@ function renderResume(){
     renderSkillsEditor();
     renderPreview();
   });
-
+   
   // If you added an Add button, wire it too (safe even if missing)
   if (btn && btn.dataset.wired !== "1") {
     btn.dataset.wired = "1";
