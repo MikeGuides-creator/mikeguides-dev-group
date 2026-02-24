@@ -813,7 +813,11 @@ function renderResume(){
       renderEducationEditor();
       renderPreview();
     });
-
+$("toggleReferences")?.addEventListener("change", (e) => {
+  state.showReferences = e.target.checked;
+  renderPreview();
+});
+    
     $("btnPreview").addEventListener("click", () => renderPreview());
 
 // Skills: add on Enter
