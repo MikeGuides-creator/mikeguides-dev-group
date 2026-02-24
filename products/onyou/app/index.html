@@ -502,71 +502,85 @@ function renderSkillsEditor(){
   const host = $("certList");
   if (!host) return;
 
-  host.innerHTML = state.certifications.map((c, idx) => `
-    <div class="card">
-      <div class="field-group">
-        <label>Name</label>
-        <input id="cert_name_${idx}" value="${esc(c.name)}">
+  host.innerHTML = (state.certifications || []).map((c, idx) => `
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">Entry ${idx + 1}</div>
+        <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
       </div>
+
       <div class="field-group">
-        <label>Issuer</label>
-        <input id="cert_issuer_${idx}" value="${esc(c.issuer)}">
+        <label for="cert_name_${idx}">Name</label>
+        <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
       </div>
+
       <div class="field-group">
-        <label>Year</label>
-        <input id="cert_year_${idx}" value="${esc(c.year)}">
+        <label for="cert_issuer_${idx}">Issuer</label>
+        <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
+      </div>
+
+      <div class="field-group">
+        <label for="cert_year_${idx}">Year</label>
+        <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
       </div>
     </div>
   `).join("");
 
-  state.certifications.forEach((_, idx) => {
-    $("cert_name_" + idx)?.addEventListener("input", e => {
-      state.certifications[idx].name = e.target.value;
-      renderPreview();
-    });
-    $("cert_issuer_" + idx)?.addEventListener("input", e => {
-      state.certifications[idx].issuer = e.target.value;
-      renderPreview();
-    });
-    $("cert_year_" + idx)?.addEventListener("input", e => {
-      state.certifications[idx].year = e.target.value;
+  (state.certifications || []).forEach((_, idx) => {
+    $("cert_name_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].name = e.target.value; renderPreview(); });
+    $("cert_issuer_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].issuer = e.target.value; renderPreview(); });
+    $("cert_year_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].year = e.target.value; renderPreview(); });
+  });
+
+  host.querySelectorAll("[data-cert-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-remove"));
+      state.certifications.splice(i, 1);
+      renderCertificationsEditor();
       renderPreview();
     });
   });
 }
 
-  function renderProjectsEditor(){
+ function renderProjectsEditor(){
   const host = $("projectList");
   if (!host) return;
 
-  host.innerHTML = state.projects.map((p, idx) => `
-    <div class="card">
-      <div class="field-group">
-        <label>Title</label>
-        <input id="proj_title_${idx}" value="${esc(p.title)}">
+  host.innerHTML = (state.projects || []).map((p, idx) => `
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">Entry ${idx + 1}</div>
+        <button class="btn btn-ghost btn-sm" type="button" data-proj-remove="${idx}">Remove</button>
       </div>
+
       <div class="field-group">
-        <label>Your Role</label>
-        <input id="proj_role_${idx}" value="${esc(p.role)}">
+        <label for="proj_title_${idx}">Title</label>
+        <input id="proj_title_${idx}" type="text" value="${esc(p.title)}" placeholder="Project title" />
       </div>
+
       <div class="field-group">
-        <label>Description</label>
-        <textarea id="proj_desc_${idx}">${esc(p.desc)}</textarea>
+        <label for="proj_role_${idx}">Your Role</label>
+        <input id="proj_role_${idx}" type="text" value="${esc(p.role)}" placeholder="Your role" />
+      </div>
+
+      <div class="field-group">
+        <label for="proj_desc_${idx}">Description</label>
+        <textarea id="proj_desc_${idx}" placeholder="What was the outcome? What changed?">${esc(p.desc)}</textarea>
       </div>
     </div>
   `).join("");
 
-  state.projects.forEach((_, idx) => {
-    $("proj_title_" + idx)?.addEventListener("input", e => {
-      state.projects[idx].title = e.target.value;
-      renderPreview();
-    });
-    $("proj_role_" + idx)?.addEventListener("input", e => {
-      state.projects[idx].role = e.target.value;
-      renderPreview();
-    });
-    $("proj_desc_" + idx)?.addEventListener("input", e => {
-      state.projects[idx].desc = e.target.value;
+  (state.projects || []).forEach((_, idx) => {
+    $("proj_title_" + idx)?.addEventListener("input", (e) => { state.projects[idx].title = e.target.value; renderPreview(); });
+    $("proj_role_" + idx)?.addEventListener("input", (e) => { state.projects[idx].role = e.target.value; renderPreview(); });
+    $("proj_desc_" + idx)?.addEventListener("input", (e) => { state.projects[idx].desc = e.target.value; renderPreview(); });
+  });
+
+  host.querySelectorAll("[data-proj-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-remove"));
+      state.projects.splice(i, 1);
+      renderProjectsEditor();
       renderPreview();
     });
   });
@@ -625,18 +639,7 @@ function renderSkillsEditor(){
   `;
 }
 
-function renderCertificationsPreview(){
-  if (!state.certifications?.length) return "";
-
-  return `
-    <h4 class="preview-section">Certifications</h4>
-    ${state.certifications.map(c => `
-      <div>
-        <strong>${esc(c.name)}</strong> — ${esc(c.issuer)} (${esc(c.year)})
-      </div>
-    `).join("")}
-  `;
-}
+function renderCertificationsPreview(){ if (!state.certifications?.length) return ""; return <h4 class="preview-section">Certifications</h4> ${state.certifications.map(c => <div> <strong>${esc(c.name)}</strong> — ${esc(c.issuer)} (${esc(c.year)}) </div> ).join("")} ; }
   
 function renderProjectsPreview(){
   if (!state.projects?.length) return "";
