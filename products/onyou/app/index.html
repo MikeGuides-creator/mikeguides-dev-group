@@ -639,7 +639,22 @@ function renderSkillsEditor(){
   `;
 }
 
-function renderCertificationsPreview(){ if (!state.certifications?.length) return ""; return <h4 class="preview-section">Certifications</h4> ${state.certifications.map(c => <div> <strong>${esc(c.name)}</strong> — ${esc(c.issuer)} (${esc(c.year)}) </div> ).join("")} ; }
+function renderCertificationsPreview() {
+  if (!state.certifications?.length) return "";
+
+  return `
+    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">
+      Certifications
+    </h4>
+    ${state.certifications.map(c => `
+      <div style="margin-bottom:6px;">
+        <strong>${esc(c.name)}</strong>
+        ${c.issuer ? ` — ${esc(c.issuer)}` : ""}
+        ${c.year ? ` (${esc(c.year)})` : ""}
+      </div>
+    `).join("")}
+  `;
+}
   
 function renderProjectsPreview(){
   if (!state.projects?.length) return "";
