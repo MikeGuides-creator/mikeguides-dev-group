@@ -549,7 +549,7 @@ function renderSkillsEditor(){
   if (!host) return;
 
   host.innerHTML = (state.certifications || []).map((c, idx) => `
-    <div class="block">
+    <div class="block" draggable="true" data-drag-index="${idx}">
       <div class="block-head">
         <div class="block-title">Entry ${idx + 1}</div>
         <div style="display:flex; gap:8px; align-items:center;">
@@ -653,7 +653,7 @@ function enableDragReorder(hostEl, list, rerender){
   if (!host) return;
 
   host.innerHTML = (state.projects || []).map((p, idx) => `
-    <div class="block">
+    <div class="block" draggable="true" data-drag-index="${idx}">
       <div class="block-head">
         <div class="block-title">Entry ${idx + 1}</div>
         <div style="display:flex; gap:8px; align-items:center;">
