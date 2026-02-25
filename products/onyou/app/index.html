@@ -292,6 +292,43 @@
   const [item] = arr.splice(from, 1);
   arr.splice(to, 0, item);
 }
+  function enableDragReorder(hostEl, list, rerender){
+  if (!hostEl || hostEl.dataset.dragWired === "1") return;
+  hostEl.dataset.dragWired = "1";
+
+  let fromIndex = null;
+
+  hostEl.addEventListener("dragstart", (e) => {
+    const item = e.target.closest("[data-drag-index]");
+    if (!item) return;
+    fromIndex = Number(item.getAttribute("data-drag-index"));
+    e.dataTransfer.effectAllowed = "move";
+  });
+
+  hostEl.addEventListener("dragover", (e) => {
+    if (fromIndex === null) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  });
+
+  hostEl.addEventListener("drop", (e) => {
+    const item = e.target.closest("[data-drag-index]");
+    if (!item) return;
+    e.preventDefault();
+
+    const toIndex = Number(item.getAttribute("data-drag-index"));
+    if (Number.isFinite(fromIndex) && Number.isFinite(toIndex)) {
+      moveItem(list, fromIndex, toIndex);
+      rerender();
+      renderPreview();
+    }
+    fromIndex = null;
+  });
+
+  hostEl.addEventListener("dragend", () => {
+    fromIndex = null;
+  });
+}
   
   const state = {
     templateType: "resume",
