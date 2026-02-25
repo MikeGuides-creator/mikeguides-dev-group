@@ -656,15 +656,24 @@ function renderCertificationsPreview() {
   `;
 }
   
-function renderProjectsPreview(){
+function renderProjectsPreview() {
   if (!state.projects?.length) return "";
 
   return `
-    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Projects</h4>
+    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">
+      Projects
+    </h4>
     ${state.projects.map(p => `
-      <div style="margin-bottom:10px;">
-        <strong>${esc(p.title)}</strong>${p.role ? ` — ${esc(p.role)}` : ""}
-        <div style="font-size:13px;color:#555;line-height:1.5;">${esc(p.desc)}</div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:600;">
+          ${esc(p.title)}
+          ${p.role ? ` — ${esc(p.role)}` : ""}
+        </div>
+        ${p.desc ? `
+          <div style="margin-top:4px; font-size:14px; line-height:1.5; color:#222;">
+            ${esc(p.desc)}
+          </div>
+        ` : ""}
       </div>
     `).join("")}
   `;
