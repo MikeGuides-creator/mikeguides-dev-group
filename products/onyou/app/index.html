@@ -599,7 +599,11 @@ function renderSkillsEditor(){
       renderPreview();
     });
   });
-  
+    
+enableDragReorder(host, state.certifications, () => {
+  renderCertificationsEditor();
+});
+    
 function enableDragReorder(hostEl, list, rerender){
   if (!hostEl || hostEl.dataset.dragWired === "1") return;
   hostEl.dataset.dragWired = "1";
@@ -713,6 +717,9 @@ function enableDragReorder(hostEl, list, rerender){
     });
   });
 }
+enableDragReorder(host, state.projects, () => {
+  renderProjectsEditor();
+});
   
   function renderExperiencePreview(){
     if (!state.experience.length) {
