@@ -284,6 +284,15 @@
 <script>
   const $ = (id) => document.getElementById(id);
 
+  function moveItem(arr, from, to){
+  if (!Array.isArray(arr)) return;
+  if (from === to) return;
+  if (from < 0 || from >= arr.length) return;
+  if (to < 0 || to >= arr.length) return;
+  const [item] = arr.splice(from, 1);
+  arr.splice(to, 0, item);
+}
+  
   const state = {
     templateType: "resume",
     fullName: "John Doe",
@@ -506,7 +515,11 @@ function renderSkillsEditor(){
     <div class="block">
       <div class="block-head">
         <div class="block-title">Entry ${idx + 1}</div>
-        <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-cert-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-cert-down="${idx}" ${idx===(state.certifications.length-1) ? "disabled" : ""}>↓</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
+        </div>
       </div>
 
       <div class="field-group">
@@ -536,6 +549,24 @@ function renderSkillsEditor(){
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-remove"));
       state.certifications.splice(i, 1);
+      renderCertificationsEditor();
+      renderPreview();
+    });
+  });
+
+  host.querySelectorAll("[data-cert-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-up"));
+      moveItem(state.certifications, i, i - 1);
+      renderCertificationsEditor();
+      renderPreview();
+    });
+  });
+
+  host.querySelectorAll("[data-cert-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-down"));
+      moveItem(state.certifications, i, i + 1);
       renderCertificationsEditor();
       renderPreview();
     });
