@@ -578,16 +578,14 @@ function renderSkillsEditor(){
     </div>
   `).join("");
 
+  // Input bindings
   (state.certifications || []).forEach((_, idx) => {
     $("cert_name_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].name = e.target.value; renderPreview(); });
     $("cert_issuer_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].issuer = e.target.value; renderPreview(); });
     $("cert_year_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].year = e.target.value; renderPreview(); });
   });
-  enableDragReorder(host, state.certifications, () => {
-    renderCertificationsEditor();
-  });
-}
-  
+
+  // Remove
   host.querySelectorAll("[data-cert-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-remove"));
@@ -597,6 +595,7 @@ function renderSkillsEditor(){
     });
   });
 
+  // Up
   host.querySelectorAll("[data-cert-up]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-up"));
@@ -605,10 +604,22 @@ function renderSkillsEditor(){
       renderPreview();
     });
   });
-    
-enableDragReorder(host, state.certifications, () => {
-  renderCertificationsEditor();
-});
+
+  // Down
+  host.querySelectorAll("[data-cert-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-down"));
+      moveItem(state.certifications, i, i + 1);
+      renderCertificationsEditor();
+      renderPreview();
+    });
+  });
+
+  // Drag enable (only once, and inside)
+  enableDragReorder(host, state.certifications, () => {
+    renderCertificationsEditor();
+  });
+}
     
 function enableDragReorder(hostEl, list, rerender){
   if (!hostEl || hostEl.dataset.dragWired === "1") return;
