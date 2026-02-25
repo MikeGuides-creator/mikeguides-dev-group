@@ -581,7 +581,11 @@ function renderSkillsEditor(){
     $("cert_issuer_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].issuer = e.target.value; renderPreview(); });
     $("cert_year_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].year = e.target.value; renderPreview(); });
   });
-
+  enableDragReorder(host, state.certifications, () => {
+    renderCertificationsEditor();
+  });
+}
+  
   host.querySelectorAll("[data-cert-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-remove"));
@@ -689,6 +693,9 @@ function enableDragReorder(hostEl, list, rerender){
     $("proj_role_" + idx)?.addEventListener("input", (e) => { state.projects[idx].role = e.target.value; renderPreview(); });
     $("proj_desc_" + idx)?.addEventListener("input", (e) => { state.projects[idx].desc = e.target.value; renderPreview(); });
   });
+  enableDragReorder(host, state.projects, () => {
+    renderProjectsEditor();
+  });
 
   host.querySelectorAll("[data-proj-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -717,9 +724,6 @@ function enableDragReorder(hostEl, list, rerender){
     });
   });
 }
-enableDragReorder(host, state.projects, () => {
-  renderProjectsEditor();
-});
   
   function renderExperiencePreview(){
     if (!state.experience.length) {
