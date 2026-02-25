@@ -292,10 +292,7 @@
   const [item] = arr.splice(from, 1);
   arr.splice(to, 0, item);
 }
-  function enableDragReorder(hostEl, list, rerender){
-  if (!hostEl || hostEl.dataset.dragWired === "1") return;
-  hostEl.dataset.dragWired = "1";
-
+  
   let fromIndex = null;
 
   hostEl.addEventListener("dragstart", (e) => {
