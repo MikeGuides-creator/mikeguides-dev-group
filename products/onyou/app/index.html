@@ -657,8 +657,7 @@ function enableDragReorder(hostEl, list, rerender){
   hostEl.addEventListener("dragend", () => {
     fromIndex = null;
   });
-}
-    
+
   host.querySelectorAll("[data-cert-down]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-down"));
@@ -667,7 +666,8 @@ function enableDragReorder(hostEl, list, rerender){
       renderPreview();
     });
   });
-
+}
+    
  function renderProjectsEditor(){
   const host = $("projectList");
   if (!host) return;
