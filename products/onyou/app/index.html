@@ -619,7 +619,7 @@ function enableDragReorder(hostEl, list, rerender){
 
   hostEl.addEventListener("dragover", (e) => {
     if (fromIndex === null) return;
-    e.preventDefault();
+    e.preventDefault(); // allow drop
     e.dataTransfer.dropEffect = "move";
   });
 
