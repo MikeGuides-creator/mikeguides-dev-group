@@ -581,7 +581,11 @@ function renderSkillsEditor(){
     <div class="block">
       <div class="block-head">
         <div class="block-title">Entry ${idx + 1}</div>
-        <button class="btn btn-ghost btn-sm" type="button" data-proj-remove="${idx}">Remove</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-down="${idx}" ${idx===(state.projects.length-1) ? "disabled" : ""}>↓</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-remove="${idx}">Remove</button>
+        </div>
       </div>
 
       <div class="field-group">
@@ -596,7 +600,7 @@ function renderSkillsEditor(){
 
       <div class="field-group">
         <label for="proj_desc_${idx}">Description</label>
-        <textarea id="proj_desc_${idx}" placeholder="What was the outcome? What changed?">${esc(p.desc)}</textarea>
+        <textarea id="proj_desc_${idx}" placeholder="What changed because you did it?">${esc(p.desc)}</textarea>
       </div>
     </div>
   `).join("");
@@ -611,6 +615,24 @@ function renderSkillsEditor(){
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-proj-remove"));
       state.projects.splice(i, 1);
+      renderProjectsEditor();
+      renderPreview();
+    });
+  });
+
+  host.querySelectorAll("[data-proj-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-up"));
+      moveItem(state.projects, i, i - 1);
+      renderProjectsEditor();
+      renderPreview();
+    });
+  });
+
+  host.querySelectorAll("[data-proj-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-down"));
+      moveItem(state.projects, i, i + 1);
       renderProjectsEditor();
       renderPreview();
     });
