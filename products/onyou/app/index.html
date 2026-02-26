@@ -309,7 +309,7 @@
 
   hostEl.addEventListener("dragover", (e) => {
     if (fromIndex === null) return;
-    e.preventDefault(); // allow drop
+    e.preventDefault();
     e.dataTransfer.dropEffect = "move";
   });
 
@@ -413,7 +413,7 @@ if (!state.skills.length) {
     const host = $("expList");
     if (!host) return;
 
-    host.innerHTML = state.experience.map((x, idx) => `
+    hostEl.innerHTML = state.experience.map((x, idx) => `
       <div class="block">
         <div class="block-head">
           <div class="block-title">Entry ${idx + 1}</div>
