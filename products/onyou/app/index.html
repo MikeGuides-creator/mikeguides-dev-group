@@ -912,8 +912,19 @@ ${renderReferencesPreview()}
     input.value = "";
     renderSkillsEditor();
     renderPreview();
-  });
 
+    input.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  commitSkill();
+});
+
+if (btn && btn.dataset.wired !== "1") {
+  btn.dataset.wired = "1";
+  btn.addEventListener("click", () => commitSkill());
+  
+  });
+}
  function commitSkill(){
   const val = normalizeSkill(input.value);
   if (!val) return;
