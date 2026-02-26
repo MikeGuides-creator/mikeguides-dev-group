@@ -913,6 +913,31 @@ ${renderReferencesPreview()}
     renderSkillsEditor();
     renderPreview();
   });
+
+ function commitSkill(){
+  const val = normalizeSkill(input.value);
+  if (!val) return;
+
+  const lower = val.toLowerCase();
+  const existingIndex = (state.skills || []).findIndex(x => String(x).toLowerCase() === lower);
+
+  if (state._editingSkillIndex !== null) {
+    const i = state._editingSkillIndex;
+
+    // block true duplicates elsewhere
+    if (existingIndex !== -1 && existingIndex !== i) return;
+
+    state.skills[i] = val;
+    state._editingSkillIndex = null;
+  } else {
+    if (existingIndex === -1) state.skills.push(val);
+  }
+
+  input.value = "";
+  input.focus();
+  renderSkillsEditor();
+  renderPreview();
+}
    
   // If you added an Add button, wire it too (safe even if missing)
   if (btn && btn.dataset.wired !== "1") {
