@@ -486,18 +486,39 @@ function renderSkillsEditor(){
   if (!host) return;
 
   host.innerHTML = (state.skills || []).map((s, idx) => `
-    <span class="chip">
+    <span class="chip" data-skill-edit="${idx}" title="Click to edit">
       ${esc(s)}
       <button type="button" aria-label="Remove skill" data-skill-remove="${idx}">✕</button>
     </span>
   `).join("");
 
+  // Remove (don’t trigger edit)
   host.querySelectorAll("[data-skill-remove]").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const i = Number(btn.getAttribute("data-skill-remove"));
       state.skills.splice(i, 1);
+
+      // keep edit index consistent
+      if (state._editingSkillIndex === i) state._editingSkillIndex = null;
+      else if (state._editingSkillIndex !== null && state._editingSkillIndex > i) state._editingSkillIndex--;
+
       renderSkillsEditor();
       renderPreview();
+    });
+  });
+
+  // Click-to-edit
+  host.querySelectorAll("[data-skill-edit]").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const i = Number(chip.getAttribute("data-skill-edit"));
+      const input = $("skillInput");
+      if (!input) return;
+
+      state._editingSkillIndex = i;
+      input.value = state.skills[i] || "";
+      input.focus();
+      input.select?.();
     });
   });
 }
