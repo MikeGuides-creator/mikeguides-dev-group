@@ -353,9 +353,7 @@
     address: "Chicago, IL",
     showHeadshot: true,
    
-    state._editingSkillIndex = null;
-  
-    experience: [
+  experience: [
       {
         company: "Acme Construction",
         role: "Project Manager",
@@ -393,6 +391,8 @@ projects: [
 
 showReferences: false,
     };
+
+  state._editingSkillIndex = null;
   
   state.skills = Array.isArray(state.skills) ? state.skills : [];
 if (!state.skills.length) {
@@ -890,81 +890,54 @@ ${renderReferencesPreview()}
     else root.innerHTML = renderResume();
   }
   
- function wireSkillsInput(){
+function wireSkillsInput(){
   const input = $("skillInput");
-  const btn = $("btnAddSkill"); // optional if you add the button
+  const btn = $("btnAddSkill");
   if (!input) return;
 
   // prevent double-binding
   if (input.dataset.wired === "1") return;
   input.dataset.wired = "1";
 
-  input.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter") return;
-    e.preventDefault();
-
+  function commitSkill(){
     const val = normalizeSkill(input.value);
     if (!val) return;
 
-    const exists = (state.skills || []).some(x => String(x).toLowerCase() === val.toLowerCase());
-    if (!exists) state.skills.push(val);
+    state.skills = Array.isArray(state.skills) ? state.skills : [];
+
+    const lower = val.toLowerCase();
+    const existingIndex = state.skills.findIndex(x => String(x).toLowerCase() === lower);
+
+    // Edit mode: update existing chip
+    if (state._editingSkillIndex !== null && state._editingSkillIndex !== undefined) {
+      const i = state._editingSkillIndex;
+
+      // block duplicates (except replacing itself)
+      if (existingIndex !== -1 && existingIndex !== i) return;
+
+      state.skills[i] = val;
+      state._editingSkillIndex = null;
+    } else {
+      // Add mode
+      if (existingIndex === -1) state.skills.push(val);
+    }
 
     input.value = "";
+    input.focus();
+
     renderSkillsEditor();
     renderPreview();
-
-    input.addEventListener("keydown", (e) => {
-  if (e.key !== "Enter") return;
-  e.preventDefault();
-  commitSkill();
-});
-
-if (btn && btn.dataset.wired !== "1") {
-  btn.dataset.wired = "1";
-  btn.addEventListener("click", () => commitSkill());
-  
-  });
-}
- function commitSkill(){
-  const val = normalizeSkill(input.value);
-  if (!val) return;
-
-  const lower = val.toLowerCase();
-  const existingIndex = (state.skills || []).findIndex(x => String(x).toLowerCase() === lower);
-
-  if (state._editingSkillIndex !== null) {
-    const i = state._editingSkillIndex;
-
-    // block true duplicates elsewhere
-    if (existingIndex !== -1 && existingIndex !== i) return;
-
-    state.skills[i] = val;
-    state._editingSkillIndex = null;
-  } else {
-    if (existingIndex === -1) state.skills.push(val);
   }
 
-  input.value = "";
-  input.focus();
-  renderSkillsEditor();
-  renderPreview();
-}
-   
-  // If you added an Add button, wire it too (safe even if missing)
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    commitSkill();
+  });
+
   if (btn && btn.dataset.wired !== "1") {
     btn.dataset.wired = "1";
-    btn.addEventListener("click", () => {
-      const val = normalizeSkill(input.value);
-      if (!val) return;
-
-      const exists = (state.skills || []).some(x => String(x).toLowerCase() === val.toLowerCase());
-      if (!exists) state.skills.push(val);
-
-      input.value = "";
-      input.focus();
-      renderSkillsEditor();
-      renderPreview();
-    });
+    btn.addEventListener("click", () => commitSkill());
   }
 }
   
