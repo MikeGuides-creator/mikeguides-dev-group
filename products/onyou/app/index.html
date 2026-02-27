@@ -668,46 +668,57 @@ function renderSkillsEditor(){
     </div>
   `).join("");
 
-  // Input bindings
   (state.certifications || []).forEach((_, idx) => {
-    $("cert_name_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].name = e.target.value; renderPreview(); });
-    $("cert_issuer_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].issuer = e.target.value; renderPreview(); });
-    $("cert_year_" + idx)?.addEventListener("input", (e) => { state.certifications[idx].year = e.target.value; renderPreview(); });
+    $("cert_name_" + idx)?.addEventListener("input", (e) => {
+      state.certifications[idx].name = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("cert_issuer_" + idx)?.addEventListener("input", (e) => {
+      state.certifications[idx].issuer = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("cert_year_" + idx)?.addEventListener("input", (e) => {
+      state.certifications[idx].year = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
   });
 
-  // Remove
   host.querySelectorAll("[data-cert-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-remove"));
       state.certifications.splice(i, 1);
       renderCertificationsEditor();
       renderPreview();
+      scheduleSave();
     });
   });
 
-  // Up
   host.querySelectorAll("[data-cert-up]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-up"));
       moveItem(state.certifications, i, i - 1);
       renderCertificationsEditor();
       renderPreview();
+      scheduleSave();
     });
   });
 
-  // Down
   host.querySelectorAll("[data-cert-down]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-down"));
       moveItem(state.certifications, i, i + 1);
       renderCertificationsEditor();
       renderPreview();
+      scheduleSave();
     });
   });
 
-  // Drag enable (only once, and inside)
   enableDragReorder(host, state.certifications, () => {
     renderCertificationsEditor();
+    scheduleSave(); // <- ensures drag reorder is persisted
   });
 }
     
@@ -744,12 +755,21 @@ function renderSkillsEditor(){
   `).join("");
 
   (state.projects || []).forEach((_, idx) => {
-    $("proj_title_" + idx)?.addEventListener("input", (e) => { state.projects[idx].title = e.target.value; renderPreview(); });
-    $("proj_role_" + idx)?.addEventListener("input", (e) => { state.projects[idx].role = e.target.value; renderPreview(); });
-    $("proj_desc_" + idx)?.addEventListener("input", (e) => { state.projects[idx].desc = e.target.value; renderPreview(); });
-  });
-  enableDragReorder(host, state.projects, () => {
-    renderProjectsEditor();
+    $("proj_title_" + idx)?.addEventListener("input", (e) => {
+      state.projects[idx].title = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("proj_role_" + idx)?.addEventListener("input", (e) => {
+      state.projects[idx].role = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("proj_desc_" + idx)?.addEventListener("input", (e) => {
+      state.projects[idx].desc = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
   });
 
   host.querySelectorAll("[data-proj-remove]").forEach(btn => {
@@ -758,6 +778,7 @@ function renderSkillsEditor(){
       state.projects.splice(i, 1);
       renderProjectsEditor();
       renderPreview();
+      scheduleSave();
     });
   });
 
@@ -767,6 +788,7 @@ function renderSkillsEditor(){
       moveItem(state.projects, i, i - 1);
       renderProjectsEditor();
       renderPreview();
+      scheduleSave();
     });
   });
 
@@ -776,7 +798,14 @@ function renderSkillsEditor(){
       moveItem(state.projects, i, i + 1);
       renderProjectsEditor();
       renderPreview();
+      scheduleSave();
     });
+  });
+
+  // Drag enable (save will happen after rerender+preview via the callback)
+  enableDragReorder(host, state.projects, () => {
+    renderProjectsEditor();
+    scheduleSave(); // <- ensures drag reorder is persisted
   });
 }
   
