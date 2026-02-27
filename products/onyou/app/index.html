@@ -293,8 +293,64 @@
 
 <script>
   
-  const $ = (id) => document.getElementById(id);
+const $ = (id) => document.getElementById(id);
+  
+const STORAGE_KEY = "onyou_builder_v1";
 
+function safeCloneState(){
+  // clone only the data we want saved (avoid functions/dom refs)
+  return JSON.parse(JSON.stringify(state));
+}
+
+function saveState(){
+  try{
+    const payload = safeCloneState();
+    payload._meta = payload._meta || {};
+    payload._meta.savedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    setSaveStatus("Saved ✓");
+  }catch(err){
+    console.warn("Autosave failed:", err);
+    setSaveStatus("Save failed");
+  }
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+
+    // merge into existing state object (keeps references stable)
+    Object.keys(data).forEach(k => { state[k] = data[k]; });
+
+    // ensure your runtime-only fields exist
+    if (state._editingSkillIndex === undefined) state._editingSkillIndex = null;
+    state.skills = Array.isArray(state.skills) ? state.skills : [];
+
+    return true;
+  }catch(err){
+    console.warn("Load failed:", err);
+    return false;
+  }
+}
+
+function clearSavedState(){
+  localStorage.removeItem(STORAGE_KEY);
+  setSaveStatus("Cleared");
+}
+
+let saveTimer = null;
+function scheduleSave(){
+  setSaveStatus("Saving…");
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveState, 350); // debounce
+}
+
+function setSaveStatus(text){
+  const el = document.getElementById("saveStatus");
+  if (el) el.textContent = text;
+}
   function moveItem(arr, from, to){
   if (!Array.isArray(arr)) return;
   if (from === to) return;
