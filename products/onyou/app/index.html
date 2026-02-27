@@ -17,7 +17,38 @@
     @media (min-width: 1000px){
       .builder-layout{ grid-template-columns: 420px 1fr; }
     }
+    
+    @media print {
+  /* Hide builder UI */
+  header.topbar,
+  .panel:first-child,
+  #buildId {
+    display: none !important;
+  }
 
+  /* Make layout single column */
+  .builder-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Remove card styling so it prints clean */
+  .panel {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .preview-area {
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}
+    
     .panel{
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       border:1px solid var(--border);
