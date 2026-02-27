@@ -372,6 +372,7 @@ function setSaveStatus(text){
     if (!item) return;
     fromIndex = Number(item.getAttribute("data-drag-index"));
     e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", String(fromIndex));
   });
 
   hostEl.addEventListener("dragover", (e) => {
