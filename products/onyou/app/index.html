@@ -277,60 +277,100 @@
 
       <div class="mini-divider"></div>
 
-      <div class="block-head">
-        <div class="block-title">Experience</div>
-        <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
-      </div>
-      <div id="expList"></div>
+<!-- Experience -->
+<button class="section-toggle" type="button" data-toggle="experience">
+  <span class="section-title">Experience</span>
+  <span data-toggle-icon="experience">▾</span>
+</button>
 
-      <div class="mini-divider"></div>
-
-      <div class="block-head">
-        <div class="block-title">Education</div>
-        <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
-      </div>
-      <div id="eduList"></div>
-
-      <div class="mini-divider"></div>
-
-<div class="block-head">
-  <div class="block-title">Skills</div>
-</div>
-      
-<div class="field-group">
-  <label for="skillInput">Add a skill (press Enter)</label>
-  <div style="display:flex; gap:10px;">
-    <input id="skillInput" type="text"
-           placeholder="e.g., Leadership, Excel, Classroom Management"
-           style="flex:1;">
-    <button id="btnAddSkill" type="button" class="btn">Add</button>
+<div class="section-body" data-section-body="experience">
+  <div class="block-head" style="margin-top:10px;">
+    <div class="block-title">Experience</div>
+    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
   </div>
-</div> 
-      
-<div id="skillsChips" class="chips"></div>
-      
-<div class="field-group">
-  <label>
-    <input type="checkbox" id="toggleReferences">
-    Include "References Available Upon Request"
-  </label>
+  <div id="expList"></div>
 </div>
-      
-<div class="mini-divider"></div>
-
-<div class="block-head">
-  <div class="block-title">Certifications</div>
-  <button id="btnAddCert" class="btn btn-ghost btn-sm" type="button">+ Add Certification</button>
-</div>
-<div id="certList"></div>
 
 <div class="mini-divider"></div>
 
-<div class="block-head">
-  <div class="block-title">Projects</div>
-  <button id="btnAddProject" class="btn btn-ghost btn-sm" type="button">+ Add Project</button>
+<!-- Education -->
+<button class="section-toggle" type="button" data-toggle="education">
+  <span class="section-title">Education</span>
+  <span data-toggle-icon="education">▾</span>
+</button>
+
+<div class="section-body" data-section-body="education">
+  <div class="block-head" style="margin-top:10px;">
+    <div class="block-title">Education</div>
+    <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
+  </div>
+  <div id="eduList"></div>
 </div>
-<div id="projectList"></div>      
+
+<div class="mini-divider"></div>
+
+<!-- Skills -->
+<button class="section-toggle" type="button" data-toggle="skills">
+  <span class="section-title">Skills</span>
+  <span data-toggle-icon="skills">▾</span>
+</button>
+
+<div class="section-body" data-section-body="skills">
+  <div class="block-head" style="margin-top:10px;">
+    <div class="block-title">Skills</div>
+  </div>
+
+  <div class="field-group">
+    <label for="skillInput">Add a skill (press Enter)</label>
+    <div style="display:flex; gap:10px;">
+      <input id="skillInput" type="text"
+             placeholder="e.g., Leadership, Excel, Classroom Management"
+             style="flex:1;">
+      <button id="btnAddSkill" type="button" class="btn">Add</button>
+    </div>
+  </div>
+
+  <div id="skillsChips" class="chips"></div>
+
+  <div class="field-group">
+    <label>
+      <input type="checkbox" id="toggleReferences">
+      Include "References Available Upon Request"
+    </label>
+  </div>
+</div>
+
+<div class="mini-divider"></div>
+
+<!-- Certifications -->
+<button class="section-toggle" type="button" data-toggle="certifications">
+  <span class="section-title">Certifications</span>
+  <span data-toggle-icon="certifications">▾</span>
+</button>
+
+<div class="section-body" data-section-body="certifications">
+  <div class="block-head" style="margin-top:10px;">
+    <div class="block-title">Certifications</div>
+    <button id="btnAddCert" class="btn btn-ghost btn-sm" type="button">+ Add Certification</button>
+  </div>
+  <div id="certList"></div>
+</div>
+
+<div class="mini-divider"></div>
+
+<!-- Projects -->
+<button class="section-toggle" type="button" data-toggle="projects">
+  <span class="section-title">Projects</span>
+  <span data-toggle-icon="projects">▾</span>
+</button>
+
+<div class="section-body" data-section-body="projects">
+  <div class="block-head" style="margin-top:10px;">
+    <div class="block-title">Projects</div>
+    <button id="btnAddProject" class="btn btn-ghost btn-sm" type="button">+ Add Project</button>
+  </div>
+  <div id="projectList"></div>
+</div>      
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
       <button id="btnExportPdf" class="btn btn-wide" type="button">Export PDF</button>
       <div class="hint">Live preview updates as you type. Button will later run template + validation.</div>
