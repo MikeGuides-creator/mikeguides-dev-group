@@ -1137,7 +1137,13 @@ function wireSkillsInput(){
     renderPreview();
     saveState(); // immediate save on explicit action
   });
-
+    
+$("btnExportPdf")?.addEventListener("click", () => {
+  renderPreview();   // ensure latest
+  saveState();       // save snapshot
+  window.print();    // user chooses "Save as PDF"
+});
+    
   // Clear saved (if you added the button)
   $("btnClearSaved")?.addEventListener("click", () => {
     clearSavedState();
