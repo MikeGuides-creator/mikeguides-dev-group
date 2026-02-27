@@ -171,6 +171,33 @@
   line-height:1;
   padding:0;
 }
+    
+    .section-toggle{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  cursor:pointer;
+}
+    
+.section-toggle:hover{ background: rgba(255,255,255,.06); }
+
+.section-title{
+  font-weight:900;
+  font-size:13px;
+  color: var(--muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.section-body{ margin-top:10px; }
+.section-body[hidden]{ display:none !important; }
+    
   </style>
 </head>
 <body>
