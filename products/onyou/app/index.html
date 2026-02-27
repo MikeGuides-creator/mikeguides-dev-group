@@ -1003,6 +1003,47 @@ function renderReferencesPreview(){
   if (!state.showReferences) return "";
   return `<p style="margin-top:20px;font-style:italic;">References available upon request.</p>`;
 }  
+
+function initSectionToggles(){
+  document.querySelectorAll("[data-toggle]").forEach(btn => {
+    if (btn.dataset.wired === "1") return;
+    btn.dataset.wired = "1";
+
+    btn.addEventListener("click", () => {
+      const key = btn.getAttribute("data-toggle");
+      const body = document.querySelector(`[data-section-body="${key}"]`);
+      const icon = document.querySelector(`[data-toggle-icon="${key}"]`);
+      if (!body) return;
+
+      const nowCollapsed = !body.hasAttribute("hidden");
+      if (nowCollapsed) body.setAttribute("hidden", "");
+      else body.removeAttribute("hidden");
+
+      if (icon) icon.textContent = nowCollapsed ? "▸" : "▾";
+
+      // remember collapsed state
+      state._ui = state._ui || {};
+      state._ui.collapsed = state._ui.collapsed || {};
+      state._ui.collapsed[key] = nowCollapsed;
+
+      scheduleSave?.();
+    });
+  });
+}
+
+function applyCollapsedState(){
+  const collapsed = state._ui?.collapsed || {};
+  Object.entries(collapsed).forEach(([key, isCollapsed]) => {
+    const body = document.querySelector(`[data-section-body="${key}"]`);
+    const icon = document.querySelector(`[data-toggle-icon="${key}"]`);
+    if (!body) return;
+
+    if (isCollapsed) body.setAttribute("hidden", "");
+    else body.removeAttribute("hidden");
+
+    if (icon) icon.textContent = isCollapsed ? "▸" : "▾";
+  });
+}
   
 function renderResume(){
   const name = esc(state.fullName?.trim() || "—");
