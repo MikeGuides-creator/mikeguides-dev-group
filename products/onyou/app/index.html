@@ -999,79 +999,112 @@ function wireSkillsInput(){
 }
   
   function bind(){
-    loadState();
-setSaveStatus("Loaded");
-    // Seed inputs
-    $("templateType").value = state.templateType;
-    $("fullName").value = state.fullName;
-    $("roleTitle").value = state.roleTitle;
-    $("summary").value = state.summary;
+  loadState();
+  setSaveStatus("Loaded");
 
-    $("email").value = state.email;
-    $("phone").value = state.phone;
-    $("address").value = state.address;
-    $("toggleHeadshot").checked = !!state.showHeadshot;
+  // Seed inputs
+  $("templateType").value = state.templateType;
+  $("fullName").value = state.fullName;
+  $("roleTitle").value = state.roleTitle;
+  $("summary").value = state.summary;
 
-    $("templateType").addEventListener("change", (e) => {
-  state.templateType = e.target.value;
+  $("email").value = state.email;
+  $("phone").value = state.phone;
+  $("address").value = state.address;
+  $("toggleHeadshot").checked = !!state.showHeadshot;
+
+  $("toggleReferences").checked = !!state.showReferences;
+
+  // Template type
+  $("templateType").addEventListener("change", (e) => {
+    state.templateType = e.target.value;
+    syncLeftPanelVisibility();
+    wireSkillsInput();
+    renderPreview();
+    scheduleSave();
+  });
+
+  // Text inputs
+  $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); scheduleSave(); });
+  $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); scheduleSave(); });
+  $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); scheduleSave(); });
+
+  $("email").addEventListener("input", (e) => { state.email = e.target.value; renderPreview(); scheduleSave(); });
+  $("phone").addEventListener("input", (e) => { state.phone = e.target.value; renderPreview(); scheduleSave(); });
+  $("address").addEventListener("input", (e) => { state.address = e.target.value; renderPreview(); scheduleSave(); });
+
+  // Toggles
+  $("toggleHeadshot").addEventListener("change", (e) => { state.showHeadshot = e.target.checked; renderPreview(); scheduleSave(); });
+
+  $("toggleReferences")?.addEventListener("change", (e) => {
+    state.showReferences = e.target.checked;
+    renderPreview();
+    scheduleSave();
+  });
+
+  // Add buttons
+  $("btnAddCert")?.addEventListener("click", () => {
+    state.certifications = state.certifications || [];
+    state.certifications.push({ name:"", issuer:"", year:"" });
+    renderCertificationsEditor();
+    renderPreview();
+    scheduleSave();
+  });
+
+  $("btnAddProject")?.addEventListener("click", () => {
+    state.projects = state.projects || [];
+    state.projects.push({ title:"", role:"", desc:"" });
+    renderProjectsEditor();
+    renderPreview();
+    scheduleSave();
+  });
+
+  $("btnAddExp").addEventListener("click", () => {
+    state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
+    renderExperienceEditor();
+    renderPreview();
+    scheduleSave();
+  });
+
+  $("btnAddEdu").addEventListener("click", () => {
+    state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
+    renderEducationEditor();
+    renderPreview();
+    scheduleSave();
+  });
+
+  // Preview button
+  $("btnPreview").addEventListener("click", () => {
+    renderPreview();
+    saveState(); // immediate save on explicit action
+  });
+
+  // Clear saved (if you added the button)
+  $("btnClearSaved")?.addEventListener("click", () => {
+    clearSavedState();
+    // Optional: refresh to reset UI to defaults after clearing
+    // location.reload();
+  });
+
+  // Export PDF (if you added the button)
+  $("btnExportPdf")?.addEventListener("click", () => {
+    renderPreview();
+    saveState();
+    window.print();
+  });
+
+  // One-time initial paint
   syncLeftPanelVisibility();
-  wireSkillsInput();   // ✅ re-wire after any panel changes
-  renderPreview();
-});
-
-    $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); });
-    $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); });
-    $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); });
-
-    $("email").addEventListener("input", (e) => { state.email = e.target.value; renderPreview(); });
-    $("phone").addEventListener("input", (e) => { state.phone = e.target.value; renderPreview(); });
-    $("address").addEventListener("input", (e) => { state.address = e.target.value; renderPreview(); });
-    $("toggleHeadshot").addEventListener("change", (e) => { state.showHeadshot = e.target.checked; renderPreview(); });
-
-    $("btnAddCert")?.addEventListener("click", () => {
-  state.certifications = state.certifications || [];
-  state.certifications.push({ name:"", issuer:"", year:"" });
+  wireSkillsInput();
+  renderExperienceEditor();
+  renderEducationEditor();
+  renderSkillsEditor();
   renderCertificationsEditor();
-  renderPreview();
-});
-
-$("btnAddProject")?.addEventListener("click", () => {
-  state.projects = state.projects || [];
-  state.projects.push({ title:"", role:"", desc:"" });
   renderProjectsEditor();
   renderPreview();
-});
-    
-    $("btnAddExp").addEventListener("click", () => {
-      state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
-      renderExperienceEditor();
-      renderPreview();
-    });
 
-    $("btnAddEdu").addEventListener("click", () => {
-      state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
-      renderEducationEditor();
-      renderPreview();
-    });
-    
-$("toggleReferences")?.addEventListener("change", (e) => {
-  state.showReferences = e.target.checked;
-  renderPreview();
-});
-    
-    $("toggleReferences").checked = !!state.showReferences;
-    
-    $("btnPreview").addEventListener("click", () => renderPreview());
-
-// One-time initial paint
-syncLeftPanelVisibility();
-wireSkillsInput();    
-renderExperienceEditor();
-renderEducationEditor();
-renderSkillsEditor();
-renderCertificationsEditor();
-renderProjectsEditor();    
-renderPreview();
+  // If nothing is saved yet, save once so status isn't stuck
+  saveState();
 }
 
 document.getElementById("buildId").textContent =
