@@ -351,6 +351,7 @@ function setSaveStatus(text){
   const el = document.getElementById("saveStatus");
   if (el) el.textContent = text;
 }
+  
   function moveItem(arr, from, to){
   if (!Array.isArray(arr)) return;
   if (from === to) return;
@@ -998,6 +999,8 @@ function wireSkillsInput(){
 }
   
   function bind(){
+    loadState();
+setSaveStatus("Loaded");
     // Seed inputs
     $("templateType").value = state.templateType;
     $("fullName").value = state.fullName;
