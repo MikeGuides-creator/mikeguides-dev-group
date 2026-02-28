@@ -463,6 +463,22 @@ function setSaveStatus(text){
   arr.splice(to, 0, item);
 }
 
+  const SECTION_LABELS = {
+  experience: "Experience",
+  education: "Education",
+  skills: "Skills",
+  projects: "Projects",
+  certifications: "Certifications",
+};
+
+function normalizeSectionOrder(){
+  const allowed = ["experience","education","skills","projects","certifications"];
+  const current = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
+  const cleaned = current.filter(x => allowed.includes(x));
+  allowed.forEach(k => { if (!cleaned.includes(k)) cleaned.push(k); });
+  state.sectionOrder = cleaned;
+}
+  
   function enableDragReorder(hostEl, list, rerender){
   if (!hostEl || hostEl.dataset.dragWired === "1") return;
   hostEl.dataset.dragWired = "1";
