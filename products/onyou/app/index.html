@@ -1070,6 +1070,23 @@ function renderProjectsPreview() {
     `).join("")}
   `;
 }
+
+  function renderSectionsByOrder(){
+  normalizeSectionOrder();
+
+  const map = {
+    experience: renderExperiencePreview,
+    education: renderEducationPreview,
+    skills: renderSkillsPreview,
+    projects: renderProjectsPreview,
+    certifications: renderCertificationsPreview,
+  };
+
+  return state.sectionOrder.map(key => {
+    const fn = map[key];
+    return typeof fn === "function" ? fn() : "";
+  }).join("");
+}
   
 function renderReferencesPreview(){
   if (!state.showReferences) return "";
@@ -1147,14 +1164,11 @@ function renderResume(){
 
     <hr style="border:none;border-top:1px solid #e7e7e7;margin:18px 0;">
 
-${renderExperiencePreview()}
-${renderEducationPreview()}
-${renderSkillsPreview()}
-${renderProjectsPreview()}
-${renderCertificationsPreview()}
+${renderSectionsByOrder()}
 ${renderReferencesPreview()}
   `;
 }
+  
   function renderNDA(){
     const name = esc(state.fullName.trim() || "—");
     return `
