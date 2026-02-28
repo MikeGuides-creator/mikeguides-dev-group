@@ -595,10 +595,9 @@ showReferences: false,
 
   state._editingSkillIndex = null;
   
-  state.skills = Array.isArray(state.skills) ? state.skills : [];
-if (!state.skills.length) {
-  state.skills = ["Leadership", "Operations", "Problem Solving"];
-}
+  state.sectionOrder = Array.isArray(state.sectionOrder) && state.sectionOrder.length
+  ? state.sectionOrder
+  : ["experience","education","skills","projects","certifications"];
   
   function esc(s){
     return String(s ?? "")
