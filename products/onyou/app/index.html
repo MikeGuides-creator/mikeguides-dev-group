@@ -370,7 +370,21 @@
     <button id="btnAddProject" class="btn btn-ghost btn-sm" type="button">+ Add Project</button>
   </div>
   <div id="projectList"></div>
-</div>      
+</div>    
+
+      <div class="mini-divider"></div>
+
+<button class="section-toggle" type="button" data-toggle="sectionOrder">
+  <span class="section-title">Preview Section Order</span>
+  <span data-toggle-icon="sectionOrder">▾</span>
+</button>
+
+<div class="section-body" data-section-body="sectionOrder">
+  <div id="sectionOrderList"></div>
+  <div class="hint" style="margin-top:10px;">
+    This changes the order in the PDF/preview (not the left editor).
+  </div>
+</div>
       <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
       <button id="btnExportPdf" class="btn btn-wide" type="button">Export PDF</button>
       <div class="hint">Live preview updates as you type. Button will later run template + validation.</div>
@@ -922,6 +936,45 @@ function renderSkillsEditor(){
   enableDragReorder(host, state.projects, () => {
     renderProjectsEditor();
     scheduleSave(); // <- ensures drag reorder is persisted
+  });
+}
+
+function renderSectionOrderEditor(){
+  const host = $("sectionOrderList");
+  if (!host) return;
+
+  normalizeSectionOrder();
+
+  host.innerHTML = state.sectionOrder.map((key, idx) => `
+    <div class="block" style="padding:10px 12px;">
+      <div class="block-head" style="margin:0;">
+        <div class="block-title">${esc(SECTION_LABELS[key] || key)}</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-sec-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-sec-down="${idx}" ${idx===(state.sectionOrder.length-1) ? "disabled" : ""}>↓</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  host.querySelectorAll("[data-sec-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-sec-up"));
+      moveItem(state.sectionOrder, i, i - 1);
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-sec-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-sec-down"));
+      moveItem(state.sectionOrder, i, i + 1);
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
   });
 }
   
