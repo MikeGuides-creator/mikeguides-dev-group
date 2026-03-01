@@ -18,6 +18,59 @@
       .builder-layout{ grid-template-columns: 420px 1fr; }
     }
     
+  /* Resume preview template system */
+.ry{ font-family: Arial, sans-serif; color:#111; }
+.ry .ry-name{ margin:0; }
+.ry .ry-role{ margin-top:4px; }
+.ry .ry-contact{ margin-top:8px; }
+.ry .ry-summary{ line-height:1.6; margin:0; }
+.ry .ry-hr{ border:none; margin:18px 0; }
+
+/* Section title */
+.ry .ry-sec{ margin:18px 0 10px; text-transform:uppercase; letter-spacing:.08em; }
+
+/* ---------- MODERN (clean, crisp, contemporary) ---------- */
+.ry.modern{ font-family: Inter, Arial, sans-serif; }
+.ry.modern .ry-name{ font-size:28px; letter-spacing:-.02em; }
+.ry.modern .ry-role{ color:#444; font-size:14px; }
+.ry.modern .ry-contact{ color:#555; font-size:13px; }
+.ry.modern .ry-hr{ border-top:1px solid #e7e7e7; }
+.ry.modern .ry-sec{ font-size:13px; color:#444; }
+.ry.modern .ry-item-meta{ color:#666; font-size:13px; }
+.ry.modern .ry-item-desc{ color:#222; font-size:14px; line-height:1.5; }
+
+/* ---------- CLASSIC (traditional, formal, “office” resume) ---------- */
+.ry.classic{ font-family: Georgia, "Times New Roman", serif; }
+.ry.classic .ry-name{ font-size:30px; letter-spacing:0; }
+.ry.classic .ry-role{ color:#222; font-size:15px; font-style:italic; }
+.ry.classic .ry-contact{ color:#222; font-size:13px; }
+.ry.classic .ry-hr{ border-top:2px solid #111; margin:14px 0; }
+.ry.classic .ry-sec{
+  font-size:14px;
+  color:#111;
+  letter-spacing:.02em;
+  text-transform:none;
+  border-bottom:1px solid #111;
+  padding-bottom:6px;
+}
+.ry.classic .ry-item-meta{ color:#111; font-size:13px; }
+.ry.classic .ry-item-desc{ color:#111; font-size:14px; line-height:1.45; }
+
+/* ---------- MINIMAL (airy, modern editorial, no dividers) ---------- */
+.ry.minimal{ font-family: Inter, Arial, sans-serif; }
+.ry.minimal .ry-name{ font-size:26px; font-weight:700; }
+.ry.minimal .ry-role{ color:#555; font-size:13px; }
+.ry.minimal .ry-contact{ color:#777; font-size:12px; }
+.ry.minimal .ry-hr{ display:none; }
+.ry.minimal .ry-sec{
+  font-size:12px;
+  color:#666;
+  letter-spacing:.14em;
+  margin-top:22px;
+}
+.ry.minimal .ry-item-meta{ color:#777; font-size:12px; }
+.ry.minimal .ry-item-desc{ color:#222; font-size:13px; line-height:1.6; }  
+    
     @media print {
   /* Hide builder UI */
   header.topbar,
