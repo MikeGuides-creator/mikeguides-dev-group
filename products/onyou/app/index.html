@@ -234,7 +234,15 @@
           <option value="employment">Employment Application</option>
         </select>
       </div>
-
+      
+<div class="field-group">
+  <label for="resumeStyle">Resume Style</label>
+  <select id="resumeStyle">
+    <option value="modern">Modern</option>
+    <option value="classic">Classic</option>
+    <option value="minimal">Minimal</option>
+  </select>
+</div>
       <div class="field-group">
         <label for="fullName">Full Name</label>
         <input id="fullName" type="text" placeholder="John Doe" autocomplete="name">
@@ -451,6 +459,8 @@ function loadState(){
     // merge into existing state object (keeps references stable)
     Object.keys(data).forEach(k => { state[k] = data[k]; });
 
+    state.resumeStyle = state.resumeStyle || "modern";
+    
     // ensure your runtime-only fields exist
     if (state._editingSkillIndex === undefined) state._editingSkillIndex = null;
     state.skills = Array.isArray(state.skills) ? state.skills : [];
