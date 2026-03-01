@@ -1067,7 +1067,7 @@ function renderSectionOrderEditor(){
       return `<p class="preview-muted"><strong>Experience:</strong> (none yet)</p>`;
     }
     return `
-      <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Experience</h4>
+      <h4 class="ry-sec">Experience</h4>
       ${state.experience.map(x => `
         <div style="margin-bottom:12px;">
           <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
@@ -1085,7 +1085,7 @@ function renderSectionOrderEditor(){
       return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
     }
     return `
-      <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Education</h4>
+      <h4 class="ry-sec">Education</h4>
       ${state.education.map(x => `
         <div style="margin-bottom:12px;">
           <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
@@ -1104,7 +1104,7 @@ function renderSectionOrderEditor(){
   }
    
   return `
-    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">Skills</h4>
+   <h4 class="ry-sec">Skills</h4>
     <div style="display:flex;flex-wrap:wrap;gap:8px;">
       ${state.skills.map(s => `
         <span style="display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid #e7e7e7;font-size:13px;color:#222;">
@@ -1119,9 +1119,7 @@ function renderCertificationsPreview() {
   if (!state.certifications?.length) return "";
 
   return `
-    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">
-      Certifications
-    </h4>
+    <h4 class="ry-sec">Certifications</h4>
     ${state.certifications.map(c => `
       <div style="margin-bottom:6px;">
         <strong>${esc(c.name)}</strong>
@@ -1136,9 +1134,7 @@ function renderProjectsPreview() {
   if (!state.projects?.length) return "";
 
   return `
-    <h4 style="margin:18px 0 10px; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#444;">
-      Projects
-    </h4>
+    <h4 class="ry-sec">Projects</h4>
     ${state.projects.map(p => `
       <div style="margin-bottom:12px;">
         <div style="font-weight:600;">
