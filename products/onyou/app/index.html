@@ -1081,22 +1081,31 @@ function renderSectionOrderEditor(){
   }
 
   function renderEducationPreview(){
-    if (!state.education.length) {
-      return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
-    }
-    return `
-      <h4 class="ry-sec">Education</h4>
-      ${state.education.map(x => `
-        <div style="margin-bottom:12px;">
-          <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-            <div><strong>${esc(x.degree || " ")}</strong> — ${esc(x.school || " ")}</div>
-            <div style="color:#666; font-size:13px;">${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}</div>
-          </div>
-          ${x.notes ? `<div style="margin-top:6px; color:#222; font-size:14px; line-height:1.5;">${esc(x.notes)}</div>` : ""}
-        </div>
-      `).join("")}
-    `;
+  if (!state.education.length) {
+    return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
   }
+
+  return `
+    <h4 class="ry-sec">Education</h4>
+    ${state.education.map(x => `
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+          <div><strong>${esc(x.degree || " ")}</strong> — ${esc(x.school || " ")}</div>
+
+          <div class="ry-item-meta">
+            ${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}
+          </div>
+        </div>
+
+        ${x.notes ? `
+          <div class="ry-item-desc">
+            ${esc(x.notes)}
+          </div>
+        ` : ""}
+      </div>
+    `).join("")}
+  `;
+}
 
  function renderSkillsPreview(){
   if (!state.skills || !state.skills.length) {
@@ -1141,8 +1150,9 @@ function renderProjectsPreview() {
           ${esc(p.title)}
           ${p.role ? ` — ${esc(p.role)}` : ""}
         </div>
+
         ${p.desc ? `
-          <div style="margin-top:4px; font-size:14px; line-height:1.5; color:#222;">
+          <div class="ry-item-desc">
             ${esc(p.desc)}
           </div>
         ` : ""}
