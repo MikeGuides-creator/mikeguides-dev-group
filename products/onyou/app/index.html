@@ -1367,7 +1367,8 @@ $("resumeStyle").value = state.resumeStyle || "modern";
 
 // Listen for changes
 $("resumeStyle").addEventListener("change", (e) => {
-  state.resumeStyle = e.target.value;   // "modern" | "classic" | "minimal"
+  console.log("resumeStyle changed to:", e.target.value);
+  state.resumeStyle = e.target.value;
   renderPreview();
   scheduleSave();
 });
