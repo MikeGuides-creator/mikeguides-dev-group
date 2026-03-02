@@ -1361,7 +1361,17 @@ function wireSkillsInput(){
   $("toggleHeadshot").checked = !!state.showHeadshot;
 
   $("toggleReferences").checked = !!state.showReferences;
+    
+// Seed resume style dropdown
+$("resumeStyle").value = state.resumeStyle || "modern";
 
+// Listen for changes
+$("resumeStyle").addEventListener("change", (e) => {
+  state.resumeStyle = e.target.value;   // "modern" | "classic" | "minimal"
+  renderPreview();
+  scheduleSave();
+});
+    
   // Template type
   $("templateType").addEventListener("change", (e) => {
     state.templateType = e.target.value;
@@ -1438,7 +1448,7 @@ $("btnExportPdf")?.addEventListener("click", () => {
     // Optional: refresh to reset UI to defaults after clearing
     // location.reload();
   });
-
+   
   // Export PDF (if you added the button)
   $("btnExportPdf")?.addEventListener("click", () => {
     renderPreview();
