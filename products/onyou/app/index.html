@@ -863,10 +863,20 @@ function renderSkillsEditor(){
     });
   }
 
+  function renderCustomSectionPreview(sec){
+  const title = esc(sec?.title || "Custom Section");
+  const body = esc(sec?.content || "");
+  return `
+    <h4 class="ry-sec">${title}</h4>
+    <div class="ry-item-desc">${body.replaceAll("\n", "<br>")}</div>
+  `;
+}
+  
   function renderCertificationsEditor(){
   const host = $("certList");
   if (!host) return;
-
+    if (!body.trim()) return "";
+    
   host.innerHTML = (state.certifications || []).map((c, idx) => `
     <div class="block" draggable="true" data-drag-index="${idx}">
       <div class="block-head">
