@@ -1353,7 +1353,8 @@ function wireSkillsInput(){
     btn.addEventListener("click", () => commitSkill());
   }
 }
-  
+
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
 function uid(prefix="cs"){
   return `${prefix}_${Math.random().toString(36).slice(2,9)}${Date.now().toString(36).slice(2,6)}`;
 }
