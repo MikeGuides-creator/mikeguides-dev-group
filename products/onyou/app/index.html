@@ -1162,7 +1162,11 @@ function renderSectionOrderEditor(){
   host.innerHTML = state.sectionOrder.map((key, idx) => `
     <div class="block" style="padding:10px 12px;">
       <div class="block-head" style="margin:0;">
-        <div class="block-title">${esc(SECTION_LABELS[key] || key)}</div>
+        <div class="block-title">${
+  key.startsWith("custom:")
+    ? esc(getCustomSectionById(key.slice("custom:".length))?.title || "Custom Section")
+    : esc(SECTION_LABELS[key] || key)
+}</div>
         <div style="display:flex; gap:8px; align-items:center;">
           <button class="btn btn-ghost btn-sm" type="button" data-sec-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
           <button class="btn btn-ghost btn-sm" type="button" data-sec-down="${idx}" ${idx===(state.sectionOrder.length-1) ? "disabled" : ""}>↓</button>
