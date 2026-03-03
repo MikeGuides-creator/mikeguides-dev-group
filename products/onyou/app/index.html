@@ -564,10 +564,30 @@ function setSaveStatus(text){
 }
 
   function normalizeSectionOrder(){
-  const allowed = ["experience","education","skills","projects","certifications"];
+  const core = ["experience","education","skills","projects","certifications"];
+
+  const customIds = new Set((state.customSections || []).map(s => s.id));
+  const isCustomKey = (k) => typeof k === "string" && k.startsWith("custom:");
+  const customIdFromKey = (k) => k.slice("custom:".length);
+
   const current = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
-  const cleaned = current.filter(x => allowed.includes(x));
-  allowed.forEach(k => { if (!cleaned.includes(k)) cleaned.push(k); });
+  const cleaned = [];
+
+  // keep only valid core + valid custom keys
+  current.forEach(k => {
+    if (core.includes(k)) cleaned.push(k);
+    else if (isCustomKey(k) && customIds.has(customIdFromKey(k))) cleaned.push(k);
+  });
+
+  // ensure all core sections exist
+  core.forEach(k => { if (!cleaned.includes(k)) cleaned.push(k); });
+
+  // ensure all custom sections exist in order (append any missing)
+  (state.customSections || []).forEach(s => {
+    const key = `custom:${s.id}`;
+    if (!cleaned.includes(key)) cleaned.push(key);
+  });
+
   state.sectionOrder = cleaned;
 }
   
