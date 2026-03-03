@@ -826,6 +826,77 @@ function renderSkillsEditor(){
     });
   });
 }
+
+  function renderCustomSectionsEditor(){
+  const host = $("customSectionsList");
+  if (!host) return;
+
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+
+  host.innerHTML = state.customSections.map((s, idx) => `
+    <div class="block" draggable="true" data-drag-index="${idx}">
+      <div class="block-head">
+        <div class="block-title">Custom ${idx + 1}</div>
+        <button class="btn btn-ghost btn-sm" type="button" data-custom-remove="${idx}">Remove</button>
+      </div>
+
+      <div class="field-group">
+        <label for="custom_title_${idx}">Title</label>
+        <input id="custom_title_${idx}" type="text" value="${esc(s.title)}" placeholder="e.g., Highlights" />
+      </div>
+
+      <div class="field-group">
+        <label for="custom_content_${idx}">Content</label>
+        <textarea id="custom_content_${idx}" placeholder="Write anything here...">${esc(s.content)}</textarea>
+      </div>
+    </div>
+  `).join("");
+
+  // bind inputs
+  state.customSections.forEach((_, idx) => {
+    $("custom_title_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].title = e.target.value;
+      normalizeSectionOrder();
+      renderSectionOrderEditor();     // keep labels updated
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("custom_content_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].content = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // remove
+  host.querySelectorAll("[data-custom-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-custom-remove"));
+      const removed = state.customSections.splice(i, 1)[0];
+
+      // also remove from sectionOrder
+      if (removed?.id){
+        const key = `custom:${removed.id}`;
+        state.sectionOrder = (state.sectionOrder || []).filter(k => k !== key);
+      }
+
+      normalizeSectionOrder();
+      renderCustomSectionsEditor();
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // optional: allow drag reorder within custom list itself
+  enableDragReorder(host, state.customSections, () => {
+    renderCustomSectionsEditor();
+    // keep sectionOrder in sync with this drag order:
+    normalizeSectionOrder();
+    renderSectionOrderEditor();
+  });
+}
   
   function renderEducationEditor(){
     const host = $("eduList");
