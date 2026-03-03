@@ -1354,6 +1354,13 @@ function wireSkillsInput(){
   }
 }
   
+function uid(prefix="cs"){
+  return `${prefix}_${Math.random().toString(36).slice(2,9)}${Date.now().toString(36).slice(2,6)}`;
+}
+
+function getCustomSectionById(id){
+  return (state.customSections || []).find(s => s.id === id) || null;
+}  
   function bind(){
   loadState();
   setSaveStatus("Loaded");
