@@ -1200,7 +1200,7 @@ function renderProjectsPreview() {
   `;
 }
 
-  function renderSectionsByOrder(){
+function renderSectionsByOrder(){
   normalizeSectionOrder();
 
   const map = {
@@ -1212,14 +1212,15 @@ function renderProjectsPreview() {
   };
 
   return state.sectionOrder.map(key => {
+    if (key.startsWith("custom:")){
+      const id = key.slice("custom:".length);
+      const sec = getCustomSectionById(id);
+      return sec ? renderCustomSectionPreview(sec) : "";
+    }
+
     const fn = map[key];
     return typeof fn === "function" ? fn() : "";
   }).join("");
-}
-  
-function renderReferencesPreview(){
-  if (!state.showReferences) return "";
-  return `<p style="margin-top:20px;font-style:italic;">References available upon request.</p>`;
 }  
 
 function initSectionToggles(){
