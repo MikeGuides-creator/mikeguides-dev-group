@@ -966,7 +966,7 @@ function renderSkillsEditor(){
   function renderCertificationsEditor(){
   const host = $("certList");
   if (!host) return;
-    if (!body.trim()) return "";
+    
     
   host.innerHTML = (state.certifications || []).map((c, idx) => `
     <div class="block" draggable="true" data-drag-index="${idx}">
