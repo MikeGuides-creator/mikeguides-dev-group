@@ -1358,6 +1358,11 @@ function applyCollapsedState(){
     if (icon) icon.textContent = isCollapsed ? "▸" : "▾";
   });
 }
+
+  function renderReferencesPreview(){
+  if (!state.showReferences) return "";
+  return `<p style="margin-top:20px;font-style:italic;">References available upon request.</p>`;
+}
   
 function renderResume(){
   const name = esc(state.fullName?.trim() || "—");
