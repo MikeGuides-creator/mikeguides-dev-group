@@ -1496,7 +1496,8 @@ function getCustomSectionById(id){
   function bind(){
   loadState();
   setSaveStatus("Loaded");
-
+  normalizeSectionOrder();
+    
   // Seed inputs
   $("templateType").value = state.templateType;
   $("fullName").value = state.fullName;
