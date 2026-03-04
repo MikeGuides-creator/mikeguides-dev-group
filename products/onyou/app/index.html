@@ -1109,7 +1109,7 @@ function renderSkillsEditor(){
       scheduleSave();
     });
   });
-
+   
   host.querySelectorAll("[data-proj-up]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-proj-up"));
@@ -1578,7 +1578,26 @@ $("resumeStyle").addEventListener("change", (e) => {
     renderPreview();
     scheduleSave();
   });
+    
+$("btnAddCustomSection")?.addEventListener("click", () => {
+  console.log("Add Custom Section clicked ✅");
 
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+
+  const id = uid("custom");
+  state.customSections.push({ id, title: "Custom Section", content: "" });
+
+  state.sectionOrder = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
+  state.sectionOrder.push(`custom:${id}`);
+
+  normalizeSectionOrder();
+
+  renderCustomSectionsEditor?.();
+  renderSectionOrderEditor?.();
+  renderPreview();
+  scheduleSave?.();
+});
+    
   // Preview button
   $("btnPreview").addEventListener("click", () => {
     renderPreview();
