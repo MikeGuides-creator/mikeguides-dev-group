@@ -602,7 +602,7 @@ function setSaveStatus(text){
   // ensure all core sections exist
   core.forEach(k => { if (!cleaned.includes(k)) cleaned.push(k); });
 
-  // ensure all custom sections exist in order (append any missing)
+  // ensure all custom sections exist (append any missing)
   (state.customSections || []).forEach(s => {
     const key = `custom:${s.id}`;
     if (!cleaned.includes(key)) cleaned.push(key);
