@@ -1495,8 +1495,8 @@ function getCustomSectionById(id){
 }  
   function bind(){
   loadState();
-  setSaveStatus("Loaded");
-  normalizeSectionOrder();
+setSaveStatus("Loaded");
+normalizeSectionOrder(); // ✅ inject custom:* keys into sectionOrder
     
   // Seed inputs
   $("templateType").value = state.templateType;
