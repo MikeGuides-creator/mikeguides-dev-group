@@ -1509,8 +1509,11 @@ function getCustomSectionById(id){
   return (state.customSections || []).find(s => s.id === id) || null;
 }  
   function bind(){
-  loadState();
+loadState();
 setSaveStatus("Loaded");
+
+migrateCustomSections();
+normalizeSectionOrder();
     
       // Ensure arrays exist AFTER load
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
