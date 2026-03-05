@@ -706,10 +706,10 @@ function setSaveStatus(text){
   const toIndex = Number(item.getAttribute("data-drag-index"));
   if (Number.isFinite(fromIndex) && Number.isFinite(toIndex)) {
     moveItem(list, fromIndex, toIndex);
-    rerender();
-    renderPreview();
-    scheduleSave(); // ✅ persist drag reorder
-  }
+rerender();
+renderPreview();
+    
+if (typeof scheduleSave === "function") scheduleSave();
   fromIndex = null;
 });
 }
