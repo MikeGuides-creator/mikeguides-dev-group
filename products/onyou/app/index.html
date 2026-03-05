@@ -867,6 +867,7 @@ function renderSkillsEditor(){
   if (!host) return;
 
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+  migrateCustomSections(); // keep legacy data safe
 
   host.innerHTML = state.customSections.map((s, idx) => `
     <div class="block" draggable="true" data-drag-index="${idx}">
@@ -881,36 +882,131 @@ function renderSkillsEditor(){
       </div>
 
       <div class="field-group">
-        <label for="custom_content_${idx}">Content</label>
-        <textarea id="custom_content_${idx}" placeholder="Write anything here...">${esc(s.content)}</textarea>
+        <label for="custom_type_${idx}">Block Type</label>
+        <select id="custom_type_${idx}">
+          ${CUSTOM_BLOCK_TYPES.map(t => `
+            <option value="${t.value}" ${s.type === t.value ? "selected" : ""}>${t.label}</option>
+          `).join("")}
+        </select>
       </div>
+
+      ${s.type === "bullets" ? `
+        <div class="field-group">
+          <label for="custom_bullets_${idx}">Bullets (one per line)</label>
+          <textarea id="custom_bullets_${idx}" placeholder="First point&#10;Second point&#10;Third point">${esc((s.items || []).join("\n"))}</textarea>
+        </div>
+      ` : s.type === "divider" ? `
+        <div class="hint">Divider shows as a clean separator line in the preview.</div>
+      ` : s.type === "signature" ? `
+        <div class="field-group">
+          <label for="custom_sig_${idx}">Signature line</label>
+          <input id="custom_sig_${idx}" type="text" value="${esc(s.content || "")}" placeholder="John Doe" />
+        </div>
+      ` : s.type === "quote" ? `
+        <div class="field-group">
+          <label for="custom_quote_${idx}">Quote</label>
+          <textarea id="custom_quote_${idx}" placeholder="Type a quote...">${esc(s.content || "")}</textarea>
+        </div>
+        <div class="field-group">
+          <label for="custom_quote_by_${idx}">Attribution (optional)</label>
+          <input id="custom_quote_by_${idx}" type="text" value="${esc(s.author || "")}" placeholder="— Name" />
+        </div>
+      ` : `
+        <div class="field-group">
+          <label for="custom_content_${idx}">Content</label>
+          <textarea id="custom_content_${idx}" placeholder="Write anything here...">${esc(s.content || "")}</textarea>
+        </div>
+      `}
     </div>
   `).join("");
 
-  // bind inputs
+  // Bind inputs
   state.customSections.forEach((_, idx) => {
+    // Title
     $("custom_title_" + idx)?.addEventListener("input", (e) => {
       state.customSections[idx].title = e.target.value;
       normalizeSectionOrder();
-      renderSectionOrderEditor();     // keep labels updated
+      renderSectionOrderEditor();
       renderPreview();
       scheduleSave();
     });
 
+    // Type
+    $("custom_type_" + idx)?.addEventListener("change", (e) => {
+      const sec = state.customSections[idx];
+      const nextType = e.target.value;
+
+      sec.type = nextType;
+
+      // Initialize fields per type
+      if (nextType === "bullets") {
+        sec.items = Array.isArray(sec.items) ? sec.items : [];
+        if (!sec.items.length && sec.content) {
+          sec.items = String(sec.content).split("\n").map(x => x.trim()).filter(Boolean);
+        }
+        sec.content = sec.items.join("\n");
+      } else if (nextType === "quote") {
+        sec.content = String(sec.content || "");
+        sec.author = String(sec.author || "");
+      } else if (nextType === "divider") {
+        // no content required
+        sec.content = "";
+      } else {
+        // text or signature
+        sec.content = String(sec.content || "");
+      }
+
+      normalizeSectionOrder();
+      renderCustomSectionsEditor();   // rerender to show the right fields
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Text content
     $("custom_content_" + idx)?.addEventListener("input", (e) => {
       state.customSections[idx].content = e.target.value;
       renderPreview();
       scheduleSave();
     });
+
+    // Bullets
+    $("custom_bullets_" + idx)?.addEventListener("input", (e) => {
+      const lines = String(e.target.value || "")
+        .split("\n").map(x => x.trim()).filter(Boolean);
+
+      state.customSections[idx].items = lines;
+      state.customSections[idx].content = lines.join("\n"); // keep in sync
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Signature
+    $("custom_sig_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].content = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Quote
+    $("custom_quote_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].content = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("custom_quote_by_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].author = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
   });
 
-  // remove
+  // Remove
   host.querySelectorAll("[data-custom-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-custom-remove"));
       const removed = state.customSections.splice(i, 1)[0];
 
-      // also remove from sectionOrder
       if (removed?.id){
         const key = `custom:${removed.id}`;
         state.sectionOrder = (state.sectionOrder || []).filter(k => k !== key);
@@ -924,12 +1020,13 @@ function renderSkillsEditor(){
     });
   });
 
-  // optional: allow drag reorder within custom list itself
+  // Drag reorder within custom list
   enableDragReorder(host, state.customSections, () => {
     renderCustomSectionsEditor();
-    // keep sectionOrder in sync with this drag order:
     normalizeSectionOrder();
     renderSectionOrderEditor();
+    renderPreview();
+    scheduleSave();
   });
 }
   
