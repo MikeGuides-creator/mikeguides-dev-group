@@ -1087,11 +1087,61 @@ function renderSkillsEditor(){
   }
 
   function renderCustomSectionPreview(sec){
-  const title = esc(sec?.title || "Custom Section");
-  const body = esc(sec?.content || "");
+  if (!sec) return "";
+
+  const title = esc(sec.title || "Custom Section");
+  const type = sec.type || "text";
+
+  // Divider block (no title)
+  if (type === "divider"){
+    return `<hr class="ry-hr">`;
+  }
+
+  // Bullet list
+  if (type === "bullets"){
+    const items = (sec.items || [])
+      .map(x => `<li>${esc(x)}</li>`)
+      .join("");
+
+    if (!items) return "";
+
+    return `
+      <h4 class="ry-sec">${title}</h4>
+      <ul class="ry-bullets">
+        ${items}
+      </ul>
+    `;
+  }
+
+  // Quote block
+  if (type === "quote"){
+    const quote = esc(sec.content || "");
+    const author = esc(sec.author || "");
+
+    return `
+      <h4 class="ry-sec">${title}</h4>
+      <blockquote class="ry-quote">
+        ${quote}
+        ${author ? `<div class="ry-quote-author">— ${author}</div>` : ""}
+      </blockquote>
+    `;
+  }
+
+  // Signature block
+  if (type === "signature"){
+    const sig = esc(sec.content || "");
+    return `
+      <h4 class="ry-sec">${title}</h4>
+      <div class="ry-signature">${sig}</div>
+    `;
+  }
+
+  // Default text block
+  const body = esc(sec.content || "");
+
   return `
     <h4 class="ry-sec">${title}</h4>
-    <div class="ry-item-desc">${body.replaceAll("\n", "<br>")}</div>
+    <div class="ry-item-desc">${body.replaceAll("\n","<br>")}</div>
   `;
 }
   
