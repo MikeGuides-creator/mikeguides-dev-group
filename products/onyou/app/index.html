@@ -1511,6 +1511,8 @@ function renderProjectsPreview() {
 function renderSectionsByOrder(){
   normalizeSectionOrder();
 
+  return state.sectionOrder.map((key, idx) => {
+
   const map = {
     experience: renderExperiencePreview,
     education: renderEducationPreview,
@@ -1519,17 +1521,23 @@ function renderSectionsByOrder(){
     certifications: renderCertificationsPreview,
   };
 
-  return state.sectionOrder.map(key => {
-    if (key.startsWith("custom:")){
-      const id = key.slice("custom:".length);
-      const sec = getCustomSectionById(id);
-      return sec ? renderCustomSectionPreview(sec) : "";
-    }
+  let html = "";
 
+  if (key.startsWith("custom:")){
+    const id = key.slice("custom:".length);
+    const sec = getCustomSectionById(id);
+    html = sec ? renderCustomSectionPreview(sec) : "";
+  } else {
     const fn = map[key];
-    return typeof fn === "function" ? fn() : "";
-  }).join("");
-}  
+    html = typeof fn === "function" ? fn() : "";
+  }
+
+  return `
+    <section class="ry-reorder-item" draggable="true" data-drag-index="${idx}">
+      ${html}
+    </section>
+  `;
+}).join("");
 
 function initSectionToggles(){
   document.querySelectorAll("[data-toggle]").forEach(btn => {
