@@ -1482,6 +1482,29 @@ function uid(prefix="cs"){
   return `${prefix}_${Math.random().toString(36).slice(2,9)}${Date.now().toString(36).slice(2,6)}`;
 }
 
+function migrateCustomSections(){
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+
+  state.customSections.forEach(sec => {
+    // Ensure id
+    if (!sec.id) sec.id = uid("custom");
+
+    // Default type
+    if (!sec.type) sec.type = "text";
+
+    // Back-compat: older data uses `content` only
+    if (sec.type === "bullets") {
+      sec.items = Array.isArray(sec.items) ? sec.items : [];
+      // If they had content, convert lines into bullets once
+      if (sec.items.length === 0 && typeof sec.content === "string" && sec.content.trim()) {
+        sec.items = sec.content.split("\n").map(x => x.trim()).filter(Boolean);
+      }
+    } else {
+      sec.content = String(sec.content || "");
+    }
+  });
+}
+  
 function getCustomSectionById(id){
   return (state.customSections || []).find(s => s.id === id) || null;
 }  
