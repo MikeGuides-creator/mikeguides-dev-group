@@ -708,11 +708,9 @@ function setSaveStatus(text){
     moveItem(list, fromIndex, toIndex);
 rerender();
 renderPreview();
-    
-if (typeof scheduleSave === "function") scheduleSave();
+    if (typeof scheduleSave === "function") scheduleSave();
   fromIndex = null;
 });
-}
   
  const state = {
     templateType: "resume",
