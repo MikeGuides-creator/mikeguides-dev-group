@@ -1145,14 +1145,6 @@ const SECTION_LABELS = {
   certifications: "Certifications",
 };
 
-function normalizeSectionOrder(){
-  const allowed = ["experience","education","skills","projects","certifications"];
-  const current = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
-  const cleaned = current.filter(x => allowed.includes(x));
-  allowed.forEach(k => { if (!cleaned.includes(k)) cleaned.push(k); });
-  state.sectionOrder = cleaned;
-}
-
 function renderSectionOrderEditor(){
   const host = $("sectionOrderList");
   if (!host) return;
