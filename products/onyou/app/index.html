@@ -1655,8 +1655,10 @@ function renderResume(){
     if (state.templateType === "nda") root.innerHTML = renderNDA();
     else if (state.templateType === "employment") root.innerHTML = renderEmployment();
     else root.innerHTML = renderResume();
-    enableDragReorder(root, state.sectionOrder, () => {});
-  }
+    const secHost = $("previewSections");
+if (secHost){
+  enableDragReorder(secHost, state.sectionOrder, () => {});
+}
   
 function wireSkillsInput(){
   const input = $("skillInput");
