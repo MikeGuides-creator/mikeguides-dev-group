@@ -1496,6 +1496,11 @@ function getCustomSectionById(id){
   function bind(){
   loadState();
 setSaveStatus("Loaded");
+    
+      // Ensure arrays exist AFTER load
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+  state.sectionOrder = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
+  
 normalizeSectionOrder(); // ✅ inject custom:* keys into sectionOrder
     
   // Seed inputs
