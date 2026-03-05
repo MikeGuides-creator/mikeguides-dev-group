@@ -1521,21 +1521,23 @@ function migrateCustomSections(){
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
 
   state.customSections.forEach(sec => {
-    // Ensure id
     if (!sec.id) sec.id = uid("custom");
-
-    // Default type
     if (!sec.type) sec.type = "text";
 
-    // Back-compat: older data uses `content` only
+    // Ensure base fields
+    sec.title = String(sec.title || "Custom Section");
+
     if (sec.type === "bullets") {
       sec.items = Array.isArray(sec.items) ? sec.items : [];
-      // If they had content, convert lines into bullets once
+      // If legacy content exists, convert once
       if (sec.items.length === 0 && typeof sec.content === "string" && sec.content.trim()) {
         sec.items = sec.content.split("\n").map(x => x.trim()).filter(Boolean);
       }
+      // keep content loosely in sync
+      sec.content = String(sec.content || sec.items.join("\n"));
     } else {
       sec.content = String(sec.content || "");
+      if (sec.type === "quote") sec.author = String(sec.author || "");
     }
   });
 }
