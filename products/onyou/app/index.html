@@ -565,6 +565,33 @@ function loadState(){
   }
 }
 
+function migrateCustomSections(){
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+
+  state.customSections.forEach(sec => {
+    // Ensure id
+    if (!sec.id) sec.id = uid("custom");
+
+    // Default type
+    if (!sec.type) sec.type = "text";
+
+    // Ensure fields exist per type
+    if (sec.type === "bullets") {
+      sec.items = Array.isArray(sec.items) ? sec.items : [];
+      if (sec.items.length === 0 && typeof sec.content === "string" && sec.content.trim()) {
+        sec.items = sec.content.split("\n").map(x => x.trim()).filter(Boolean);
+      }
+    } else {
+      sec.content = String(sec.content || "");
+    }
+
+    // Quote attribution
+    if (sec.type === "quote") {
+      sec.author = String(sec.author || "");
+    }
+  });
+}
+  
 function clearSavedState(){
   localStorage.removeItem(STORAGE_KEY);
   setSaveStatus("Cleared");
