@@ -1656,9 +1656,9 @@ function renderResume(){
     else if (state.templateType === "employment") root.innerHTML = renderEmployment();
     else root.innerHTML = renderResume();
     const secHost = $("previewSections");
-if (secHost){
-  enableDragReorder(secHost, state.sectionOrder, () => {});
-}
+    if (secHost){
+    enableDragReorder(secHost, state.sectionOrder, () => {});
+  }
   
 function wireSkillsInput(){
   const input = $("skillInput");
