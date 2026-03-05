@@ -1511,8 +1511,6 @@ function renderProjectsPreview() {
 function renderSectionsByOrder(){
   normalizeSectionOrder();
 
-  return state.sectionOrder.map((key, idx) => {
-
   const map = {
     experience: renderExperiencePreview,
     education: renderEducationPreview,
@@ -1521,23 +1519,25 @@ function renderSectionsByOrder(){
     certifications: renderCertificationsPreview,
   };
 
-  let html = "";
+  return (state.sectionOrder || []).map((key, idx) => {
+    let html = "";
 
-  if (key.startsWith("custom:")){
-    const id = key.slice("custom:".length);
-    const sec = getCustomSectionById(id);
-    html = sec ? renderCustomSectionPreview(sec) : "";
-  } else {
-    const fn = map[key];
-    html = typeof fn === "function" ? fn() : "";
-  }
+    if (typeof key === "string" && key.startsWith("custom:")){
+      const id = key.slice("custom:".length);
+      const sec = getCustomSectionById(id);
+      html = sec ? renderCustomSectionPreview(sec) : "";
+    } else {
+      const fn = map[key];
+      html = typeof fn === "function" ? fn() : "";
+    }
 
-  return `
-    <section class="ry-reorder-item" draggable="true" data-drag-index="${idx}">
-      ${html}
-    </section>
-  `;
-}).join("");
+    return `
+      <section class="ry-reorder-item" draggable="true" data-drag-index="${idx}">
+        ${html}
+      </section>
+    `;
+  }).join("");
+}
 
 function initSectionToggles(){
   document.querySelectorAll("[data-toggle]").forEach(btn => {
