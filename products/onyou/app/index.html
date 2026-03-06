@@ -1144,10 +1144,15 @@ function renderSkillsEditor(){
   const title = esc(sec.title || "Custom Section");
   const type = sec.type || "text";
 
-  // Divider block (no title)
+  // Divider block (with centered label)
   if (type === "divider"){
-    return `<hr class="ry-hr">`;
-  }
+  const label = esc(sec.title || "");
+  return `
+    <div class="ry-divider">
+      ${label ? `<span>${label}</span>` : ""}
+    </div>
+  `;
+}
 
   // Bullet list
   if (type === "bullets"){
