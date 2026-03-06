@@ -484,7 +484,16 @@
 <div class="section-body" data-section-body="customSections">
   <div class="block-head" style="margin-top:10px;">
     <div class="block-title">Custom Sections</div>
-    <button id="btnAddCustomSection" class="btn btn-ghost btn-sm" type="button">+ Add Custom Section</button>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <select id="newCustomBlockType">
+    <option value="text">Text</option>
+    <option value="bullets">Bullet List</option>
+    <option value="divider">Divider</option>
+    <option value="quote">Quote</option>
+    <option value="signature">Signature</option>
+      </select>
+      <button id="btnAddCustomSection" class="btn btn-ghost btn-sm" type="button">+ Add Block</button>
+    </div>
   </div>
 
   <div id="customSectionsList"></div>
