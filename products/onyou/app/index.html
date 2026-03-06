@@ -1648,15 +1648,17 @@ function renderResume(){
   }
 
   function renderPreview(){
-    const root = $("previewRoot");
-    if (!root) return;
-    if (state.templateType === "nda") root.innerHTML = renderNDA();
-    else if (state.templateType === "employment") root.innerHTML = renderEmployment();
-    else root.innerHTML = renderResume();
-    const secHost = $("previewSections");
-    if (secHost){
-    enableDragReorder(secHost, state.sectionOrder, () => {});
+  const root = $("previewRoot");
+  if (!root) return;
+
+  if (state.templateType === "nda") {
+    root.innerHTML = renderNDA();
+  } else if (state.templateType === "employment") {
+    root.innerHTML = renderEmployment();
+  } else {
+    root.innerHTML = renderResume();
   }
+}
   
 function wireSkillsInput(){
   const input = $("skillInput");
