@@ -1753,7 +1753,8 @@ function migrateCustomSections(){
 function getCustomSectionById(id){
   return (state.customSections || []).find(s => s.id === id) || null;
 }  
-  function bind(){
+  
+function bind(){
 loadState();
 setSaveStatus("Loaded");
 
@@ -1849,22 +1850,39 @@ $("resumeStyle").addEventListener("change", (e) => {
   });
     
 $("btnAddCustomSection")?.addEventListener("click", () => {
-  console.log("Add Custom Section clicked ✅");
-
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
 
+  const type = $("newCustomBlockType")?.value || "text";
   const id = uid("custom");
-  state.customSections.push({ id, title: "Custom Section", content: "" });
 
-  state.sectionOrder = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
-  state.sectionOrder.push(`custom:${id}`);
+  const sec = {
+    id,
+    title: "Custom Section",
+    type,
+    content: "",
+  };
+
+  if (type === "bullets") {
+    sec.title = "Bullet List";
+    sec.items = [];
+  } else if (type === "divider") {
+    sec.title = "Divider";
+  } else if (type === "quote") {
+    sec.title = "Quote";
+    sec.author = "";
+  } else if (type === "signature") {
+    sec.title = "Signature";
+  } else {
+    sec.title = "Custom Section";
+  }
+
+  state.customSections.push(sec);
 
   normalizeSectionOrder();
-
-  renderCustomSectionsEditor?.();
-  renderSectionOrderEditor?.();
+  renderCustomSectionsEditor();
+  renderSectionOrderEditor();
   renderPreview();
-  scheduleSave?.();
+  scheduleSave();
 });
     
   // Preview button
