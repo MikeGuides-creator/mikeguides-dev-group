@@ -924,6 +924,30 @@ function renderSkillsEditor(){
     });
   });
 
+  host.querySelectorAll("[data-custom-duplicate]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const i = Number(btn.getAttribute("data-custom-duplicate"));
+    const original = state.customSections[i];
+
+    if (!original) return;
+
+    const clone = JSON.parse(JSON.stringify(original));
+    clone.id = uid("custom");
+
+    const newIndex = i + 1;
+    state.customSections.splice(newIndex, 0, clone);
+
+    const key = `custom:${clone.id}`;
+    state.sectionOrder.splice(newIndex, 0, key);
+
+    normalizeSectionOrder();
+    renderCustomSectionsEditor();
+    renderSectionOrderEditor();
+    renderPreview();
+    scheduleSave();
+  });
+});
+  
   // Click-to-edit
   host.querySelectorAll("[data-skill-edit]").forEach(chip => {
     chip.addEventListener("click", () => {
