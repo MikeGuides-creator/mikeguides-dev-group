@@ -30,6 +30,31 @@
   margin: 18px 0;
 }
 
+/* Center label divider */
+
+.ry-divider{
+  display:flex;
+  align-items:center;
+  margin:22px 0;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#334155;
+}
+
+.ry-divider::before,
+.ry-divider::after{
+  content:"";
+  flex:1;
+  border-top:2px solid #94a3b8; /* same divider color */
+}
+
+.ry-divider span{
+  padding:0 12px;
+  white-space:nowrap;
+}
+    
 /* Section title */
 .ry .ry-sec{ margin:18px 0 10px; text-transform:uppercase; letter-spacing:.08em; }
 
