@@ -928,17 +928,13 @@ function renderSkillsEditor(){
   btn.addEventListener("click", () => {
     const i = Number(btn.getAttribute("data-custom-duplicate"));
     const original = state.customSections[i];
-
     if (!original) return;
 
     const clone = JSON.parse(JSON.stringify(original));
     clone.id = uid("custom");
+    clone.title = `${clone.title || "Custom Section"} Copy`;
 
-    const newIndex = i + 1;
-    state.customSections.splice(newIndex, 0, clone);
-
-    const key = `custom:${clone.id}`;
-    state.sectionOrder.splice(newIndex, 0, key);
+    state.customSections.splice(i + 1, 0, clone);
 
     normalizeSectionOrder();
     renderCustomSectionsEditor();
