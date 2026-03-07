@@ -915,35 +915,17 @@ function renderSkillsEditor(){
       const i = Number(btn.getAttribute("data-skill-remove"));
       state.skills.splice(i, 1);
 
-      // keep edit index consistent
       if (state._editingSkillIndex === i) state._editingSkillIndex = null;
-      else if (state._editingSkillIndex !== null && state._editingSkillIndex > i) state._editingSkillIndex--;
+      else if (state._editingSkillIndex !== null && state._editingSkillIndex > i) {
+        state._editingSkillIndex--;
+      }
 
       renderSkillsEditor();
       renderPreview();
+      scheduleSave();
     });
   });
 
-  host.querySelectorAll("[data-custom-duplicate]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const i = Number(btn.getAttribute("data-custom-duplicate"));
-    const original = state.customSections[i];
-    if (!original) return;
-
-    const clone = JSON.parse(JSON.stringify(original));
-    clone.id = uid("custom");
-    clone.title = `${clone.title || "Custom Section"} Copy`;
-
-    state.customSections.splice(i + 1, 0, clone);
-
-    normalizeSectionOrder();
-    renderCustomSectionsEditor();
-    renderSectionOrderEditor();
-    renderPreview();
-    scheduleSave();
-  });
-});
-  
   // Click-to-edit
   host.querySelectorAll("[data-skill-edit]").forEach(chip => {
     chip.addEventListener("click", () => {
@@ -1101,6 +1083,27 @@ function renderSkillsEditor(){
     });
   });
 
+   // Duplicate
+  host.querySelectorAll("[data-custom-duplicate]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-custom-duplicate"));
+      const original = state.customSections[i];
+      if (!original) return;
+
+      const clone = JSON.parse(JSON.stringify(original));
+      clone.id = uid("custom");
+      clone.title = `${clone.title || "Custom Section"} Copy`;
+
+      state.customSections.splice(i + 1, 0, clone);
+
+      normalizeSectionOrder();
+      renderCustomSectionsEditor();
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+    
   // Remove
   host.querySelectorAll("[data-custom-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
