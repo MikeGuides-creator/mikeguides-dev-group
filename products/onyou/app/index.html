@@ -951,7 +951,10 @@ function renderSkillsEditor(){
   host.innerHTML = state.customSections.map((s, idx) => `
   <div class="block" draggable="true" data-drag-index="${idx}">
     <div class="block-head">
-      <div class="block-title">Custom ${idx + 1}</div>
+      <div class="block-title">
+  <span class="drag-handle">⋮⋮</span>
+  Custom ${idx + 1}
+</div>
       <div style="display:flex; gap:8px; align-items:center;">
         <button class="btn btn-ghost btn-sm" type="button" data-custom-duplicate="${idx}">Duplicate</button>
         <button class="btn btn-ghost btn-sm" type="button" data-custom-remove="${idx}">Remove</button>
