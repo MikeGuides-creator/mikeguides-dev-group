@@ -2057,7 +2057,14 @@ $("resumeStyle").addEventListener("change", (e) => {
     renderPreview();
     scheduleSave();
   });
-    
+  
+ $("btnResetAll")?.addEventListener("click", () => {
+  const ok = window.confirm("Start over? This will clear your current document and reset the builder.");
+  if (!ok) return;
+
+  resetAllState();
+});  
+  
 $("btnAddCustomSection")?.addEventListener("click", () => {
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
 
