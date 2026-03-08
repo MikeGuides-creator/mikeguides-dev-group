@@ -643,6 +643,42 @@ function saveState(){
   }
 }
 
+function saveBackupState(){
+  try{
+    const payload = JSON.parse(JSON.stringify(state));
+    localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(payload));
+  }catch(err){
+    console.warn("Backup save failed:", err);
+  }
+}
+
+function loadBackupState(){
+  try{
+    const raw = localStorage.getItem(BACKUP_STORAGE_KEY);
+    if (!raw) return false;
+
+    const data = JSON.parse(raw);
+
+    Object.keys(state).forEach(key => {
+      delete state[key];
+    });
+
+    Object.assign(state, data);
+
+    migrateCustomSections();
+    normalizeSectionOrder();
+
+    return true;
+  }catch(err){
+    console.warn("Backup load failed:", err);
+    return false;
+  }
+}
+
+function clearBackupState(){
+  localStorage.removeItem(BACKUP_STORAGE_KEY);
+}
+  
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
