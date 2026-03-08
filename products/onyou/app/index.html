@@ -657,8 +657,10 @@ function saveBackupState(){
   try{
     const payload = JSON.parse(JSON.stringify(state));
     localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(payload));
+    return true;
   }catch(err){
     console.warn("Backup save failed:", err);
+    return false;
   }
 }
 
@@ -669,6 +671,7 @@ function loadBackupState(){
 
     const data = JSON.parse(raw);
 
+    // clear current state object but keep same reference
     Object.keys(state).forEach(key => {
       delete state[key];
     });
