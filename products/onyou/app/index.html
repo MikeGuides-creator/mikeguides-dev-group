@@ -1125,13 +1125,22 @@ function renderSkillsEditor(){
 
   // Drag reorder within custom list
   enableDragReorder(host, state.customSections, () => {
-    renderCustomSectionsEditor();
-    normalizeSectionOrder();
-    renderSectionOrderEditor();
-    renderPreview();
-    scheduleSave();
+
+  // rebuild sectionOrder so custom sections follow the new order
+  const core = ["experience","education","skills","projects","certifications"];
+
+  const customKeys = state.customSections.map(sec => `custom:${sec.id}`);
+
+  state.sectionOrder = (state.sectionOrder || [])
+    .filter(k => core.includes(k))
+    .concat(customKeys);
+
+  renderCustomSectionsEditor();
+  renderSectionOrderEditor();
+  renderPreview();
+  scheduleSave();
   });
-}
+  }
   
   function renderEducationEditor(){
     const host = $("eduList");
