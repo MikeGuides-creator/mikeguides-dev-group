@@ -1816,6 +1816,7 @@ function wireSkillsInput(){
 }
 
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+  
 function uid(prefix="cs"){
   return `${prefix}_${Math.random().toString(36).slice(2,9)}${Date.now().toString(36).slice(2,6)}`;
 }
@@ -1848,6 +1849,71 @@ function migrateCustomSections(){
 function getCustomSectionById(id){
   return (state.customSections || []).find(s => s.id === id) || null;
 }  
+
+function getDefaultState(){
+  return {
+    templateType: "resume",
+    resumeStyle: "modern",
+
+    fullName: "John Doe",
+    roleTitle: "Project Manager",
+    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
+
+    email: "john@example.com",
+    phone: "(555) 123-4567",
+    address: "Chicago, IL",
+    showHeadshot: true,
+
+    experience: [
+      {
+        company: "Acme Construction",
+        role: "Project Manager",
+        dates: "2022 – Present",
+        location: "Chicago, IL",
+        desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
+      }
+    ],
+
+    education: [
+      {
+        school: "State University",
+        degree: "B.S. Business Administration",
+        dates: "2018 – 2022",
+        location: "Springfield, IL",
+        notes: "Relevant coursework: operations, finance, project management."
+      }
+    ],
+
+    certifications: [
+      {
+        name: "PMP Certification",
+        issuer: "Project Management Institute",
+        year: "2023"
+      }
+    ],
+
+    projects: [
+      {
+        title: "Warehouse Optimization Initiative",
+        role: "Lead Coordinator",
+        desc: "Reduced operating costs by 18% through logistics restructuring."
+      }
+    ],
+
+    skills: ["Leadership", "Operations", "Problem Solving"],
+
+    showReferences: false,
+
+    customSections: [],
+
+    sectionOrder: ["experience","education","skills","projects","certifications"],
+
+    _editingSkillIndex: null,
+    _ui: {
+      collapsed: {}
+    }
+  };
+}
   
 function bind(){
 loadState();
