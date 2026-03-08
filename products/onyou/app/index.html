@@ -1914,6 +1914,54 @@ function getDefaultState(){
     }
   };
 }
+
+function resetAllState(){
+  const fresh = getDefaultState();
+
+  // remove all existing keys from state
+  Object.keys(state).forEach(key => {
+    delete state[key];
+  });
+
+  // copy fresh defaults into the same state object
+  Object.assign(state, fresh);
+
+  // clear autosave
+  localStorage.removeItem(STORAGE_KEY);
+
+  // rebuild dependent data
+  migrateCustomSections();
+  normalizeSectionOrder();
+
+  // reset form fields
+  $("templateType").value = state.templateType;
+  $("resumeStyle").value = state.resumeStyle || "modern";
+  $("fullName").value = state.fullName;
+  $("roleTitle").value = state.roleTitle;
+  $("summary").value = state.summary;
+  $("email").value = state.email;
+  $("phone").value = state.phone;
+  $("address").value = state.address;
+  $("toggleHeadshot").checked = !!state.showHeadshot;
+  $("toggleReferences").checked = !!state.showReferences;
+
+  // rerender everything
+  syncLeftPanelVisibility();
+  renderExperienceEditor();
+  renderEducationEditor();
+  renderSkillsEditor();
+  renderCertificationsEditor();
+  renderProjectsEditor();
+  renderCustomSectionsEditor();
+  renderSectionOrderEditor();
+  renderPreview();
+
+  initSectionToggles();
+  applyCollapsedState();
+
+  setSaveStatus("Reset complete");
+  saveState();
+}
   
 function bind(){
 loadState();
