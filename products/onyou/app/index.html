@@ -2109,8 +2109,46 @@ $("resumeStyle").addEventListener("change", (e) => {
   const ok = window.confirm("Start over? This will clear your current document and reset the builder.");
   if (!ok) return;
 
+  saveBackupState();
   resetAllState();
-}); 
+});
+
+$("btnUndoReset")?.addEventListener("click", () => {
+  const ok = loadBackupState();
+  if (!ok) {
+    window.alert("No reset backup was found.");
+    return;
+  }
+
+  // reseed form inputs
+  $("templateType").value = state.templateType;
+  $("resumeStyle").value = state.resumeStyle || "modern";
+  $("fullName").value = state.fullName;
+  $("roleTitle").value = state.roleTitle;
+  $("summary").value = state.summary;
+  $("email").value = state.email;
+  $("phone").value = state.phone;
+  $("address").value = state.address;
+  $("toggleHeadshot").checked = !!state.showHeadshot;
+  $("toggleReferences").checked = !!state.showReferences;
+
+  syncLeftPanelVisibility();
+  renderExperienceEditor();
+  renderEducationEditor();
+  renderSkillsEditor();
+  renderCertificationsEditor();
+  renderProjectsEditor();
+  renderCustomSectionsEditor();
+  renderSectionOrderEditor();
+  renderPreview();
+
+  initSectionToggles();
+  applyCollapsedState();
+
+  setSaveStatus("Backup restored");
+  saveState();
+  clearBackupState();
+});  
   
 $("btnAddCustomSection")?.addEventListener("click", () => {
   state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
