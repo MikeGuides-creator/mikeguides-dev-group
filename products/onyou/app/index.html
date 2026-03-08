@@ -2121,7 +2121,12 @@ $("resumeStyle").addEventListener("change", (e) => {
   const ok = window.confirm("Start over? This will clear your current document and reset the builder.");
   if (!ok) return;
 
-  saveBackupState();
+  const backedUp = saveBackupState();
+  if (!backedUp) {
+    window.alert("Could not create a backup before reset.");
+    return;
+  }
+
   resetAllState();
 });
 
@@ -2132,19 +2137,21 @@ $("btnUndoReset")?.addEventListener("click", () => {
     return;
   }
 
-  // reseed form inputs
-  $("templateType").value = state.templateType;
+  // reseed visible inputs
+  $("templateType").value = state.templateType || "resume";
   $("resumeStyle").value = state.resumeStyle || "modern";
-  $("fullName").value = state.fullName;
-  $("roleTitle").value = state.roleTitle;
-  $("summary").value = state.summary;
-  $("email").value = state.email;
-  $("phone").value = state.phone;
-  $("address").value = state.address;
+  $("fullName").value = state.fullName || "";
+  $("roleTitle").value = state.roleTitle || "";
+  $("summary").value = state.summary || "";
+  $("email").value = state.email || "";
+  $("phone").value = state.phone || "";
+  $("address").value = state.address || "";
   $("toggleHeadshot").checked = !!state.showHeadshot;
   $("toggleReferences").checked = !!state.showReferences;
 
   syncLeftPanelVisibility();
+  wireSkillsInput();
+
   renderExperienceEditor();
   renderEducationEditor();
   renderSkillsEditor();
