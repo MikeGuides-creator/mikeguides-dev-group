@@ -1036,6 +1036,9 @@ function renderSkillsEditor(){
     <div class="block-head">
       <div class="block-title">
   <span class="drag-handle">⋮⋮</span>
+  <button class="collapse-toggle" type="button" data-custom-toggle="${idx}">
+    ${s.collapsed ? "▸" : "▾"}
+  </button>
   Custom ${idx + 1}
 </div>
       <div style="display:flex; gap:8px; align-items:center;">
