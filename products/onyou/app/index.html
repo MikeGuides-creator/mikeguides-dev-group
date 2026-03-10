@@ -925,11 +925,11 @@ showReferences: false,
     if (!host) return;
 
     host.innerHTML = state.experience.map((x, idx) => `
-      <div class="block">
+      <div class="block" draggable="true" data-drag-index="${idx}">
         <div class="block-head">
-          <div class="block-title">Entry ${idx + 1}</div>
-          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
         </div>
+          <div class="custom-body" ${s.collapsed ? 'hidden' : ''}>
+          
 
         <div class="field-group">
           <label for="exp_company_${idx}">Company</label>
@@ -954,6 +954,7 @@ showReferences: false,
         <div class="field-group">
           <label for="exp_desc_${idx}">Description</label>
           <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
+          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
         </div>
       </div>
     `).join("");
