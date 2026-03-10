@@ -1043,6 +1043,20 @@ function renderSkillsEditor(){
   Custom ${idx + 1}
 </div>
 
+  // Collapse / Expand
+  host.querySelectorAll("[data-custom-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-custom-toggle"));
+      const sec = state.customSections[i];
+      if (!sec) return;
+
+      sec.collapsed = !sec.collapsed;
+
+      renderCustomSectionsEditor();
+      scheduleSave();
+    });
+  });
+  
       <div style="display:flex; gap:8px; align-items:center;">
         <button class="btn btn-ghost btn-sm" type="button" data-custom-duplicate="${idx}">Duplicate</button>
         <button class="btn btn-ghost btn-sm" type="button" data-custom-remove="${idx}">Remove</button>
