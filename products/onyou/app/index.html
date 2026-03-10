@@ -1886,6 +1886,7 @@ function migrateCustomSections(){
 
   state.customSections.forEach(sec => {
     if (!sec.id) sec.id = uid("custom");
+    if (typeof sec.collapsed !== "boolean") sec.collapsed = false;
     if (!sec.type) sec.type = "text";
 
     // Ensure base fields
