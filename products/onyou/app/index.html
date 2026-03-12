@@ -1869,12 +1869,19 @@ function renderResume(){
   const root = $("previewRoot");
   if (!root) return;
 
-  if (state.templateType === "nda") {
-    root.innerHTML = renderNDA();
-  } else if (state.templateType === "employment") {
-    root.innerHTML = renderEmployment();
-  } else {
-    root.innerHTML = renderResume();
+  try{
+    root.innerHTML =
+      state.templateType === "resume"
+        ? renderResume()
+        : renderResume(); // future templates will go here
+  }
+  catch(err){
+    console.error("Preview render failed:", err);
+    root.innerHTML = `
+      <div style="padding:20px;color:#b91c1c;font-weight:600;">
+        Preview rendering error. Check console.
+      </div>
+    `;
   }
 }
   
