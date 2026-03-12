@@ -939,61 +939,85 @@ showReferences: false,
   }
 
   function renderExperienceEditor(){
-    const host = $("expList");
-    if (!host) return;
+  const host = $("expList");
+  if (!host) return;
 
-    host.innerHTML = state.experience.map((x, idx) => `
-      <div class="block" draggable="true" data-drag-index="${idx}">
-        <div class="block-head">
-        </div>
-          <div class="custom-body" ${s.collapsed ? 'hidden' : ''}>
-          
-
-        <div class="field-group">
-          <label for="exp_company_${idx}">Company</label>
-          <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
-        </div>
-
-        <div class="field-group">
-          <label for="exp_role_${idx}">Role / Title</label>
-          <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
-        </div>
-
-        <div class="field-group">
-          <label for="exp_dates_${idx}">Dates</label>
-          <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
-        </div>
-
-        <div class="field-group">
-          <label for="exp_location_${idx}">Location</label>
-          <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
-        </div>
-
-        <div class="field-group">
-          <label for="exp_desc_${idx}">Description</label>
-          <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
-          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
-        </div>
+  host.innerHTML = state.experience.map((x, idx) => `
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">Entry ${idx + 1}</div>
+        <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
       </div>
-    `).join("");
-    
-    state.experience.forEach((_, idx) => {
-      $("exp_company_" + idx)?.addEventListener("input", (e) => { state.experience[idx].company = e.target.value; renderPreview(); });
-      $("exp_role_" + idx)?.addEventListener("input", (e) => { state.experience[idx].role = e.target.value; renderPreview(); });
-      $("exp_dates_" + idx)?.addEventListener("input", (e) => { state.experience[idx].dates = e.target.value; renderPreview(); });
-      $("exp_location_" + idx)?.addEventListener("input", (e) => { state.experience[idx].location = e.target.value; renderPreview(); });
-      $("exp_desc_" + idx)?.addEventListener("input", (e) => { state.experience[idx].desc = e.target.value; renderPreview(); });
+
+      <div class="field-group">
+        <label for="exp_company_${idx}">Company</label>
+        <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
+      </div>
+
+      <div class="field-group">
+        <label for="exp_role_${idx}">Role / Title</label>
+        <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
+      </div>
+
+      <div class="field-group">
+        <label for="exp_dates_${idx}">Dates</label>
+        <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
+      </div>
+
+      <div class="field-group">
+        <label for="exp_location_${idx}">Location</label>
+        <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+      </div>
+
+      <div class="field-group">
+        <label for="exp_desc_${idx}">Description</label>
+        <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
+      </div>
+    </div>
+  `).join("");
+
+  state.experience.forEach((_, idx) => {
+    $("exp_company_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].company = e.target.value;
+      renderPreview();
+      scheduleSave();
     });
 
-    host.querySelectorAll("[data-exp-remove]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const i = Number(btn.getAttribute("data-exp-remove"));
-        state.experience.splice(i, 1);
-        renderExperienceEditor();
-        renderPreview();
-      });
+    $("exp_role_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].role = e.target.value;
+      renderPreview();
+      scheduleSave();
     });
-  }
+
+    $("exp_dates_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].dates = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("exp_location_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].location = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("exp_desc_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].desc = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-exp-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-exp-remove"));
+      state.experience.splice(i, 1);
+      renderExperienceEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+}
   
 function normalizeSkill(s){
   return (s || "").trim().replace(/\s+/g, " ");
