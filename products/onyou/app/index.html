@@ -1338,6 +1338,11 @@ function renderSkillsEditor(){
     });
   }
 
+  function toggleItemCollapsed(list, index){
+  if (!Array.isArray(list) || !list[index]) return;
+  list[index].collapsed = !list[index].collapsed;
+}
+  
   function renderCustomSectionPreview(sec){
   if (!sec) return "";
 
