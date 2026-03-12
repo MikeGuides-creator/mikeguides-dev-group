@@ -942,39 +942,50 @@ showReferences: false,
   const host = $("expList");
   if (!host) return;
 
-  host.innerHTML = state.experience.map((x, idx) => `
-    <div class="block">
-      <div class="block-head">
-        <div class="block-title">Entry ${idx + 1}</div>
-        <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
-      </div>
+  host.innerHTML = state.experience.map((x, idx) => {
+    const isCollapsed = !!x.collapsed;
 
-      <div class="field-group">
-        <label for="exp_company_${idx}">Company</label>
-        <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
-      </div>
+    return `
+      <div class="block">
+        <div class="block-head">
+          <div class="block-title">
+            <button class="collapse-toggle" type="button" data-exp-toggle="${idx}">
+              ${isCollapsed ? "▸" : "▾"}
+            </button>
+            Entry ${idx + 1}
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
+        </div>
 
-      <div class="field-group">
-        <label for="exp_role_${idx}">Role / Title</label>
-        <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
-      </div>
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+          <div class="field-group">
+            <label for="exp_company_${idx}">Company</label>
+            <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
+          </div>
 
-      <div class="field-group">
-        <label for="exp_dates_${idx}">Dates</label>
-        <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
-      </div>
+          <div class="field-group">
+            <label for="exp_role_${idx}">Role / Title</label>
+            <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
+          </div>
 
-      <div class="field-group">
-        <label for="exp_location_${idx}">Location</label>
-        <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
-      </div>
+          <div class="field-group">
+            <label for="exp_dates_${idx}">Dates</label>
+            <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
+          </div>
 
-      <div class="field-group">
-        <label for="exp_desc_${idx}">Description</label>
-        <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
+          <div class="field-group">
+            <label for="exp_location_${idx}">Location</label>
+            <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+          </div>
+
+          <div class="field-group">
+            <label for="exp_desc_${idx}">Description</label>
+            <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
+          </div>
+        </div>
       </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 
   state.experience.forEach((_, idx) => {
     $("exp_company_" + idx)?.addEventListener("input", (e) => {
@@ -1004,6 +1015,15 @@ showReferences: false,
     $("exp_desc_" + idx)?.addEventListener("input", (e) => {
       state.experience[idx].desc = e.target.value;
       renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-exp-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-exp-toggle"));
+      toggleItemCollapsed(state.experience, i);
+      renderExperienceEditor();
       scheduleSave();
     });
   });
