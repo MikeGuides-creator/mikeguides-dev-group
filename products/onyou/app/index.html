@@ -1472,42 +1472,48 @@ function renderSkillsEditor(){
   `;
 }
   
-  function renderCertificationsEditor(){
+function renderCertificationsEditor(){
   const host = $("certList");
   if (!host) return;
-    
-    
-  host.innerHTML = (state.certifications || []).map((c, idx) => `
-    <div class="block" draggable="true" data-drag-index="${idx}">
-      <div class="block-head">
-        <div class="block-title">
-        <button class="collapse-toggle" type="button" data-proj-toggle="${idx}">
-          ${isCollapsed ? "▸" : "▾"}
-      </button>
-          Entry ${idx + 1}
-      </div>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <button class="btn btn-ghost btn-sm" type="button" data-cert-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
-          <button class="btn btn-ghost btn-sm" type="button" data-cert-down="${idx}" ${idx===(state.certifications.length-1) ? "disabled" : ""}>↓</button>
-          <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
+
+  host.innerHTML = (state.certifications || []).map((c, idx) => {
+    const isCollapsed = !!c.collapsed;
+
+    return `
+      <div class="block" draggable="true" data-drag-index="${idx}">
+        <div class="block-head">
+          <div class="block-title">
+            <button class="collapse-toggle" type="button" data-cert-toggle="${idx}">
+              ${isCollapsed ? "▸" : "▾"}
+            </button>
+            Entry ${idx + 1}
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn btn-ghost btn-sm" type="button" data-cert-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+            <button class="btn btn-ghost btn-sm" type="button" data-cert-down="${idx}" ${idx===(state.certifications.length-1) ? "disabled" : ""}>↓</button>
+            <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
+          </div>
+        </div>
+
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+          <div class="field-group">
+            <label for="cert_name_${idx}">Name</label>
+            <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
+          </div>
+
+          <div class="field-group">
+            <label for="cert_issuer_${idx}">Issuer</label>
+            <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
+          </div>
+
+          <div class="field-group">
+            <label for="cert_year_${idx}">Year</label>
+            <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
+          </div>
         </div>
       </div>
-
-    <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
-      <div class="field-group">
-        <label for="cert_name_${idx}">Name</label>
-        <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
-      </div> 
-      <div class="field-group">
-        <label for="cert_issuer_${idx}">Issuer</label>
-        <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
-      </div>
-      <div class="field-group">
-        <label for="cert_year_${idx}">Year</label>
-        <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 
   (state.certifications || []).forEach((_, idx) => {
     $("cert_name_" + idx)?.addEventListener("input", (e) => {
@@ -1515,14 +1521,25 @@ function renderSkillsEditor(){
       renderPreview();
       scheduleSave();
     });
+
     $("cert_issuer_" + idx)?.addEventListener("input", (e) => {
       state.certifications[idx].issuer = e.target.value;
       renderPreview();
       scheduleSave();
     });
+
     $("cert_year_" + idx)?.addEventListener("input", (e) => {
       state.certifications[idx].year = e.target.value;
       renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-cert-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-toggle"));
+      toggleItemCollapsed(state.certifications, i);
+      renderCertificationsEditor();
       scheduleSave();
     });
   });
@@ -1556,19 +1573,11 @@ function renderSkillsEditor(){
       scheduleSave();
     });
   });
-    
-  host.querySelectorAll("[data-proj-toggle]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const i = Number(btn.getAttribute("data-proj-toggle"));
-      toggleItemCollapsed(state.projects, i);
-      renderProjectsEditor();
-      scheduleSave();
-    });
-  });
-    
+
   enableDragReorder(host, state.certifications, () => {
     renderCertificationsEditor();
-    scheduleSave(); // <- ensures drag reorder is persisted
+    renderPreview();
+    scheduleSave();
   });
 }
     
