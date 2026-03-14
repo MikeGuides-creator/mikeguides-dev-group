@@ -1480,7 +1480,12 @@ function renderSkillsEditor(){
   host.innerHTML = (state.certifications || []).map((c, idx) => `
     <div class="block" draggable="true" data-drag-index="${idx}">
       <div class="block-head">
-        <div class="block-title">Entry ${idx + 1}</div>
+        <div class="block-title">
+        <button class="collapse-toggle" type="button" data-proj-toggle="${idx}">
+          ${isCollapsed ? "▸" : "▾"}
+      </button>
+          Entry ${idx + 1}
+      </div>
         <div style="display:flex; gap:8px; align-items:center;">
           <button class="btn btn-ghost btn-sm" type="button" data-cert-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
           <button class="btn btn-ghost btn-sm" type="button" data-cert-down="${idx}" ${idx===(state.certifications.length-1) ? "disabled" : ""}>↓</button>
