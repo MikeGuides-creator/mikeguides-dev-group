@@ -1493,16 +1493,15 @@ function renderSkillsEditor(){
         </div>
       </div>
 
+    <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
       <div class="field-group">
         <label for="cert_name_${idx}">Name</label>
         <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
-      </div>
-
+      </div> 
       <div class="field-group">
         <label for="cert_issuer_${idx}">Issuer</label>
         <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
       </div>
-
       <div class="field-group">
         <label for="cert_year_${idx}">Year</label>
         <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
@@ -1557,7 +1556,16 @@ function renderSkillsEditor(){
       scheduleSave();
     });
   });
-
+    
+  host.querySelectorAll("[data-proj-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-toggle"));
+      toggleItemCollapsed(state.projects, i);
+      renderProjectsEditor();
+      scheduleSave();
+    });
+  });
+    
   enableDragReorder(host, state.certifications, () => {
     renderCertificationsEditor();
     scheduleSave(); // <- ensures drag reorder is persisted
