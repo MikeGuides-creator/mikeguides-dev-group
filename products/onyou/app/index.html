@@ -1978,7 +1978,7 @@ function renderResume(){
     root.innerHTML =
       state.templateType === "resume"
         ? renderResume()
-        : renderResume(); // future templates will go here
+        : renderResume(); // future template types
   }
   catch(err){
     console.error("Preview render failed:", err);
