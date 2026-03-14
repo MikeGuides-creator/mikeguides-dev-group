@@ -1544,6 +1544,19 @@ function renderCertificationsEditor(){
     });
   });
 
+  host.querySelectorAll(".block-head").forEach((head, idx) => {
+  head.addEventListener("click", (e) => {
+
+    // ignore clicks on buttons
+    if (e.target.closest("button")) return;
+
+    toggleItemCollapsed(state.certifications, idx);
+    renderCertificationsEditor();
+    scheduleSave();
+
+  });
+});
+  
   host.querySelectorAll("[data-cert-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-remove"));
