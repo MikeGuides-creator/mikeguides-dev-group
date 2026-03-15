@@ -1150,6 +1150,8 @@ function renderSkillsEditor(){
     </div>
   `).join("");
 
+   bindHeaderToggleAll(host, "[data-custom-collapse-all]", state.customSections, renderCustomSectionsEditor);
+   
   // Title
   state.customSections.forEach((_, idx) => {
     $("custom_title_" + idx)?.addEventListener("input", (e) => {
