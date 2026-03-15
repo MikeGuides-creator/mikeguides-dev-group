@@ -948,13 +948,6 @@ showReferences: false,
     return `
       <div class="block">
         <div class="block-head">
-  <div class="block-title">Experience</div>
-  <div style="display:flex; gap:8px; align-items:center;">
-    <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="collapse">Collapse All</button>
-    <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="expand">Expand All</button>
-    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
-  </div>
-</div>
         <div class="custom-body" ${isCollapsed ? "hidden" : ""}></div>
           <div class="field-group">
             <label for="exp_company_${idx}">Company</label>
@@ -1098,8 +1091,9 @@ function renderSkillsEditor(){
         <div class="block-title">
           <span class="drag-handle">⋮⋮</span>
           <button class="collapse-toggle" type="button" data-custom-toggle="${idx}">
-            ${s.collapsed ? "▸" : "▾"}
-          </button>
+            ${s.collapsed ? "▸" : "▾"}</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="collapse">Collapse All</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="expand">Expand All</button>
           Custom ${idx + 1}
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
