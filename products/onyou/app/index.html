@@ -1010,6 +1010,8 @@ showReferences: false,
     });
   });
 
+    bindHeaderToggleAll(host, "[data-exp-collapse-all]", state.experience, renderExperienceEditor);
+    
   host.querySelectorAll("[data-exp-toggle]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-exp-toggle"));
