@@ -1523,6 +1523,8 @@ function renderCertificationsEditor(){
     });
   });
 
+  bindHeaderToggleAll(host, "[data-cert-collapse-all]", state.certifications, renderCertificationsEditor);
+  
   host.querySelectorAll("[data-cert-toggle]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-cert-toggle"));
