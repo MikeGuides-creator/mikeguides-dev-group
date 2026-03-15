@@ -948,16 +948,14 @@ showReferences: false,
     return `
       <div class="block">
         <div class="block-head">
-          <div class="block-title">
-            <button class="collapse-toggle" type="button" data-exp-toggle="${idx}">
-              ${isCollapsed ? "▸" : "▾"}
-            </button>
-            Entry ${idx + 1}
-          </div>
-          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
-        </div>
-
-        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+  <div class="block-title">Experience</div>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="collapse">Collapse All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="expand">Expand All</button>
+    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
+  </div>
+</div>
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}></div>
           <div class="field-group">
             <label for="exp_company_${idx}">Company</label>
             <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
@@ -1310,16 +1308,14 @@ function renderSkillsEditor(){
     const isCollapsed = !!x.collapsed;
 
     return `
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">
-            <button class="collapse-toggle" type="button" data-edu-toggle="${idx}">
-              ${isCollapsed ? "▸" : "▾"}
-            </button>
-            Entry ${idx + 1}
-          </div>
-          <button class="btn btn-ghost btn-sm" type="button" data-edu-remove="${idx}">Remove</button>
-        </div>
+      <div class="block-head">
+  <div class="block-title">Education</div>
+  <div style="display:flex; gap:8px; align-items:center;">
+   <button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="collapse">Collapse All</button>
+<button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="expand">Expand All</button>
+    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
+  </div>
+</div>
 
         <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
           <div class="field-group">
@@ -1480,20 +1476,14 @@ function renderCertificationsEditor(){
     const isCollapsed = !!c.collapsed;
 
     return `
-      <div class="block" draggable="true" data-drag-index="${idx}">
-        <div class="block-head">
-          <div class="block-title">
-            <button class="collapse-toggle" type="button" data-cert-toggle="${idx}">
-              ${isCollapsed ? "▸" : "▾"}
-            </button>
-            Entry ${idx + 1}
-          </div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <button class="btn btn-ghost btn-sm" type="button" data-cert-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
-            <button class="btn btn-ghost btn-sm" type="button" data-cert-down="${idx}" ${idx===(state.certifications.length-1) ? "disabled" : ""}>↓</button>
-            <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
-          </div>
-        </div>
+     <div class="block-head">
+  <div class="block-title">Certifications</div>
+  <div style="display:flex; gap:8px; align-items:center;">
+   <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
+<button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>>
+    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Certifications</button>
+  </div>
+</div>
 
         <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
           <div class="field-group">
@@ -1601,8 +1591,10 @@ function renderCertificationsEditor(){
   host.innerHTML = (state.projects || []).map((p, idx) => `
     <div class="block" draggable="true" data-drag-index="${idx}">
       <div class="block-head">
-        <div class="block-title">Entry ${idx + 1}</div>
+      <div class="block-title">Projects</div>
         <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>
           <button class="btn btn-ghost btn-sm" type="button" data-proj-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
           <button class="btn btn-ghost btn-sm" type="button" data-proj-down="${idx}" ${idx===(state.projects.length-1) ? "disabled" : ""}>↓</button>
           <button class="btn btn-ghost btn-sm" type="button" data-proj-remove="${idx}">Remove</button>
