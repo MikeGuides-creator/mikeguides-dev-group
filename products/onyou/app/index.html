@@ -1636,6 +1636,8 @@ function renderCertificationsEditor(){
     });
   });
 
+   bindHeaderToggleAll(host, "[data-proj-collapse-all]", state.projects, renderProjectsEditor);
+   
   host.querySelectorAll("[data-proj-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-proj-remove"));
