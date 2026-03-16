@@ -473,13 +473,15 @@
   <span data-toggle-icon="experience">▾</span>
 </button>
 
-<div class="section-body" data-section-body="experience">
-  <div class="block-head" style="margin-top:10px;">
-    <div class="block-title">Experience</div>
+<div class="block-head">
+  <div class="block-title">Experience</div>
+  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+    <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="collapse">Collapse All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="expand">Expand All</button>
     <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
   </div>
-  <div id="expList"></div>
 </div>
+<div id="expList"></div>
 
 <div class="mini-divider"></div>
 
@@ -489,36 +491,41 @@
   <span data-toggle-icon="education">▾</span>
 </button>
 
-<div class="section-body" data-section-body="education">
-  <div class="block-head" style="margin-top:10px;">
-    <div class="block-title">Education</div>
+<div class="block-head">
+  <div class="block-title">Education</div>
+  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+    <button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="collapse">Collapse All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="expand">Expand All</button>
     <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
   </div>
-  <div id="eduList"></div>
 </div>
+<div id="eduList"></div>
 
 <div class="mini-divider"></div>
 
 <!-- Skills -->
-<button class="section-toggle" type="button" data-toggle="skills">
-  <span class="section-title">Skills</span>
-  <span data-toggle-icon="skills">▾</span>
-</button>
+<div class="block-head">
+  <div class="block-title">Skills</div>
+</div>
 
-<div class="section-body" data-section-body="skills">
-  <div class="block-head" style="margin-top:10px;">
-    <div class="block-title">Skills</div>
+<div class="field-group">
+  <label for="skillInput">Add a skill (press Enter)</label>
+  <div style="display:flex; gap:10px;">
+    <input id="skillInput" type="text"
+           placeholder="e.g., Leadership, Excel, Classroom Management"
+           style="flex:1;">
+    <button id="btnAddSkill" type="button" class="btn">Add</button>
   </div>
+</div>
 
-  <div class="field-group">
-    <label for="skillInput">Add a skill (press Enter)</label>
-    <div style="display:flex; gap:10px;">
-      <input id="skillInput" type="text"
-             placeholder="e.g., Leadership, Excel, Classroom Management"
-             style="flex:1;">
-      <button id="btnAddSkill" type="button" class="btn">Add</button>
-    </div>
-  </div>
+<div id="skillsChips" class="chips"></div>
+
+<div class="field-group">
+  <label>
+    <input type="checkbox" id="toggleReferences">
+    Include "References Available Upon Request"
+  </label>
+</div>
 
   <div id="skillsChips" class="chips"></div>
 
@@ -533,34 +540,28 @@
 <div class="mini-divider"></div>
 
 <!-- Certifications -->
-<button class="section-toggle" type="button" data-toggle="certifications">
-  <span class="section-title">Certifications</span>
-  <span data-toggle-icon="certifications">▾</span>
-</button>
-
-<div class="section-body" data-section-body="certifications">
-  <div class="block-head" style="margin-top:10px;">
-    <div class="block-title">Certifications</div>
+<div class="block-head">
+  <div class="block-title">Certifications</div>
+  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+    <button class="btn btn-ghost btn-sm" type="button" data-cert-collapse-all data-collapse-mode="collapse">Collapse All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-cert-collapse-all data-collapse-mode="expand">Expand All</button>
     <button id="btnAddCert" class="btn btn-ghost btn-sm" type="button">+ Add Certification</button>
   </div>
-  <div id="certList"></div>
 </div>
+<div id="certList"></div>
 
 <div class="mini-divider"></div>
 
 <!-- Projects -->
-<button class="section-toggle" type="button" data-toggle="projects">
-  <span class="section-title">Projects</span>
-  <span data-toggle-icon="projects">▾</span>
-</button>
-
-<div class="section-body" data-section-body="projects">
-  <div class="block-head" style="margin-top:10px;">
-    <div class="block-title">Projects</div>
+<div class="block-head">
+  <div class="block-title">Projects</div>
+  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+    <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>
     <button id="btnAddProject" class="btn btn-ghost btn-sm" type="button">+ Add Project</button>
   </div>
-  <div id="projectList"></div>
-</div> 
+</div>
+<div id="projectList"></div>
       
 <div class="mini-divider"></div>
 
@@ -569,22 +570,16 @@
   <span data-toggle-icon="customSections">▾</span>
 </button>
 
-<div class="section-body" data-section-body="customSections">
   <div class="block-head" style="margin-top:10px;">
-    <div class="block-title">Custom Sections</div>
-    <div style="display:flex; gap:10px; align-items:center;">
-      <select id="newCustomBlockType">
-    <option value="text">Text</option>
-    <option value="bullets">Bullet List</option>
-    <option value="divider">Divider</option>
-    <option value="quote">Quote</option>
-    <option value="signature">Signature</option>
-      </select>
-      <button id="btnAddCustomSection" class="btn btn-ghost btn-sm" type="button">+ Add Block</button>
-    </div>
+  <div class="block-title">Custom Sections</div>
+  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+    <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="collapse">Collapse All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="expand">Expand All</button>
+    <button id="btnAddCustomSection" class="btn btn-ghost btn-sm" type="button">+ Add Block</button>
   </div>
+</div>
 
-  <div id="customSectionsList"></div>
+<div id="customSectionsList"></div>
 
   <div class="hint" style="margin-top:10px;">
     Custom sections can be moved in “Preview Section Order.”
