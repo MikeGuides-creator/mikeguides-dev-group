@@ -1310,15 +1310,7 @@ function renderSkillsEditor(){
     const isCollapsed = !!x.collapsed;
 
     return `
-      <div class="block-head">
-  <div class="block-title">Education</div>
-  <div style="display:flex; gap:8px; align-items:center;">
-   <button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="collapse">Collapse All</button>
-<button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="expand">Expand All</button>
-    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
-  </div>
-</div>
-
+      
         <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
           <div class="field-group">
             <label for="edu_school_${idx}">School</label>
@@ -1480,15 +1472,7 @@ function renderCertificationsEditor(){
     const isCollapsed = !!c.collapsed;
 
     return `
-     <div class="block-head">
-  <div class="block-title">Certifications</div>
-  <div style="display:flex; gap:8px; align-items:center;">
-   <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
-<button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>>
-    <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Certifications</button>
-  </div>
-</div>
-
+     
         <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
           <div class="field-group">
             <label for="cert_name_${idx}">Name</label>
