@@ -141,20 +141,17 @@
   letter-spacing:.02em;
 }
     
-    @media print {
-  /* Hide builder UI */
+   @media print {
   header.topbar,
   .panel:first-child,
   #buildId {
     display: none !important;
   }
 
-  /* Make layout single column */
   .builder-layout {
     grid-template-columns: 1fr !important;
   }
 
-  /* Remove card styling so it prints clean */
   .panel {
     border: 0 !important;
     box-shadow: none !important;
@@ -167,6 +164,12 @@
     min-height: auto !important;
   }
 
+  body {
+    background: #fff !important;
+  }
+}
+
+/* Drag + collapse UI */
 .drag-handle{
   cursor: grab;
   font-weight: bold;
@@ -177,12 +180,6 @@
 
 .drag-handle:active{
   cursor: grabbing;
-}
-
-.block-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
 }
 
 .block:hover .drag-handle{
@@ -206,7 +203,40 @@
 .custom-body[hidden]{
   display:none !important;
 }
-        
+
+/* Section wrappers */
+.section-toggle{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  cursor:pointer;
+}
+
+.section-toggle:hover{
+  background: rgba(255,255,255,.06);
+}
+
+.section-title{
+  font-weight:900;
+  font-size:13px;
+  color: var(--muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.section-body{
+  margin-top:10px;
+}
+
+.section-body[hidden]{
+  display:none !important;
+}        
     .panel{
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       border:1px solid var(--border);
