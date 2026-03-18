@@ -431,8 +431,6 @@
 
     <!-- LEFT PANEL -->
     <div class="panel">
-            
-<div class="mini-divider"></div>
       
   <h2>Form Configuration</h2>
 
@@ -980,7 +978,16 @@ showReferences: false,
     return `
       <div class="block">
         <div class="block-head">
-        <div class="custom-body" ${isCollapsed ? "hidden" : ""}></div>
+          <div class="block-title">
+            <button class="collapse-toggle" type="button" data-exp-toggle="${idx}">
+              ${isCollapsed ? "▸" : "▾"}
+            </button>
+            Entry ${idx + 1}
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
+        </div>
+
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
           <div class="field-group">
             <label for="exp_company_${idx}">Company</label>
             <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
@@ -1042,7 +1049,27 @@ showReferences: false,
     });
   });
 
-    bindHeaderToggleAll(host, "[data-exp-collapse-all]", state.experience, renderExperienceEditor);
+  host.querySelectorAll("[data-exp-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-exp-toggle"));
+      toggleItemCollapsed(state.experience, i);
+      renderExperienceEditor();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-exp-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-exp-remove"));
+      state.experience.splice(i, 1);
+      renderExperienceEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  bindHeaderToggleAll(host, "[data-exp-collapse-all]", state.experience, renderExperienceEditor);
+}
     
   host.querySelectorAll("[data-exp-toggle]").forEach(btn => {
     btn.addEventListener("click", () => {
