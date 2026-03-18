@@ -1059,37 +1059,22 @@ showReferences: false,
   });
 
   host.querySelectorAll("[data-exp-remove]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const i = Number(btn.getAttribute("data-exp-remove"));
-      state.experience.splice(i, 1);
-      renderExperienceEditor();
-      renderPreview();
-      scheduleSave();
-    });
+  btn.addEventListener("click", () => {
+    const i = Number(btn.getAttribute("data-exp-remove"));
+    state.experience.splice(i, 1);
+    renderExperienceEditor();
+    renderPreview();
+    scheduleSave();
   });
+});
 
-  bindHeaderToggleAll(host, "[data-exp-collapse-all]", state.experience, renderExperienceEditor);
+bindHeaderToggleAll(host, "[data-exp-collapse-all]", state.experience, renderExperienceEditor);
 }
-    
-  host.querySelectorAll("[data-exp-toggle]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const i = Number(btn.getAttribute("data-exp-toggle"));
-      toggleItemCollapsed(state.experience, i);
-      renderExperienceEditor();
-      scheduleSave();
-    });
-  });
 
-  host.querySelectorAll("[data-exp-remove]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const i = Number(btn.getAttribute("data-exp-remove"));
-      state.experience.splice(i, 1);
-      renderExperienceEditor();
-      renderPreview();
-      scheduleSave();
-    });
-  });
+function normalizeSkill(s){
+  return (s || "").trim().replace(/\s+/g, " ");
 }
+  
   
 function normalizeSkill(s){
   return (s || "").trim().replace(/\s+/g, " ");
