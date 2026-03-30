@@ -2418,11 +2418,19 @@ $("resumeStyle").addEventListener("change", (e) => {
   });
 
   $("btnAddExp").addEventListener("click", () => {
-    state.experience.push({ company:"", role:"", dates:"", location:"", desc:"" });
-    renderExperienceEditor();
-    renderPreview();
-    scheduleSave();
+  state.experience.push({
+    company: "",
+    role: "",
+    dates: "",
+    location: "",
+    desc: "",
+    collapsed: false
   });
+
+  renderExperienceEditor();
+  renderPreview();
+  scheduleSave();
+});
 
   $("btnAddEdu").addEventListener("click", () => {
     state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
