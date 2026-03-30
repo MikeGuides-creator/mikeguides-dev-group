@@ -2417,7 +2417,9 @@ $("resumeStyle").addEventListener("change", (e) => {
     scheduleSave();
   });
 
-  $("btnAddExp").addEventListener("click", () => {
+  $("btnAddExp")?.addEventListener("click", () => {
+  console.log("Add Experience clicked");
+
   state.experience.push({
     company: "",
     role: "",
@@ -2426,6 +2428,11 @@ $("resumeStyle").addEventListener("change", (e) => {
     desc: "",
     collapsed: false
   });
+
+  renderExperienceEditor();
+  renderPreview();
+  scheduleSave();
+});
 
   renderExperienceEditor();
   renderPreview();
