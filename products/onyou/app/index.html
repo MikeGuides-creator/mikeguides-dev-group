@@ -2435,7 +2435,7 @@ $("resumeStyle").addEventListener("change", (e) => {
   scheduleSave();
 });
 
-  $("btnAddEdu").addEventListener("click", () => {
+  $("btnAddEdu")?.addEventListener("click", () => {
     state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
     renderEducationEditor();
     renderPreview();
@@ -2462,7 +2462,6 @@ $("btnUndoReset")?.addEventListener("click", () => {
     return;
   }
 
-  // reseed visible inputs
   $("templateType").value = state.templateType || "resume";
   $("resumeStyle").value = state.resumeStyle || "modern";
   $("fullName").value = state.fullName || "";
@@ -2476,7 +2475,6 @@ $("btnUndoReset")?.addEventListener("click", () => {
 
   syncLeftPanelVisibility();
   wireSkillsInput();
-
   renderExperienceEditor();
   renderEducationEditor();
   renderSkillsEditor();
@@ -2485,13 +2483,8 @@ $("btnUndoReset")?.addEventListener("click", () => {
   renderCustomSectionsEditor();
   renderSectionOrderEditor();
   renderPreview();
-
-  initSectionToggles();
   applyCollapsedState();
-
-  setSaveStatus("Backup restored");
   saveState();
-  clearBackupState();
 });  
   
 $("btnAddCustomSection")?.addEventListener("click", () => {
