@@ -2436,13 +2436,19 @@ $("resumeStyle").addEventListener("change", (e) => {
 });
 
   $("btnAddEdu")?.addEventListener("click", () => {
-    state.education.push({ school:"", degree:"", dates:"", location:"", notes:"" });
-    renderEducationEditor();
-    renderPreview();
-    scheduleSave();
+  state.education.push({
+    school: "",
+    degree: "",
+    dates: "",
+    location: "",
+    notes: ""
   });
-  
- $("btnResetAll")?.addEventListener("click", () => {
+  renderEducationEditor();
+  renderPreview();
+  scheduleSave();
+});
+
+$("btnResetAll")?.addEventListener("click", () => {
   const ok = window.confirm("Start over? This will clear your current document and reset the builder.");
   if (!ok) return;
 
@@ -2482,88 +2488,48 @@ $("btnUndoReset")?.addEventListener("click", () => {
   renderProjectsEditor();
   renderCustomSectionsEditor();
   renderSectionOrderEditor();
-  renderPreview();
-  applyCollapsedState();
-  saveState();
-});  
-  
-$("btnAddCustomSection")?.addEventListener("click", () => {
-  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
-
-  const type = $("newCustomBlockType")?.value || "text";
-  const id = uid("custom");
-
-  const sec = {
-    id,
-    title: "Custom Section",
-    type,
-    content: "",
-  };
-
-  if (type === "bullets") {
-    sec.title = "Bullet List";
-    sec.items = [];
-  } else if (type === "divider") {
-    sec.title = "Section";
-  } else if (type === "quote") {
-    sec.title = "Quote";
-    sec.author = "";
-  } else if (type === "signature") {
-    sec.title = "Signature";
-  } else {
-    sec.title = "Custom Section";
-  }
-
-  state.customSections.push(sec);
-
-  normalizeSectionOrder();
-  renderCustomSectionsEditor();
-  renderSectionOrderEditor();
-  renderPreview();
-  scheduleSave();
-});
-    
-  // Preview button
-  $("btnPreview").addEventListener("click", () => {
-    renderPreview();
-    saveState(); // immediate save on explicit action
-  });
-    
-$("btnExportPdf")?.addEventListener("click", () => {
-  renderPreview();   // ensure latest
-  saveState();       // save snapshot
-  window.print();    // user chooses "Save as PDF"
-});
-    
-  // Clear saved (if you added the button)
-  $("btnClearSaved")?.addEventListener("click", () => {
-    clearSavedState();
-    // Optional: refresh to reset UI to defaults after clearing
-    // location.reload();
-  });
-  
-  // One-time initial paint
-  syncLeftPanelVisibility();
-  wireSkillsInput();
-  renderExperienceEditor();
-  renderEducationEditor();
-  renderSkillsEditor();
-  renderCertificationsEditor();
-  renderProjectsEditor();
-  renderPreview();
-  renderCustomSectionsEditor();
-  renderSectionOrderEditor();  
   initSectionToggles();
   applyCollapsedState();
-  // If nothing is saved yet, save once so status isn't stuck
+  renderPreview();
   saveState();
+});
+
+$("btnPreview")?.addEventListener("click", () => {
+  renderPreview();
+  saveState();
+});
+
+$("btnClearSaved")?.addEventListener("click", () => {
+  clearSavedState();
+  // location.reload();
+});
+
+$("btnExportPdf")?.addEventListener("click", () => {
+  renderPreview();
+  saveState();
+  window.print();
+});
+
+// One-time initial paint
+syncLeftPanelVisibility();
+wireSkillsInput();
+renderExperienceEditor();
+renderEducationEditor();
+renderSkillsEditor();
+renderCertificationsEditor();
+renderProjectsEditor();
+renderCustomSectionsEditor();
+renderSectionOrderEditor();
+renderPreview();
+initSectionToggles();
+applyCollapsedState();
+saveState();
 }
 
 document.getElementById("buildId").textContent =
   new Date(document.lastModified).toLocaleString();
-  
-  bind();
-</script>
 
+bind();
+</script>
 </body>
 </html>
