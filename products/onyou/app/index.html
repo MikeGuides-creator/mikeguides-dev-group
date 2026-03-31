@@ -2548,14 +2548,7 @@ $("btnExportPdf")?.addEventListener("click", () => {
     // Optional: refresh to reset UI to defaults after clearing
     // location.reload();
   });
-   
-  // Export PDF (if you added the button)
-  $("btnExportPdf")?.addEventListener("click", () => {
-    renderPreview();
-    saveState();
-    window.print();
-  });
-
+  
   // One-time initial paint
   syncLeftPanelVisibility();
   wireSkillsInput();
