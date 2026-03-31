@@ -1,0 +1,2454 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OnYou Builder • MikeGuides Dev Group</title>
+
+  <link rel="stylesheet" href="../../../assets/css/site.css" />
+
+  <style>
+    .builder-layout{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+      padding: 32px 0 60px;
+    }
+    @media (min-width: 1000px){
+      .builder-layout{ grid-template-columns: 420px 1fr; }
+    }
+    
+  /* Resume preview template system */
+.ry{ font-family: Arial, sans-serif; color:#111; }
+.ry .ry-name{ margin:0; }
+.ry .ry-role{ margin-top:4px; }
+.ry .ry-contact{ margin-top:8px; }
+.ry .ry-summary{ line-height:1.6; margin:0; }
+.ry .ry-hr{
+  border: none;
+  border-top: 2px solid #94a3b8; /* slate-400 */
+  margin: 18px 0;
+}
+
+/* Center label divider */
+
+.ry-divider{
+  display:flex;
+  align-items:center;
+  margin:22px 0;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#334155;
+}
+
+.ry-divider::before,
+.ry-divider::after{
+  content:"";
+  flex:1;
+  border-top:2px solid #94a3b8; /* same divider color */
+}
+
+.ry-divider span{
+  padding:0 12px;
+  white-space:nowrap;
+}
+    
+/* Section title */
+.ry .ry-sec{ margin:18px 0 10px; text-transform:uppercase; letter-spacing:.08em; }
+
+/* ---------- MODERN (clean, crisp, contemporary) ---------- */
+.ry.modern{ font-family: Inter, Arial, sans-serif; }
+.ry.modern .ry-name{ font-size:28px; letter-spacing:-.02em; }
+.ry.modern .ry-role{ color:#444; font-size:14px; }
+.ry.modern .ry-contact{ color:#555; font-size:13px; }
+.ry.modern .ry-hr{ border-top:1px solid #e7e7e7; }
+.ry.modern .ry-sec{ font-size:13px; color:#444; }
+.ry.modern .ry-item-meta{ color:#666; font-size:13px; }
+.ry.modern .ry-item-desc{ color:#222; font-size:14px; line-height:1.5; }
+/* Modern subtle brand accents */
+#previewRoot .ry.modern .ry-name {
+  color: #1d4ed8;
+}
+
+#previewRoot .ry.modern .ry-sec {
+  border-left: 3px solid #1d4ed8;
+  padding-left: 10px;
+}
+    
+/* ---------- CLASSIC (traditional, formal, “office” resume) ---------- */
+.ry.classic{ font-family: Georgia, "Times New Roman", serif; }
+.ry.classic .ry-name{ font-size:30px; letter-spacing:0; }
+.ry.classic .ry-role{ color:#222; font-size:15px; font-style:italic; }
+.ry.classic .ry-contact{ color:#222; font-size:13px; }
+.ry.classic .ry-hr{ border-top:2px solid #111; margin:14px 0; }
+.ry.classic .ry-sec{
+  font-size:14px;
+  color:#111;
+  letter-spacing:.02em;
+  text-transform:none;
+  border-bottom:1px solid #111;
+  padding-bottom:6px;
+}
+.ry.classic .ry-item-meta{ color:#111; font-size:13px; }
+.ry.classic .ry-item-desc{ color:#111; font-size:14px; line-height:1.45; }
+
+/* ---------- MINIMAL (airy, modern editorial, no dividers) ---------- */
+.ry.minimal{ font-family: Inter, Arial, sans-serif; }
+.ry.minimal .ry-name{ font-size:26px; font-weight:700; }
+.ry.minimal .ry-role{ color:#555; font-size:13px; }
+.ry.minimal .ry-contact{ color:#777; font-size:12px; }
+.ry.minimal .ry-hr{ display:none; }
+.ry.minimal .ry-sec{
+  font-size:12px;
+  color:#666;
+  letter-spacing:.14em;
+  margin-top:22px;
+}
+.ry.minimal .ry-item-meta{ color:#777; font-size:12px; }
+.ry.minimal .ry-item-desc{ color:#222; font-size:13px; line-height:1.6; }  
+
+/* Custom blocks */
+
+.ry-bullets{
+  margin:6px 0 12px 18px;
+  padding:0;
+}
+.ry-bullets li{
+  margin-bottom:4px;
+  line-height:1.5;
+}
+
+.ry-quote{
+  margin:10px 0;
+  padding-left:14px;
+  border-left:3px solid #3b82f6; /* subtle blue accent */
+  font-style:italic;
+  color:#333;
+}
+
+.ry-quote-author{
+  margin-top:6px;
+  font-size:13px;
+  color:#666;
+  font-style:normal;
+}
+
+.ry-signature{
+  margin-top:12px;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+    
+   @media print {
+  header.topbar,
+  .panel:first-child,
+  #buildId {
+    display: none !important;
+  }
+
+  .builder-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .panel {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .preview-area {
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}
+
+/* Drag + collapse UI */
+.drag-handle{
+  cursor: grab;
+  font-weight: bold;
+  margin-right: 8px;
+  color: #64748b;
+  letter-spacing: 2px;
+}
+
+.drag-handle:active{
+  cursor: grabbing;
+}
+
+.block:hover .drag-handle{
+  color:#2563eb;
+}
+
+.collapse-toggle{
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  font-size:14px;
+  margin-right:6px;
+  color:#475569;
+  padding:0;
+}
+
+.collapse-toggle:hover{
+  color:#2563eb;
+}
+
+.custom-body[hidden]{
+  display:none !important;
+}
+
+/* Section wrappers */
+.section-toggle{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  cursor:pointer;
+}
+
+.section-toggle:hover{
+  background: rgba(255,255,255,.06);
+}
+
+.section-title{
+  font-weight:900;
+  font-size:13px;
+  color: var(--muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.section-body{
+  margin-top:10px;
+}
+
+.section-body[hidden]{
+  display:none !important;
+}        
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      min-width: 0;
+    }
+
+    .panel h2{
+      margin:0 0 12px;
+      font-family:Poppins,Inter,sans-serif;
+      font-size:18px;
+    }
+
+    .field-group{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    label{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    input, textarea, select{
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 12px;
+      color:var(--text);
+      font-size:14px;
+    }
+
+    /* Dropdown menu contrast fix */
+    select option{
+      color: black;
+      background: white;
+    }
+
+    textarea{ min-height:80px; resize:vertical; }
+
+    .preview-area{
+      background:white;
+      color:black;
+      border-radius:12px;
+      padding:24px;
+      min-height:540px;
+    }
+
+    .preview-muted{ color:#555; font-size:14px; }
+
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+
+    .block{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .block-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+
+    .block-title{
+      font-weight:900;
+      font-size:13px;
+      color: var(--muted);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .btn-sm{
+      padding:8px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+    
+    /* Reset builder button */
+#btnResetAll{
+  border-color:#cbd5e1;
+  color:#475569;
+}
+
+#btnResetAll:hover{
+  background:#f8fafc;
+}
+
+#btnUndoReset{
+  border-color:#bfdbfe;
+  color:#1d4ed8;
+}
+
+#btnUndoReset:hover{
+  background:#eff6ff;
+}
+    
+    .chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin: 8px 0 16px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  font-size:13px;
+}
+
+.chip button{
+  border:0;
+  background: transparent;
+  color: var(--muted);
+  cursor:pointer;
+  font-size:14px;
+  line-height:1;
+  padding:0;
+}
+    
+    .section-toggle{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  cursor:pointer;
+}
+    
+.section-toggle:hover{ background: rgba(255,255,255,.06); }
+
+.section-title{
+  font-weight:900;
+  font-size:13px;
+  color: var(--muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.section-body{ margin-top:10px; }
+.section-body[hidden]{ display:none !important; }
+    
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner container">
+    <a class="brand" href="../../">
+      <span class="brand-mark">MG</span>
+      <span class="brand-text">
+        <span class="brand-name">MikeGuides Dev Group</span>
+        <span class="brand-sub">OnYou Builder</span>
+      </span>
+    </a>
+
+    <div class="actions">
+      <a class="btn btn-ghost" href="../">Back to Product</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="builder-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="panel">
+      
+  <h2>Form Configuration</h2>
+
+  <div class="field-group">
+    <label for="templateType">Template Type</label>
+    <select id="templateType">
+      <option value="resume">Resume</option>
+      <option value="nda">NDA</option>
+      <option value="employment">Employment Application</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label for="resumeStyle">Resume Style</label>
+    <select id="resumeStyle">
+      <option value="modern">Modern</option>
+      <option value="classic">Classic</option>
+      <option value="minimal">Minimal</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label for="fullName">Full Name</label>
+    <input id="fullName" type="text" placeholder="John Doe" autocomplete="name">
+  </div>
+
+  <div class="field-group">
+    <label for="roleTitle">Title / Role</label>
+    <input id="roleTitle" type="text" placeholder="Project Manager" autocomplete="organization-title">
+  </div>
+
+  <div class="field-group">
+    <label for="summary">Summary</label>
+    <textarea id="summary" placeholder="Brief professional summary..."></textarea>
+  </div>
+
+  <div class="mini-divider"></div>
+  <div class="block-title">Contact</div>
+
+  <div class="field-group">
+    <label for="email">Email</label>
+    <input id="email" type="text" placeholder="email@example.com" autocomplete="email">
+  </div>
+
+  <div class="field-group">
+    <label for="phone">Phone</label>
+    <input id="phone" type="text" placeholder="(555) 123-4567" autocomplete="tel">
+  </div>
+
+  <div class="field-group">
+    <label for="address">Address</label>
+    <input id="address" type="text" placeholder="City, State">
+  </div>
+
+  <div class="field-group">
+    <label style="text-transform:none; letter-spacing:0; font-weight:600; color:var(--text);">
+      <input id="toggleHeadshot" type="checkbox" style="margin-right:8px;">
+      Include headshot placeholder
+    </label>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <!-- Experience -->
+<button class="section-toggle" type="button" data-toggle="experience">
+  <span class="section-title">Experience</span>
+  <span data-toggle-icon="experience">▾</span>
+</button>
+
+<div class="section-body" data-section-body="experience">
+  <div class="block-head" style="margin-top:10px;">
+    <div class="block-title">Experience</div>
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <button class="btn btn-ghost btn-sm" type="button" data-exp-collapse-all data-collapse-mode="collapse">Collapse All</button>
+      <button class="btn btn-ghost btn-sm" type="button" data-exp-expand-all data-collapse-mode="expand">Expand All</button>
+      <button id="btnAddExp" class="btn btn-ghost btn-sm" type="button">+ Add Experience</button>
+    </div>
+  </div>
+  <div id="expList"></div>
+</div>
+
+<div class="mini-divider"></div>    
+ 
+  <!-- Education -->
+  <button class="section-toggle" type="button" data-toggle="education">
+    <span class="section-title">Education</span>
+    <span data-toggle-icon="education">▾</span>
+  </button>
+
+  <div class="section-body" data-section-body="education">
+    <div class="block-head" style="margin-top:10px;">
+      <div class="block-title">Education</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="collapse">Collapse All</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-edu-collapse-all data-collapse-mode="expand">Expand All</button>
+        <button id="btnAddEdu" class="btn btn-ghost btn-sm" type="button">+ Add Education</button>
+      </div>
+    </div>
+    <div id="eduList"></div>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <!-- Skills -->
+  <button class="section-toggle" type="button" data-toggle="skills">
+    <span class="section-title">Skills</span>
+    <span data-toggle-icon="skills">▾</span>
+  </button>
+
+  <div class="section-body" data-section-body="skills">
+    <div class="block-head" style="margin-top:10px;">
+      <div class="block-title">Skills</div>
+    </div>
+
+    <div class="field-group">
+      <label for="skillInput">Add a skill (press Enter)</label>
+      <div style="display:flex; gap:10px;">
+        <input id="skillInput" type="text"
+               placeholder="e.g., Leadership, Excel, Classroom Management"
+               style="flex:1;">
+        <button id="btnAddSkill" type="button" class="btn">Add</button>
+      </div>
+    </div>
+
+    <div id="skillsChips" class="chips"></div>
+
+    <div class="field-group">
+      <label>
+        <input type="checkbox" id="toggleReferences">
+        Include "References Available Upon Request"
+      </label>
+    </div>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <!-- Certifications -->
+  <button class="section-toggle" type="button" data-toggle="certifications">
+    <span class="section-title">Certifications</span>
+    <span data-toggle-icon="certifications">▾</span>
+  </button>
+
+  <div class="section-body" data-section-body="certifications">
+    <div class="block-head" style="margin-top:10px;">
+      <div class="block-title">Certifications</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" type="button" data-cert-collapse-all data-collapse-mode="collapse">Collapse All</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-cert-collapse-all data-collapse-mode="expand">Expand All</button>
+        <button id="btnAddCert" class="btn btn-ghost btn-sm" type="button">+ Add Certification</button>
+      </div>
+    </div>
+    <div id="certList"></div>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <!-- Projects -->
+  <button class="section-toggle" type="button" data-toggle="projects">
+    <span class="section-title">Projects</span>
+    <span data-toggle-icon="projects">▾</span>
+  </button>
+
+  <div class="section-body" data-section-body="projects">
+    <div class="block-head" style="margin-top:10px;">
+      <div class="block-title">Projects</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>
+        <button id="btnAddProject" class="btn btn-ghost btn-sm" type="button">+ Add Project</button>
+      </div>
+    </div>
+    <div id="projectList"></div>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <!-- Custom Sections -->
+  <button class="section-toggle" type="button" data-toggle="customSections">
+    <span class="section-title">Custom Sections</span>
+    <span data-toggle-icon="customSections">▾</span>
+  </button>
+
+  <div class="section-body" data-section-body="customSections">
+    <div class="block-head" style="margin-top:10px;">
+      <div class="block-title">Custom Sections</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="collapse">Collapse All</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="expand">Expand All</button>
+        <button id="btnAddCustomSection" class="btn btn-ghost btn-sm" type="button">+ Add Block</button>
+      </div>
+    </div>
+
+    <div id="customSectionsList"></div>
+
+    <div class="hint" style="margin-top:10px;">
+      Custom sections can be moved in “Preview Section Order.”
+    </div>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <!-- Preview Section Order -->
+  <button class="section-toggle" type="button" data-toggle="sectionOrder">
+    <span class="section-title">Preview Section Order</span>
+    <span data-toggle-icon="sectionOrder">▾</span>
+  </button>
+
+  <div class="section-body" data-section-body="sectionOrder">
+    <div id="sectionOrderList"></div>
+    <div class="hint" style="margin-top:10px;">
+      This changes the order in the preview + PDF.
+    </div>
+  </div>
+
+  <div class="mini-divider"></div>
+
+  <button id="btnPreview" class="btn btn-wide" type="button">Generate Preview</button>
+  <button id="btnExportPdf" class="btn btn-wide" type="button">Export PDF</button>
+  <button id="btnResetAll" class="btn btn-ghost btn-wide" type="button">Start Over</button>
+  <button id="btnUndoReset" class="btn btn-ghost btn-wide" type="button">Undo Reset</button>
+
+  <div class="hint">Live preview updates as you type. Button will later run template + validation.</div>
+</div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <h2>Live Preview</h2>
+      <div class="preview-area" id="previewRoot"></div>
+    </div>
+    
+<div style="font-size:12px;color:#888;margin-top:-6px;">
+  Build: <span id="buildId"></span>
+</div>
+    
+  </div>
+
+</main>
+
+<script>
+
+const $ = (id) => document.getElementById(id);
+
+var STORAGE_KEY = "onyou_builder_v1";
+var BACKUP_STORAGE_KEY = "onyou_builder_backup_v1";
+
+const CUSTOM_BLOCK_TYPES = [
+  { value: "text", label: "Text" },
+  { value: "bullets", label: "Bullet List" },
+  { value: "divider", label: "Divider" },
+  { value: "quote", label: "Quote" },
+  { value: "signature", label: "Signature" },
+];
+
+function safeCloneState(){
+  // clone only the data we want saved (avoid functions/dom refs)
+  return JSON.parse(JSON.stringify(state));
+}
+
+function saveState(){
+  try{
+    const payload = safeCloneState();
+    payload._meta = payload._meta || {};
+    payload._meta.savedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    setSaveStatus("Saved ✓");
+  }catch(err){
+    console.warn("Autosave failed:", err);
+    setSaveStatus("Save failed");
+  }
+}
+
+function saveBackupState(){
+  try{
+    const payload = JSON.parse(JSON.stringify(state));
+    localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(payload));
+    return true;
+  }catch(err){
+    console.warn("Backup save failed:", err);
+    return false;
+  }
+}
+
+function loadBackupState(){
+  try{
+    const raw = localStorage.getItem(BACKUP_STORAGE_KEY);
+    if (!raw) return false;
+
+    const data = JSON.parse(raw);
+
+    // clear current state object but keep same reference
+    Object.keys(state).forEach(key => {
+      delete state[key];
+    });
+
+    Object.assign(state, data);
+
+    migrateCustomSections();
+    normalizeSectionOrder();
+
+    return true;
+  }catch(err){
+    console.warn("Backup load failed:", err);
+    return false;
+  }
+}
+
+function clearBackupState(){
+  localStorage.removeItem(BACKUP_STORAGE_KEY);
+}
+  
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+
+    // merge into existing state object (keeps references stable)
+    Object.keys(data).forEach(k => { state[k] = data[k]; });
+
+    state.resumeStyle = state.resumeStyle || "modern";
+    
+    // ensure your runtime-only fields exist
+    if (state._editingSkillIndex === undefined) state._editingSkillIndex = null;
+    state.skills = Array.isArray(state.skills) ? state.skills : [];
+    state.sectionOrder = Array.isArray(state.sectionOrder) && state.sectionOrder.length
+  ? state.sectionOrder
+  : ["experience","education","skills","projects","certifications"];
+    
+    return true;
+  }catch(err){
+    console.warn("Load failed:", err);
+    return false;
+  }
+}
+
+function migrateCustomSections(){
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+
+  state.customSections.forEach(sec => {
+    // Ensure id
+    if (!sec.id) sec.id = uid("custom");
+
+    // Default type
+    if (!sec.type) sec.type = "text";
+
+    // Ensure fields exist per type
+    if (sec.type === "bullets") {
+      sec.items = Array.isArray(sec.items) ? sec.items : [];
+      if (sec.items.length === 0 && typeof sec.content === "string" && sec.content.trim()) {
+        sec.items = sec.content.split("\n").map(x => x.trim()).filter(Boolean);
+      }
+    } else {
+      sec.content = String(sec.content || "");
+    }
+
+    // Quote attribution
+    if (sec.type === "quote") {
+      sec.author = String(sec.author || "");
+    }
+  });
+}
+  
+function clearSavedState(){
+  localStorage.removeItem(STORAGE_KEY);
+  setSaveStatus("Cleared");
+}
+
+let saveTimer = null;
+function scheduleSave(){
+  setSaveStatus("Saving…");
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveState, 350); // debounce
+}
+
+function setSaveStatus(text){
+  const el = document.getElementById("saveStatus");
+  if (el) el.textContent = text;
+}
+  
+  function moveItem(arr, from, to){
+  if (!Array.isArray(arr)) return;
+  if (from === to) return;
+  if (from < 0 || from >= arr.length) return;
+  if (to < 0 || to >= arr.length) return;
+  const [item] = arr.splice(from, 1);
+  arr.splice(to, 0, item);
+}
+
+  function normalizeSectionOrder(){
+  const core = ["experience","education","skills","projects","certifications"];
+
+  const customIds = new Set((state.customSections || []).map(s => s.id));
+  const isCustomKey = (k) => typeof k === "string" && k.startsWith("custom:");
+  const customIdFromKey = (k) => k.slice("custom:".length);
+
+  const current = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
+  const cleaned = [];
+
+  // keep only valid core + valid custom keys
+  current.forEach(k => {
+    if (core.includes(k)) cleaned.push(k);
+    else if (isCustomKey(k) && customIds.has(customIdFromKey(k))) cleaned.push(k);
+  });
+
+  // ensure all core sections exist
+  core.forEach(k => { if (!cleaned.includes(k)) cleaned.push(k); });
+
+  // ensure all custom sections exist (append any missing)
+  (state.customSections || []).forEach(s => {
+    const key = `custom:${s.id}`;
+    if (!cleaned.includes(key)) cleaned.push(key);
+  });
+
+  state.sectionOrder = cleaned;
+}
+  
+  function enableDragReorder(hostEl, list, rerender){
+  if (!hostEl || hostEl.dataset.dragWired === "1") return;
+  hostEl.dataset.dragWired = "1";
+
+  let fromIndex = null;
+
+  hostEl.addEventListener("dragstart", (e) => {
+    const item = e.target.closest("[data-drag-index]");
+    if (!item) return;
+    fromIndex = Number(item.getAttribute("data-drag-index"));
+    e.dataTransfer.effectAllowed = "move";
+  });
+
+  hostEl.addEventListener("dragover", (e) => {
+    if (fromIndex === null) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  });
+
+  hostEl.addEventListener("drop", (e) => {
+    const item = e.target.closest("[data-drag-index]");
+    if (!item) return;
+    e.preventDefault();
+
+    const toIndex = Number(item.getAttribute("data-drag-index"));
+
+    if (Number.isFinite(fromIndex) && Number.isFinite(toIndex)) {
+      moveItem(list, fromIndex, toIndex);
+
+      if (typeof rerender === "function") rerender();
+      renderPreview();
+
+      if (typeof scheduleSave === "function") scheduleSave();
+    }
+
+    fromIndex = null;
+  });
+
+  hostEl.addEventListener("dragend", () => {
+    fromIndex = null;
+  });
+}
+  
+ const state = {
+    templateType: "resume",
+    fullName: "John Doe",
+    roleTitle: "Project Manager",
+    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
+
+    email: "john@example.com",
+    phone: "(555) 123-4567",
+    address: "Chicago, IL",
+    showHeadshot: true,
+   
+  experience: [
+      {
+        company: "Acme Construction",
+        role: "Project Manager",
+        dates: "2022 – Present",
+        location: "Chicago, IL",
+        desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
+      }
+    ],
+
+    education: [
+      {
+        school: "State University",
+        degree: "B.S. Business Administration",
+        dates: "2018 – 2022",
+        location: "Springfield, IL",
+        notes: "Relevant coursework: operations, finance, project management."
+      }
+    ],
+    
+    certifications: [
+  {
+    name: "PMP Certification",
+    issuer: "Project Management Institute",
+    year: "2023"
+  }
+],
+
+projects: [
+  {
+    title: "Warehouse Optimization Initiative",
+    role: "Lead Coordinator",
+    desc: "Reduced operating costs by 18% through logistics restructuring."
+  }
+],
+
+showReferences: false,
+    };
+
+  state._editingSkillIndex = null;
+  
+  state.sectionOrder = Array.isArray(state.sectionOrder) && state.sectionOrder.length
+  ? state.sectionOrder
+  : ["experience","education","skills","projects","certifications"];
+  
+  function esc(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function syncLeftPanelVisibility(){
+    const show = state.templateType === "resume";
+    const expHost = $("expList");
+    const eduHost = $("eduList");
+    const addExp = $("btnAddExp");
+    const addEdu = $("btnAddEdu");
+
+    if (expHost) expHost.style.display = show ? "" : "none";
+    if (eduHost) eduHost.style.display = show ? "" : "none";
+    if (addExp) addExp.style.display = show ? "" : "none";
+    if (addEdu) addEdu.style.display = show ? "" : "none";
+  }
+
+  function getExperienceLabel(x, idx) {
+  const role = (x.role || "").trim();
+  const company = (x.company || "").trim();
+
+  if (role && company) return `${role} — ${company}`;
+  if (role) return role;
+  if (company) return company;
+  return `Entry ${idx + 1}`;
+}
+
+function ensureExperienceCollapsedFlags() {
+  state.experience.forEach(item => {
+    if (typeof item.collapsed !== "boolean") {
+      item.collapsed = false;
+    }
+  });
+}
+
+function renderExperienceEditor() {
+  const host = $("expList");
+  if (!host) return;
+
+  ensureExperienceCollapsedFlags();
+
+  host.innerHTML = state.experience.map((x, idx) => {
+    const isCollapsed = x.collapsed;
+    const label = getExperienceLabel(x, idx);
+
+    return `
+      <div class="block ${isCollapsed ? "is-collapsed" : ""}">
+        <div class="block-head">
+          <div class="block-title">
+            <button class="collapse-toggle" type="button" data-exp-toggle="${idx}" aria-label="${isCollapsed ? "Expand entry" : "Collapse entry"}">
+              ${isCollapsed ? "▸" : "▾"}
+            </button>
+            <span class="block-title-text">${esc(label)}</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
+        </div>
+
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+          <div class="field-group">
+            <label for="exp_company_${idx}">Company</label>
+            <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
+          </div>
+
+          <div class="field-group">
+            <label for="exp_role_${idx}">Role / Title</label>
+            <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
+          </div>
+
+          <div class="field-group">
+            <label for="exp_dates_${idx}">Dates</label>
+            <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
+          </div>
+
+          <div class="field-group">
+            <label for="exp_location_${idx}">Location</label>
+            <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+          </div>
+
+          <div class="field-group">
+            <label for="exp_desc_${idx}">Description</label>
+            <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  state.experience.forEach((_, idx) => {
+    $("exp_company_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].company = e.target.value;
+      renderExperienceEditor();
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("exp_role_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].role = e.target.value;
+      renderExperienceEditor();
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("exp_dates_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].dates = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("exp_location_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].location = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("exp_desc_" + idx)?.addEventListener("input", (e) => {
+      state.experience[idx].desc = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-exp-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-exp-toggle"));
+      toggleItemCollapsed(state.experience, i);
+      renderExperienceEditor();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-exp-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-exp-remove"));
+      state.experience.splice(i, 1);
+      renderExperienceEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  bindHeaderToggleAll(host, "[data-exp-collapse-all]", state.experience, renderExperienceEditor);
+}
+
+function normalizeSkill(s){
+  return (s || "").trim().replace(/\s+/g, " ");
+}
+  
+  
+function normalizeSkill(s){
+  return (s || "").trim().replace(/\s+/g, " ");
+}
+
+function renderSkillsEditor(){
+  const host = $("skillsChips");
+  if (!host) return;
+
+  host.innerHTML = (state.skills || []).map((s, idx) => `
+    <span class="chip" data-skill-edit="${idx}" title="Click to edit">
+      ${esc(s)}
+      <button type="button" aria-label="Remove skill" data-skill-remove="${idx}">✕</button>
+    </span>
+  `).join("");
+
+  // Remove (don’t trigger edit)
+  host.querySelectorAll("[data-skill-remove]").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const i = Number(btn.getAttribute("data-skill-remove"));
+      state.skills.splice(i, 1);
+
+      if (state._editingSkillIndex === i) state._editingSkillIndex = null;
+      else if (state._editingSkillIndex !== null && state._editingSkillIndex > i) {
+        state._editingSkillIndex--;
+      }
+
+      renderSkillsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // Click-to-edit
+  host.querySelectorAll("[data-skill-edit]").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const i = Number(chip.getAttribute("data-skill-edit"));
+      const input = $("skillInput");
+      if (!input) return;
+
+      state._editingSkillIndex = i;
+      input.value = state.skills[i] || "";
+      input.focus();
+      input.select?.();
+    });
+  });
+}
+
+ function renderCustomSectionsEditor(){
+  const host = $("customSectionsList");
+  if (!host) return;
+
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+  migrateCustomSections();
+
+  host.innerHTML = state.customSections.map((s, idx) => `
+    <div class="block" draggable="true" data-drag-index="${idx}">
+      <div class="block-head">
+        <div class="block-title">
+          <span class="drag-handle">⋮⋮</span>
+          <button class="collapse-toggle" type="button" data-custom-toggle="${idx}">
+            ${s.collapsed ? "▸" : "▾"}</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="collapse">Collapse All</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-custom-collapse-all data-collapse-mode="expand">Expand All</button>
+          Custom ${idx + 1}
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-custom-duplicate="${idx}">Duplicate</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-custom-remove="${idx}">Remove</button>
+        </div>
+      </div>
+
+      <div class="custom-body" ${s.collapsed ? "hidden" : ""}>
+        <div class="field-group">
+          <label for="custom_title_${idx}">Title</label>
+          <input id="custom_title_${idx}" type="text" value="${esc(s.title)}" placeholder="e.g., Highlights" />
+        </div>
+
+        <div class="field-group">
+          <label for="custom_type_${idx}">Block Type</label>
+          <select id="custom_type_${idx}">
+            ${CUSTOM_BLOCK_TYPES.map(t => `
+              <option value="${t.value}" ${s.type === t.value ? "selected" : ""}>${t.label}</option>
+            `).join("")}
+          </select>
+        </div>
+
+        ${s.type === "bullets" ? `
+          <div class="field-group">
+            <label for="custom_bullets_${idx}">Bullets (one per line)</label>
+            <textarea id="custom_bullets_${idx}" placeholder="First point&#10;Second point&#10;Third point">${esc((s.items || []).join("\n"))}</textarea>
+          </div>
+        ` : s.type === "divider" ? `
+          <div class="hint">Divider shows as a clean separator line in the preview.</div>
+        ` : s.type === "signature" ? `
+          <div class="field-group">
+            <label for="custom_sig_${idx}">Signature line</label>
+            <input id="custom_sig_${idx}" type="text" value="${esc(s.content || "")}" placeholder="John Doe" />
+          </div>
+        ` : s.type === "quote" ? `
+          <div class="field-group">
+            <label for="custom_quote_${idx}">Quote</label>
+            <textarea id="custom_quote_${idx}" placeholder="Type a quote...">${esc(s.content || "")}</textarea>
+          </div>
+          <div class="field-group">
+            <label for="custom_quote_by_${idx}">Attribution (optional)</label>
+            <input id="custom_quote_by_${idx}" type="text" value="${esc(s.author || "")}" placeholder="— Name" />
+          </div>
+        ` : `
+          <div class="field-group">
+            <label for="custom_content_${idx}">Content</label>
+            <textarea id="custom_content_${idx}" placeholder="Write anything here...">${esc(s.content || "")}</textarea>
+          </div>
+        `}
+      </div>
+    </div>
+  `).join("");
+
+   bindHeaderToggleAll(host, "[data-custom-collapse-all]", state.customSections, renderCustomSectionsEditor);
+   
+  // Title
+  state.customSections.forEach((_, idx) => {
+    $("custom_title_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].title = e.target.value;
+      normalizeSectionOrder();
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Type
+    $("custom_type_" + idx)?.addEventListener("change", (e) => {
+      const sec = state.customSections[idx];
+      const nextType = e.target.value;
+
+      sec.type = nextType;
+
+      if (nextType === "bullets") {
+        sec.items = Array.isArray(sec.items) ? sec.items : [];
+        if (!sec.items.length && sec.content) {
+          sec.items = String(sec.content).split("\n").map(x => x.trim()).filter(Boolean);
+        }
+        sec.content = sec.items.join("\n");
+      } else if (nextType === "quote") {
+        sec.content = String(sec.content || "");
+        sec.author = String(sec.author || "");
+      } else if (nextType === "divider") {
+        sec.content = "";
+      } else {
+        sec.content = String(sec.content || "");
+      }
+
+      normalizeSectionOrder();
+      renderCustomSectionsEditor();
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Text
+    $("custom_content_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].content = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Bullets
+    $("custom_bullets_" + idx)?.addEventListener("input", (e) => {
+      const lines = String(e.target.value || "")
+        .split("\n").map(x => x.trim()).filter(Boolean);
+
+      state.customSections[idx].items = lines;
+      state.customSections[idx].content = lines.join("\n");
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Signature
+    $("custom_sig_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].content = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    // Quote
+    $("custom_quote_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].content = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("custom_quote_by_" + idx)?.addEventListener("input", (e) => {
+      state.customSections[idx].author = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // Collapse / Expand
+  host.querySelectorAll("[data-custom-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-custom-toggle"));
+      const sec = state.customSections[i];
+      if (!sec) return;
+
+      sec.collapsed = !sec.collapsed;
+      renderCustomSectionsEditor();
+      scheduleSave();
+    });
+  });
+
+  // Duplicate
+  host.querySelectorAll("[data-custom-duplicate]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-custom-duplicate"));
+      const original = state.customSections[i];
+      if (!original) return;
+
+      const clone = JSON.parse(JSON.stringify(original));
+      clone.id = uid("custom");
+      clone.title = `${clone.title || "Custom Section"} Copy`;
+
+      state.customSections.splice(i + 1, 0, clone);
+
+      normalizeSectionOrder();
+      renderCustomSectionsEditor();
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // Remove
+  host.querySelectorAll("[data-custom-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-custom-remove"));
+      const removed = state.customSections.splice(i, 1)[0];
+
+      if (removed?.id){
+        const key = `custom:${removed.id}`;
+        state.sectionOrder = (state.sectionOrder || []).filter(k => k !== key);
+      }
+
+      normalizeSectionOrder();
+      renderCustomSectionsEditor();
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // Drag reorder within custom list
+  enableDragReorder(host, state.customSections, () => {
+    const core = ["experience","education","skills","projects","certifications"];
+    const customKeys = state.customSections.map(sec => `custom:${sec.id}`);
+    state.sectionOrder = (state.sectionOrder || [])
+      .filter(k => core.includes(k))
+      .concat(customKeys);
+
+    renderCustomSectionsEditor();
+    renderSectionOrderEditor();
+    renderPreview();
+    scheduleSave();
+  });
+}
+  
+  function renderEducationEditor(){
+  const host = $("eduList");
+  if (!host) return;
+
+  host.innerHTML = state.education.map((x, idx) => {
+    const isCollapsed = !!x.collapsed;
+
+    return `
+      
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+          <div class="field-group">
+            <label for="edu_school_${idx}">School</label>
+            <input id="edu_school_${idx}" type="text" value="${esc(x.school)}" placeholder="School / Institution" />
+          </div>
+
+          <div class="field-group">
+            <label for="edu_degree_${idx}">Degree / Program</label>
+            <input id="edu_degree_${idx}" type="text" value="${esc(x.degree)}" placeholder="Degree or program" />
+          </div>
+
+          <div class="field-group">
+            <label for="edu_dates_${idx}">Dates</label>
+            <input id="edu_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2018 – 2022" />
+          </div>
+
+          <div class="field-group">
+            <label for="edu_location_${idx}">Location</label>
+            <input id="edu_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+          </div>
+
+          <div class="field-group">
+            <label for="edu_notes_${idx}">Notes</label>
+            <textarea id="edu_notes_${idx}" placeholder="Honors, coursework, focus...">${esc(x.notes)}</textarea>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  state.education.forEach((_, idx) => {
+    $("edu_school_" + idx)?.addEventListener("input", (e) => {
+      state.education[idx].school = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("edu_degree_" + idx)?.addEventListener("input", (e) => {
+      state.education[idx].degree = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("edu_dates_" + idx)?.addEventListener("input", (e) => {
+      state.education[idx].dates = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("edu_location_" + idx)?.addEventListener("input", (e) => {
+      state.education[idx].location = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("edu_notes_" + idx)?.addEventListener("input", (e) => {
+      state.education[idx].notes = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+    bindHeaderToggleAll(host, "[data-edu-collapse-all]", state.education, renderEducationEditor);
+    
+  host.querySelectorAll("[data-edu-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-edu-toggle"));
+      toggleItemCollapsed(state.education, i);
+      renderEducationEditor();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-edu-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-edu-remove"));
+      state.education.splice(i, 1);
+      renderEducationEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+}
+  
+  function toggleItemCollapsed(list, index){
+  if (!Array.isArray(list) || !list[index]) return;
+  list[index].collapsed = !list[index].collapsed;
+}
+  
+  function renderCustomSectionPreview(sec){
+  if (!sec) return "";
+
+  const title = esc(sec.title || "Custom Section");
+  const type = sec.type || "text";
+
+  // Divider block (with centered label)
+  if (type === "divider"){
+  const label = esc(sec.title || "");
+  return `
+    <div class="ry-divider">
+      ${label ? `<span>${label}</span>` : ""}
+    </div>
+  `;
+}
+
+  // Bullet list
+  if (type === "bullets"){
+    const items = (sec.items || [])
+      .map(x => `<li>${esc(x)}</li>`)
+      .join("");
+
+    if (!items) return "";
+
+    return `
+      <h4 class="ry-sec">${title}</h4>
+      <ul class="ry-bullets">
+        ${items}
+      </ul>
+    `;
+  }
+
+  // Quote block
+  if (type === "quote"){
+    const quote = esc(sec.content || "");
+    const author = esc(sec.author || "");
+
+    return `
+      <h4 class="ry-sec">${title}</h4>
+      <blockquote class="ry-quote">
+        ${quote}
+        ${author ? `<div class="ry-quote-author">— ${author}</div>` : ""}
+      </blockquote>
+    `;
+  }
+
+  // Signature block
+  if (type === "signature"){
+    const sig = esc(sec.content || "");
+    return `
+      <h4 class="ry-sec">${title}</h4>
+      <div class="ry-signature">${sig}</div>
+    `;
+  }
+
+  // Default text block
+  const body = esc(sec.content || "");
+
+  return `
+    <h4 class="ry-sec">${title}</h4>
+    <div class="ry-item-desc">${body.replaceAll("\n","<br>")}</div>
+  `;
+}
+  
+function renderCertificationsEditor(){
+  const host = $("certList");
+  if (!host) return;
+
+  host.innerHTML = (state.certifications || []).map((c, idx) => {
+    const isCollapsed = !!c.collapsed;
+
+    return `
+     
+        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+          <div class="field-group">
+            <label for="cert_name_${idx}">Name</label>
+            <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
+          </div>
+
+          <div class="field-group">
+            <label for="cert_issuer_${idx}">Issuer</label>
+            <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
+          </div>
+
+          <div class="field-group">
+            <label for="cert_year_${idx}">Year</label>
+            <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  (state.certifications || []).forEach((_, idx) => {
+    $("cert_name_" + idx)?.addEventListener("input", (e) => {
+      state.certifications[idx].name = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("cert_issuer_" + idx)?.addEventListener("input", (e) => {
+      state.certifications[idx].issuer = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+
+    $("cert_year_" + idx)?.addEventListener("input", (e) => {
+      state.certifications[idx].year = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  bindHeaderToggleAll(host, "[data-cert-collapse-all]", state.certifications, renderCertificationsEditor);
+  
+  host.querySelectorAll("[data-cert-toggle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-toggle"));
+      toggleItemCollapsed(state.certifications, i);
+      renderCertificationsEditor();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll(".block-head").forEach((head, idx) => {
+  head.addEventListener("click", (e) => {
+
+    // ignore clicks on buttons
+    if (e.target.closest("button")) return;
+
+    toggleItemCollapsed(state.certifications, idx);
+    renderCertificationsEditor();
+    scheduleSave();
+
+  });
+});
+  
+  host.querySelectorAll("[data-cert-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-remove"));
+      state.certifications.splice(i, 1);
+      renderCertificationsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-cert-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-up"));
+      moveItem(state.certifications, i, i - 1);
+      renderCertificationsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-cert-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-cert-down"));
+      moveItem(state.certifications, i, i + 1);
+      renderCertificationsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  enableDragReorder(host, state.certifications, () => {
+    renderCertificationsEditor();
+    renderPreview();
+    scheduleSave();
+  });
+}
+    
+ function renderProjectsEditor(){
+  const host = $("projectList");
+  if (!host) return;
+
+  host.innerHTML = (state.projects || []).map((p, idx) => `
+    <div class="block" draggable="true" data-drag-index="${idx}">
+      <div class="block-head">
+      <div class="block-title">Projects</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-down="${idx}" ${idx===(state.projects.length-1) ? "disabled" : ""}>↓</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-proj-remove="${idx}">Remove</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="proj_title_${idx}">Title</label>
+        <input id="proj_title_${idx}" type="text" value="${esc(p.title)}" placeholder="Project title" />
+      </div>
+
+      <div class="field-group">
+        <label for="proj_role_${idx}">Your Role</label>
+        <input id="proj_role_${idx}" type="text" value="${esc(p.role)}" placeholder="Your role" />
+      </div>
+
+      <div class="field-group">
+        <label for="proj_desc_${idx}">Description</label>
+        <textarea id="proj_desc_${idx}" placeholder="What changed because you did it?">${esc(p.desc)}</textarea>
+      </div>
+    </div>
+  `).join("");
+
+  (state.projects || []).forEach((_, idx) => {
+    $("proj_title_" + idx)?.addEventListener("input", (e) => {
+      state.projects[idx].title = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("proj_role_" + idx)?.addEventListener("input", (e) => {
+      state.projects[idx].role = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+    $("proj_desc_" + idx)?.addEventListener("input", (e) => {
+      state.projects[idx].desc = e.target.value;
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+   bindHeaderToggleAll(host, "[data-proj-collapse-all]", state.projects, renderProjectsEditor);
+   
+  host.querySelectorAll("[data-proj-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-remove"));
+      state.projects.splice(i, 1);
+      renderProjectsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+   
+  host.querySelectorAll("[data-proj-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-up"));
+      moveItem(state.projects, i, i - 1);
+      renderProjectsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-proj-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-proj-down"));
+      moveItem(state.projects, i, i + 1);
+      renderProjectsEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  // Drag enable (save will happen after rerender+preview via the callback)
+  enableDragReorder(host, state.projects, () => {
+    renderProjectsEditor();
+    scheduleSave(); // <- ensures drag reorder is persisted
+  });
+}
+
+const SECTION_LABELS = {
+  experience: "Experience",
+  education: "Education",
+  skills: "Skills",
+  projects: "Projects",
+  certifications: "Certifications",
+};
+
+function renderSectionOrderEditor(){
+  const host = $("sectionOrderList");
+  if (!host) return;
+
+  normalizeSectionOrder();
+
+  host.innerHTML = state.sectionOrder.map((key, idx) => `
+    <div class="block" style="padding:10px 12px;">
+      <div class="block-head" style="margin:0;">
+        <div class="block-title">${
+  key.startsWith("custom:")
+    ? esc(getCustomSectionById(key.slice("custom:".length))?.title || "Custom Section")
+    : esc(SECTION_LABELS[key] || key)
+}</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-ghost btn-sm" type="button" data-sec-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-sec-down="${idx}" ${idx===(state.sectionOrder.length-1) ? "disabled" : ""}>↓</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  host.querySelectorAll("[data-sec-up]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-sec-up"));
+      moveItem(state.sectionOrder, i, i - 1);
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+
+  host.querySelectorAll("[data-sec-down]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.getAttribute("data-sec-down"));
+      moveItem(state.sectionOrder, i, i + 1);
+      renderSectionOrderEditor();
+      renderPreview();
+      scheduleSave();
+    });
+  });
+}
+  
+  function renderExperiencePreview(){
+    if (!state.experience.length) {
+      return `<p class="preview-muted"><strong>Experience:</strong> (none yet)</p>`;
+    }
+    return `
+      <h4 class="ry-sec">Experience</h4>
+      ${state.experience.map(x => `
+        <div style="margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <div><strong>${esc(x.role || " ")}</strong> — ${esc(x.company || " ")}</div>
+            <div style="color:#666; font-size:13px;">${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}</div>
+          </div>
+          <div style="margin-top:6px; color:#222; font-size:14px; line-height:1.5;">${esc(x.desc || " ")}</div>
+        </div>
+      `).join("")}
+    `;
+  }
+
+  function renderEducationPreview(){
+  if (!state.education.length) {
+    return `<p class="preview-muted"><strong>Education:</strong> (none yet)</p>`;
+  }
+
+  return `
+    <h4 class="ry-sec">Education</h4>
+    ${state.education.map(x => `
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+          <div><strong>${esc(x.degree || " ")}</strong> — ${esc(x.school || " ")}</div>
+
+          <div class="ry-item-meta">
+            ${esc(x.dates || "")}${x.location ? " • " + esc(x.location) : ""}
+          </div>
+        </div>
+
+        ${x.notes ? `
+          <div class="ry-item-desc">
+            ${esc(x.notes)}
+          </div>
+        ` : ""}
+      </div>
+    `).join("")}
+  `;
+}
+
+ function renderSkillsPreview(){
+  if (!state.skills || !state.skills.length) {
+    return `<p class="preview-muted"><strong>Skills:</strong> (none yet)</p>`;
+  }
+   
+  return `
+   <h4 class="ry-sec">Skills</h4>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      ${state.skills.map(s => `
+        <span style="display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid #e7e7e7;font-size:13px;color:#222;">
+          ${esc(s)}
+        </span>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderCertificationsPreview() {
+  if (!state.certifications?.length) return "";
+
+  return `
+    <h4 class="ry-sec">Certifications</h4>
+    ${state.certifications.map(c => `
+      <div style="margin-bottom:6px;">
+        <strong>${esc(c.name)}</strong>
+        ${c.issuer ? ` — ${esc(c.issuer)}` : ""}
+        ${c.year ? ` (${esc(c.year)})` : ""}
+      </div>
+    `).join("")}
+  `;
+}
+  
+function renderProjectsPreview() {
+  if (!state.projects?.length) return "";
+
+  return `
+    <h4 class="ry-sec">Projects</h4>
+    ${state.projects.map(p => `
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:600;">
+          ${esc(p.title)}
+          ${p.role ? ` — ${esc(p.role)}` : ""}
+        </div>
+
+        ${p.desc ? `
+          <div class="ry-item-desc">
+            ${esc(p.desc)}
+          </div>
+        ` : ""}
+      </div>
+    `).join("")}
+  `;
+}
+
+function renderSectionsByOrder(){
+  normalizeSectionOrder();
+
+  const map = {
+    experience: renderExperiencePreview,
+    education: renderEducationPreview,
+    skills: renderSkillsPreview,
+    projects: renderProjectsPreview,
+    certifications: renderCertificationsPreview,
+  };
+
+  return (state.sectionOrder || []).map((key, idx) => {
+    let html = "";
+
+    if (typeof key === "string" && key.startsWith("custom:")){
+      const id = key.slice("custom:".length);
+      const sec = getCustomSectionById(id);
+      html = sec ? renderCustomSectionPreview(sec) : "";
+    } else {
+      const fn = map[key];
+      html = typeof fn === "function" ? fn() : "";
+    }
+
+    return `
+      <section class="ry-reorder-item" draggable="true" data-drag-index="${idx}">
+        ${html}
+      </section>
+    `;
+  }).join("");
+}
+
+function initSectionToggles(){
+  document.querySelectorAll("[data-toggle]").forEach(btn => {
+    if (btn.dataset.wired === "1") return;
+    btn.dataset.wired = "1";
+
+    btn.addEventListener("click", () => {
+      const key = btn.getAttribute("data-toggle");
+      const body = document.querySelector(`[data-section-body="${key}"]`);
+      const icon = document.querySelector(`[data-toggle-icon="${key}"]`);
+      if (!body) return;
+
+      const nowCollapsed = !body.hasAttribute("hidden");
+      if (nowCollapsed) body.setAttribute("hidden", "");
+      else body.removeAttribute("hidden");
+
+      if (icon) icon.textContent = nowCollapsed ? "▸" : "▾";
+
+      // remember collapsed state
+      state._ui = state._ui || {};
+      state._ui.collapsed = state._ui.collapsed || {};
+      state._ui.collapsed[key] = nowCollapsed;
+
+      scheduleSave?.();
+    });
+  });
+}
+
+function applyCollapsedState(){
+  const collapsed = state._ui?.collapsed || {};
+  Object.entries(collapsed).forEach(([key, isCollapsed]) => {
+    const body = document.querySelector(`[data-section-body="${key}"]`);
+    const icon = document.querySelector(`[data-toggle-icon="${key}"]`);
+    if (!body) return;
+
+    if (isCollapsed) body.setAttribute("hidden", "");
+    else body.removeAttribute("hidden");
+
+    if (icon) icon.textContent = isCollapsed ? "▸" : "▾";
+  });
+}
+
+function setAllCollapsed(list, collapsed){
+  if (!Array.isArray(list)) return;
+  list.forEach(item => {
+    if (item) item.collapsed = collapsed;
+  });
+}
+
+function bindHeaderToggleAll(host, selector, list, rerender){
+  host.querySelectorAll(selector).forEach(btn => {
+    btn.addEventListener("click", () => {
+      const shouldCollapse = btn.getAttribute("data-collapse-mode") === "collapse";
+      setAllCollapsed(list, shouldCollapse);
+      rerender();
+      scheduleSave();
+    });
+  });
+}
+  
+  function renderReferencesPreview(){
+  if (!state.showReferences) return "";
+  return `<p style="margin-top:20px;font-style:italic;">References available upon request.</p>`;
+}
+  
+function renderResume(){
+  const name = esc(state.fullName?.trim() || "—");
+  const role = esc(state.roleTitle?.trim() || " ");
+  const email = esc(state.email?.trim() || "");
+  const phone = esc(state.phone?.trim() || "");
+  const address = esc(state.address?.trim() || "");
+  const summary = esc(state.summary?.trim() || " ");
+
+  const contactBits = [email, phone, address].filter(Boolean).join(" • ");
+
+  const headshot = state.showHeadshot
+    ? `<div class="ry-headshot" style="width:90px;height:90px;border-radius:50%;background:#e7e7e7;flex:0 0 auto;"></div>`
+    : "";
+
+  const style = (state.resumeStyle || "modern");
+
+  return `
+    <div class="ry ${style}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="min-width:260px;">
+          <h2 class="ry-name">${name}</h2>
+          <div class="ry-role">${role}</div>
+          <div class="ry-contact">${contactBits || " "}</div>
+        </div>
+        ${headshot}
+      </div>
+
+      <hr class="ry-hr">
+
+      <p class="ry-summary">${summary}</p>
+
+      <hr class="ry-hr">
+
+      ${renderSectionsByOrder()}
+      ${renderReferencesPreview()}
+    </div>
+  `;
+}
+  
+  function renderNDA(){
+    const name = esc(state.fullName.trim() || "—");
+    return `
+      <h3 style="margin-top:0;">Mutual NDA</h3>
+      <p class="preview-muted">Draft preview (template switch demo)</p>
+      <p><strong>Parties:</strong> ${name} (“Receiving Party”) and __________________ (“Disclosing Party”).</p>
+      <p><strong>Purpose:</strong> ${esc(state.summary.trim() || " ")}</p>
+      <p><strong>Confidentiality:</strong> Receiving Party agrees to protect confidential information and not disclose it to third parties.</p>
+      <p><strong>Term:</strong> ____ years from the Effective Date.</p>
+    `;
+  }
+
+  function renderEmployment(){
+    const name = esc(state.fullName.trim() || "—");
+    return `
+      <h3 style="margin-top:0;">Employment Application</h3>
+      <p class="preview-muted">Draft preview (template switch demo)</p>
+      <p><strong>Applicant:</strong> ${name}</p>
+      <p><strong>Desired Position:</strong> ${esc(state.roleTitle.trim() || " ")}</p>
+      <p><strong>Notes:</strong> ${esc(state.summary.trim() || " ")}</p>
+    `;
+  }
+
+  function renderPreview(){
+  const root = $("previewRoot");
+  if (!root) return;
+
+  try{
+    root.innerHTML =
+      state.templateType === "resume"
+        ? renderResume()
+        : renderResume(); // future template types
+  }
+  catch(err){
+    console.error("Preview render failed:", err);
+    root.innerHTML = `
+      <div style="padding:20px;color:#b91c1c;font-weight:600;">
+        Preview rendering error. Check console.
+      </div>
+    `;
+  }
+}
+  
+function wireSkillsInput(){
+  const input = $("skillInput");
+  const btn = $("btnAddSkill");
+  if (!input) return;
+
+  // prevent double-binding
+  if (input.dataset.wired === "1") return;
+  input.dataset.wired = "1";
+
+  function commitSkill(){
+    const val = normalizeSkill(input.value);
+    if (!val) return;
+
+    state.skills = Array.isArray(state.skills) ? state.skills : [];
+
+    const lower = val.toLowerCase();
+    const existingIndex = state.skills.findIndex(x => String(x).toLowerCase() === lower);
+
+    // Edit mode: update existing chip
+    if (state._editingSkillIndex !== null && state._editingSkillIndex !== undefined) {
+      const i = state._editingSkillIndex;
+
+      // block duplicates (except replacing itself)
+      if (existingIndex !== -1 && existingIndex !== i) return;
+
+      state.skills[i] = val;
+      state._editingSkillIndex = null;
+    } else {
+      // Add mode
+      if (existingIndex === -1) state.skills.push(val);
+    }
+
+    input.value = "";
+    input.focus();
+
+    renderSkillsEditor();
+    renderPreview();
+  }
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    commitSkill();
+  });
+
+  if (btn && btn.dataset.wired !== "1") {
+    btn.dataset.wired = "1";
+    btn.addEventListener("click", () => commitSkill());
+  }
+}
+
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+  
+function uid(prefix="cs"){
+  return `${prefix}_${Math.random().toString(36).slice(2,9)}${Date.now().toString(36).slice(2,6)}`;
+}
+
+function migrateCustomSections(){
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+
+  state.customSections.forEach(sec => {
+    if (!sec.id) sec.id = uid("custom");
+    if (!sec.type) sec.type = "text";
+    if (typeof sec.collapsed !== "boolean") sec.collapsed = false;
+
+    // Ensure base fields
+    sec.title = String(sec.title || "Custom Section");
+
+    if (sec.type === "bullets") {
+      sec.items = Array.isArray(sec.items) ? sec.items : [];
+      // If legacy content exists, convert once
+      if (sec.items.length === 0 && typeof sec.content === "string" && sec.content.trim()) {
+        sec.items = sec.content.split("\n").map(x => x.trim()).filter(Boolean);
+      }
+      // keep content loosely in sync
+      sec.content = String(sec.content || sec.items.join("\n"));
+    } else {
+      sec.content = String(sec.content || "");
+      if (sec.type === "quote") sec.author = String(sec.author || "");
+    }
+  });
+}
+  
+function getCustomSectionById(id){
+  return (state.customSections || []).find(s => s.id === id) || null;
+}  
+
+function getDefaultState(){
+  return {
+    templateType: "resume",
+    resumeStyle: "modern",
+
+    fullName: "John Doe",
+    roleTitle: "Project Manager",
+    summary: "This area will render structured output in real time. The final layout will be export-ready and professionally formatted.",
+
+    email: "john@example.com",
+    phone: "(555) 123-4567",
+    address: "Chicago, IL",
+    showHeadshot: true,
+
+    experience: [
+      {
+        company: "Acme Construction",
+        role: "Project Manager",
+        dates: "2022 – Present",
+        location: "Chicago, IL",
+        desc: "Led multi-site project execution, improved coordination, and reduced delays through clear scheduling and stakeholder communication."
+      }
+    ],
+
+    education: [
+      {
+        school: "State University",
+        degree: "B.S. Business Administration",
+        dates: "2018 – 2022",
+        location: "Springfield, IL",
+        notes: "Relevant coursework: operations, finance, project management."
+      }
+    ],
+
+    certifications: [
+      {
+        name: "PMP Certification",
+        issuer: "Project Management Institute",
+        year: "2023"
+      }
+    ],
+
+    projects: [
+      {
+        title: "Warehouse Optimization Initiative",
+        role: "Lead Coordinator",
+        desc: "Reduced operating costs by 18% through logistics restructuring."
+      }
+    ],
+
+    skills: ["Leadership", "Operations", "Problem Solving"],
+
+    showReferences: false,
+
+    customSections: [],
+
+    sectionOrder: ["experience","education","skills","projects","certifications"],
+
+    _editingSkillIndex: null,
+    _ui: {
+      collapsed: {}
+    }
+  };
+}
+
+function resetAllState(){
+  const fresh = getDefaultState();
+
+  // remove all existing keys from state
+  Object.keys(state).forEach(key => {
+    delete state[key];
+  });
+
+  // copy fresh defaults into the same state object
+  Object.assign(state, fresh);
+
+  // clear autosave
+  localStorage.removeItem(STORAGE_KEY);
+
+  // rebuild dependent data
+  migrateCustomSections();
+  normalizeSectionOrder();
+
+  // reset form fields
+  $("templateType").value = state.templateType;
+  $("resumeStyle").value = state.resumeStyle || "modern";
+  $("fullName").value = state.fullName;
+  $("roleTitle").value = state.roleTitle;
+  $("summary").value = state.summary;
+  $("email").value = state.email;
+  $("phone").value = state.phone;
+  $("address").value = state.address;
+  $("toggleHeadshot").checked = !!state.showHeadshot;
+  $("toggleReferences").checked = !!state.showReferences;
+
+  // rerender everything
+  syncLeftPanelVisibility();
+  renderExperienceEditor();
+  renderEducationEditor();
+  renderSkillsEditor();
+  renderCertificationsEditor();
+  renderProjectsEditor();
+  renderCustomSectionsEditor();
+  renderSectionOrderEditor();
+  renderPreview();
+
+  initSectionToggles();
+  applyCollapsedState();
+
+  setSaveStatus("Reset complete");
+  saveState();
+}
+  
+function bind(){
+loadState();
+setSaveStatus("Loaded");
+
+migrateCustomSections();
+normalizeSectionOrder();
+    
+      // Ensure arrays exist AFTER load
+  state.customSections = Array.isArray(state.customSections) ? state.customSections : [];
+  state.sectionOrder = Array.isArray(state.sectionOrder) ? state.sectionOrder : [];
+  
+normalizeSectionOrder(); // ✅ inject custom:* keys into sectionOrder
+    
+  // Seed inputs
+  $("templateType").value = state.templateType;
+  $("fullName").value = state.fullName;
+  $("roleTitle").value = state.roleTitle;
+  $("summary").value = state.summary;
+
+  $("email").value = state.email;
+  $("phone").value = state.phone;
+  $("address").value = state.address;
+  $("toggleHeadshot").checked = !!state.showHeadshot;
+
+  $("toggleReferences").checked = !!state.showReferences;
+    
+// Seed resume style dropdown
+$("resumeStyle").value = state.resumeStyle || "modern";
+
+// Listen for changes
+$("resumeStyle").addEventListener("change", (e) => {
+  console.log("resumeStyle changed to:", e.target.value);
+  state.resumeStyle = e.target.value;
+  renderPreview();
+  scheduleSave();
+});
+    
+  // Template type
+  $("templateType").addEventListener("change", (e) => {
+    state.templateType = e.target.value;
+    syncLeftPanelVisibility();
+    wireSkillsInput();
+    renderPreview();
+    scheduleSave();
+  });
+
+  // Text inputs
+  $("fullName").addEventListener("input", (e) => { state.fullName = e.target.value; renderPreview(); scheduleSave(); });
+  $("roleTitle").addEventListener("input", (e) => { state.roleTitle = e.target.value; renderPreview(); scheduleSave(); });
+  $("summary").addEventListener("input", (e) => { state.summary = e.target.value; renderPreview(); scheduleSave(); });
+
+  $("email").addEventListener("input", (e) => { state.email = e.target.value; renderPreview(); scheduleSave(); });
+  $("phone").addEventListener("input", (e) => { state.phone = e.target.value; renderPreview(); scheduleSave(); });
+  $("address").addEventListener("input", (e) => { state.address = e.target.value; renderPreview(); scheduleSave(); });
+
+  // Toggles
+  $("toggleHeadshot").addEventListener("change", (e) => { state.showHeadshot = e.target.checked; renderPreview(); scheduleSave(); });
+
+  $("toggleReferences")?.addEventListener("change", (e) => {
+    state.showReferences = e.target.checked;
+    renderPreview();
+    scheduleSave();
+  });
+
+  // Add buttons
+  $("btnAddCert")?.addEventListener("click", () => {
+    state.certifications = state.certifications || [];
+    state.certifications.push({ name:"", issuer:"", year:"" });
+    renderCertificationsEditor();
+    renderPreview();
+    scheduleSave();
+  });
+
+  $("btnAddProject")?.addEventListener("click", () => {
+    state.projects = state.projects || [];
+    state.projects.push({ title:"", role:"", desc:"" });
+    renderProjectsEditor();
+    renderPreview();
+    scheduleSave();
+  });
+
+  $("btnAddExp")?.addEventListener("click", () => {
+  console.log("Add Experience clicked");
+
+  state.experience.push({
+    company: "",
+    role: "",
+    dates: "",
+    location: "",
+    desc: "",
+    collapsed: false
+  });
+
+  renderExperienceEditor();
+  renderPreview();
+  scheduleSave();
+});
+
+  $("btnAddEdu")?.addEventListener("click", () => {
+  state.education.push({
+    school: "",
+    degree: "",
+    dates: "",
+    location: "",
+    notes: ""
+  });
+  renderEducationEditor();
+  renderPreview();
+  scheduleSave();
+});
+
+$("btnResetAll")?.addEventListener("click", () => {
+  const ok = window.confirm("Start over? This will clear your current document and reset the builder.");
+  if (!ok) return;
+
+  const backedUp = saveBackupState();
+  if (!backedUp) {
+    window.alert("Could not create a backup before reset.");
+    return;
+  }
+
+  resetAllState();
+});
+
+$("btnUndoReset")?.addEventListener("click", () => {
+  const ok = loadBackupState();
+  if (!ok) {
+    window.alert("No reset backup was found.");
+    return;
+  }
+
+  $("templateType").value = state.templateType || "resume";
+  $("resumeStyle").value = state.resumeStyle || "modern";
+  $("fullName").value = state.fullName || "";
+  $("roleTitle").value = state.roleTitle || "";
+  $("summary").value = state.summary || "";
+  $("email").value = state.email || "";
+  $("phone").value = state.phone || "";
+  $("address").value = state.address || "";
+  $("toggleHeadshot").checked = !!state.showHeadshot;
+  $("toggleReferences").checked = !!state.showReferences;
+
+  syncLeftPanelVisibility();
+  wireSkillsInput();
+  renderExperienceEditor();
+  renderEducationEditor();
+  renderSkillsEditor();
+  renderCertificationsEditor();
+  renderProjectsEditor();
+  renderCustomSectionsEditor();
+  renderSectionOrderEditor();
+  initSectionToggles();
+  applyCollapsedState();
+  renderPreview();
+  saveState();
+});
+
+$("btnPreview")?.addEventListener("click", () => {
+  renderPreview();
+  saveState();
+});
+
+$("btnClearSaved")?.addEventListener("click", () => {
+  clearSavedState();
+  // location.reload();
+});
+
+$("btnExportPdf")?.addEventListener("click", () => {
+  renderPreview();
+  saveState();
+  window.print();
+});
+
+// One-time initial paint
+syncLeftPanelVisibility();
+wireSkillsInput();
+renderExperienceEditor();
+renderEducationEditor();
+renderSkillsEditor();
+renderCertificationsEditor();
+renderProjectsEditor();
+renderCustomSectionsEditor();
+renderSectionOrderEditor();
+renderPreview();
+initSectionToggles();
+applyCollapsedState();
+saveState();
+}
+
+document.getElementById("buildId").textContent =
+  new Date(document.lastModified).toLocaleString();
+
+bind();
+</script>
+</body>
+</html>
