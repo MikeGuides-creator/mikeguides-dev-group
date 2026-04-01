@@ -1001,42 +1001,42 @@ function renderExperienceEditor() {
   <div class="block ${isCollapsed ? "is-collapsed" : ""}">
     <div class="block-head">
       <div class="block-title">
-        <button class="collapse-toggle" type="button" data-edu-toggle="${idx}">
+        <button class="collapse-toggle" type="button" data-exp-toggle="${idx}">
           ${isCollapsed ? "▸" : "▾"}
         </button>
         <span class="block-title-text">
-          ${esc(x.degree || x.school || `Entry ${idx + 1}`)}
+          ${esc(label)}
         </span>
       </div>
-      <button class="btn btn-ghost btn-sm" type="button" data-edu-remove="${idx}">
+      <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">
         Remove
       </button>
     </div>
 
     <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
       <div class="field-group">
-        <label for="edu_school_${idx}">School</label>
-        <input id="edu_school_${idx}" type="text" value="${esc(x.school)}" placeholder="School / Institution" />
+        <label for="exp_company_${idx}">Company</label>
+        <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company / Organization" />
       </div>
 
       <div class="field-group">
-        <label for="edu_degree_${idx}">Degree / Program</label>
-        <input id="edu_degree_${idx}" type="text" value="${esc(x.degree)}" placeholder="Degree or program" />
+        <label for="exp_role_${idx}">Role</label>
+        <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Job title / Role" />
       </div>
 
       <div class="field-group">
-        <label for="edu_dates_${idx}">Dates</label>
-        <input id="edu_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2018 – 2022" />
+        <label for="exp_dates_${idx}">Dates</label>
+        <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2021 – Present" />
       </div>
 
       <div class="field-group">
-        <label for="edu_location_${idx}">Location</label>
-        <input id="edu_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+        <label for="exp_location_${idx}">Location</label>
+        <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
       </div>
 
       <div class="field-group">
-        <label for="edu_notes_${idx}">Notes</label>
-        <textarea id="edu_notes_${idx}" placeholder="Honors, coursework, focus...">${esc(x.notes)}</textarea>
+        <label for="exp_desc_${idx}">Description</label>
+        <textarea id="exp_desc_${idx}" placeholder="What you did, wins, results...">${esc(x.desc)}</textarea>
       </div>
     </div>
   </div>
