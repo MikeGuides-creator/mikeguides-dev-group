@@ -969,87 +969,6 @@ showReferences: false,
     if (addEdu) addEdu.style.display = show ? "" : "none";
   }
 
-  function renderExperienceEditor(){
-  const host = $("expList");
-  if (!host) return;
-
-  host.innerHTML = state.experience.map((x, idx) => {
-    const isCollapsed = !!x.collapsed;
-
-    return `
-      <div class="block">
-        <div class="block-head">
-          <div class="block-title">
-            <button class="collapse-toggle" type="button" data-exp-toggle="${idx}">
-              ${isCollapsed ? "▸" : "▾"}
-            </button>
-            Entry ${idx + 1}
-          </div>
-          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
-        </div>
-
-        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
-          <div class="field-group">
-            <label for="exp_company_${idx}">Company</label>
-            <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_role_${idx}">Role / Title</label>
-            <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_dates_${idx}">Dates</label>
-            <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_location_${idx}">Location</label>
-            <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_desc_${idx}">Description</label>
-            <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  state.experience.forEach((_, idx) => {
-    $("exp_company_" + idx)?.addEventListener("input", (e) => {
-      state.experience[idx].company = e.target.value;
-      renderPreview();
-      scheduleSave();
-    });
-
-    $("exp_role_" + idx)?.addEventListener("input", (e) => {
-      state.experience[idx].role = e.target.value;
-      renderPreview();
-      scheduleSave();
-    });
-
-    $("exp_dates_" + idx)?.addEventListener("input", (e) => {
-      state.experience[idx].dates = e.target.value;
-      renderPreview();
-      scheduleSave();
-    });
-
-    $("exp_location_" + idx)?.addEventListener("input", (e) => {
-      state.experience[idx].location = e.target.value;
-      renderPreview();
-      scheduleSave();
-    });
-
-    $("exp_desc_" + idx)?.addEventListener("input", (e) => {
-      state.experience[idx].desc = e.target.value;
-      renderPreview();
-      scheduleSave();
-    });
-  });
-
   function getExperienceLabel(x, idx) {
   const role = (x.role || "").trim();
   const company = (x.company || "").trim();
@@ -1079,45 +998,49 @@ function renderExperienceEditor() {
     const label = getExperienceLabel(x, idx);
 
     return `
-      <div class="block ${isCollapsed ? "is-collapsed" : ""}">
-        <div class="block-head">
-          <div class="block-title">
-            <button class="collapse-toggle" type="button" data-exp-toggle="${idx}" aria-label="${isCollapsed ? "Expand entry" : "Collapse entry"}">
-              ${isCollapsed ? "▸" : "▾"}
-            </button>
-            <span class="block-title-text">${esc(label)}</span>
-          </div>
-          <button class="btn btn-ghost btn-sm" type="button" data-exp-remove="${idx}">Remove</button>
-        </div>
-
-        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
-          <div class="field-group">
-            <label for="exp_company_${idx}">Company</label>
-            <input id="exp_company_${idx}" type="text" value="${esc(x.company)}" placeholder="Company name" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_role_${idx}">Role / Title</label>
-            <input id="exp_role_${idx}" type="text" value="${esc(x.role)}" placeholder="Role/title" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_dates_${idx}">Dates</label>
-            <input id="exp_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2022 – Present" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_location_${idx}">Location</label>
-            <input id="exp_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
-          </div>
-
-          <div class="field-group">
-            <label for="exp_desc_${idx}">Description</label>
-            <textarea id="exp_desc_${idx}" placeholder="What did you do? What changed because you did it?">${esc(x.desc)}</textarea>
-          </div>
-        </div>
+  <div class="block ${isCollapsed ? "is-collapsed" : ""}">
+    <div class="block-head">
+      <div class="block-title">
+        <button class="collapse-toggle" type="button" data-edu-toggle="${idx}">
+          ${isCollapsed ? "▸" : "▾"}
+        </button>
+        <span class="block-title-text">
+          ${esc(x.degree || x.school || `Entry ${idx + 1}`)}
+        </span>
       </div>
-    `;
+      <button class="btn btn-ghost btn-sm" type="button" data-edu-remove="${idx}">
+        Remove
+      </button>
+    </div>
+
+    <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+      <div class="field-group">
+        <label for="edu_school_${idx}">School</label>
+        <input id="edu_school_${idx}" type="text" value="${esc(x.school)}" placeholder="School / Institution" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_degree_${idx}">Degree / Program</label>
+        <input id="edu_degree_${idx}" type="text" value="${esc(x.degree)}" placeholder="Degree or program" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_dates_${idx}">Dates</label>
+        <input id="edu_dates_${idx}" type="text" value="${esc(x.dates)}" placeholder="2018 – 2022" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_location_${idx}">Location</label>
+        <input id="edu_location_${idx}" type="text" value="${esc(x.location)}" placeholder="City, State" />
+      </div>
+
+      <div class="field-group">
+        <label for="edu_notes_${idx}">Notes</label>
+        <textarea id="edu_notes_${idx}" placeholder="Honors, coursework, focus...">${esc(x.notes)}</textarea>
+      </div>
+    </div>
+  </div>
+`;
   }).join("");
 
   state.experience.forEach((_, idx) => {
@@ -1617,25 +1540,41 @@ function renderCertificationsEditor(){
     const isCollapsed = !!c.collapsed;
 
     return `
-     
-        <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
-          <div class="field-group">
-            <label for="cert_name_${idx}">Name</label>
-            <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
-          </div>
-
-          <div class="field-group">
-            <label for="cert_issuer_${idx}">Issuer</label>
-            <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
-          </div>
-
-          <div class="field-group">
-            <label for="cert_year_${idx}">Year</label>
-            <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
-          </div>
-        </div>
+  <div class="block ${isCollapsed ? "is-collapsed" : ""}">
+    <div class="block-head">
+      <div class="block-title">
+        <button class="collapse-toggle" type="button" data-cert-toggle="${idx}">
+          ${isCollapsed ? "▸" : "▾"}
+        </button>
+        <span class="block-title-text">
+          ${esc(c.name || c.issuer || `Certification ${idx + 1}`)}
+        </span>
       </div>
-    `;
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn btn-ghost btn-sm" type="button" data-cert-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-cert-down="${idx}" ${idx===((state.certifications || []).length - 1) ? "disabled" : ""}>↓</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-cert-remove="${idx}">Remove</button>
+      </div>
+    </div>
+
+    <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+      <div class="field-group">
+        <label for="cert_name_${idx}">Name</label>
+        <input id="cert_name_${idx}" type="text" value="${esc(c.name)}" placeholder="e.g., PMP" />
+      </div>
+
+      <div class="field-group">
+        <label for="cert_issuer_${idx}">Issuer</label>
+        <input id="cert_issuer_${idx}" type="text" value="${esc(c.issuer)}" placeholder="Organization" />
+      </div>
+
+      <div class="field-group">
+        <label for="cert_year_${idx}">Year</label>
+        <input id="cert_year_${idx}" type="text" value="${esc(c.year)}" placeholder="2025" />
+      </div>
+    </div>
+  </div>
+`;
   }).join("");
 
   (state.certifications || []).forEach((_, idx) => {
@@ -1668,19 +1607,6 @@ function renderCertificationsEditor(){
       scheduleSave();
     });
   });
-
-  host.querySelectorAll(".block-head").forEach((head, idx) => {
-  head.addEventListener("click", (e) => {
-
-    // ignore clicks on buttons
-    if (e.target.closest("button")) return;
-
-    toggleItemCollapsed(state.certifications, idx);
-    renderCertificationsEditor();
-    scheduleSave();
-
-  });
-});
   
   host.querySelectorAll("[data-cert-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -1723,35 +1649,45 @@ function renderCertificationsEditor(){
   const host = $("projectList");
   if (!host) return;
 
-  host.innerHTML = (state.projects || []).map((p, idx) => `
-    <div class="block" draggable="true" data-drag-index="${idx}">
+  host.innerHTML = (state.projects || []).map((p, idx) => {
+  const isCollapsed = !!p.collapsed;
+  const label = p.title || p.role || `Project ${idx + 1}`;
+
+  return `
+    <div class="block ${isCollapsed ? "is-collapsed" : ""}" draggable="true" data-drag-index="${idx}">
       <div class="block-head">
-      <div class="block-title">Projects</div>
+        <div class="block-title">
+          <button class="collapse-toggle" type="button" data-proj-toggle="${idx}">
+            ${isCollapsed ? "▸" : "▾"}
+          </button>
+          <span class="block-title-text">${esc(label)}</span>
+        </div>
         <div style="display:flex; gap:8px; align-items:center;">
-          <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="collapse">Collapse All</button>
-          <button class="btn btn-ghost btn-sm" type="button" data-proj-collapse-all data-collapse-mode="expand">Expand All</button>
           <button class="btn btn-ghost btn-sm" type="button" data-proj-up="${idx}" ${idx===0 ? "disabled" : ""}>↑</button>
           <button class="btn btn-ghost btn-sm" type="button" data-proj-down="${idx}" ${idx===(state.projects.length-1) ? "disabled" : ""}>↓</button>
           <button class="btn btn-ghost btn-sm" type="button" data-proj-remove="${idx}">Remove</button>
         </div>
       </div>
 
-      <div class="field-group">
-        <label for="proj_title_${idx}">Title</label>
-        <input id="proj_title_${idx}" type="text" value="${esc(p.title)}" placeholder="Project title" />
-      </div>
+      <div class="custom-body" ${isCollapsed ? "hidden" : ""}>
+        <div class="field-group">
+          <label for="proj_title_${idx}">Title</label>
+          <input id="proj_title_${idx}" type="text" value="${esc(p.title)}" placeholder="Project title" />
+        </div>
 
-      <div class="field-group">
-        <label for="proj_role_${idx}">Your Role</label>
-        <input id="proj_role_${idx}" type="text" value="${esc(p.role)}" placeholder="Your role" />
-      </div>
+        <div class="field-group">
+          <label for="proj_role_${idx}">Your Role</label>
+          <input id="proj_role_${idx}" type="text" value="${esc(p.role)}" placeholder="Your role" />
+        </div>
 
-      <div class="field-group">
-        <label for="proj_desc_${idx}">Description</label>
-        <textarea id="proj_desc_${idx}" placeholder="What changed because you did it?">${esc(p.desc)}</textarea>
+        <div class="field-group">
+          <label for="proj_desc_${idx}">Description</label>
+          <textarea id="proj_desc_${idx}" placeholder="What changed because you did it?">${esc(p.desc)}</textarea>
+        </div>
       </div>
     </div>
-  `).join("");
+  `;
+}).join("");
 
   (state.projects || []).forEach((_, idx) => {
     $("proj_title_" + idx)?.addEventListener("input", (e) => {
@@ -1772,7 +1708,16 @@ function renderCertificationsEditor(){
   });
 
    bindHeaderToggleAll(host, "[data-proj-collapse-all]", state.projects, renderProjectsEditor);
-   
+ 
+host.querySelectorAll("[data-proj-toggle]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const i = Number(btn.getAttribute("data-proj-toggle"));
+    toggleItemCollapsed(state.projects, i);
+    renderProjectsEditor();
+    scheduleSave();
+  });
+});
+ 
   host.querySelectorAll("[data-proj-remove]").forEach(btn => {
     btn.addEventListener("click", () => {
       const i = Number(btn.getAttribute("data-proj-remove"));
